@@ -1,0 +1,46 @@
+/* 이미지 */
+/* @import url(http://fonts.googleapis.com/css?family=Open+Sans); */
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+/*공통*/
+#wrap{position:relative;clear:both; margin:10px; }
+#contents{position:relative;clear:both;}
+
+#wrap h1{color:#736357;line-height:40px;}
+#wrap .c_text{font-size:12px;line-height:40px;}
+#wrap .flatbtn{color:#8c6239;text-decoration:underline;}
+
+
+#loginmodal, #updateForm {background:#fff;}
+#loginmodal h2, #updateForm h2 {color:#636363;font-size:24px;line-height:40px;}
+#loginmodal .p_c_text, #updateForm .p_c_text {font-size:12px;line-height:24px;}
+#loginmodal .login_line, #updateForm .login_line {margin:10px 0 0;height:80px;}
+#loginmodal .box_in, #updateForm .box_in {float:left;margin:0 10px 0; }
+#loginmodal .btn_login {width:72px;height:60px;background:#363636;color:#e1e1e1;float:left;line-height:60px;text-align:center;}
+#loginmodal .find_join {clear:both;margin:20px 0 0 10px;}
+
+/** modal window styles **/
+#lean_overlay {
+    position: fixed;
+    z-index:500;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+
+
+#loginmodal {
+  width: 320px;height:600px;  /*팝업창의 크기조절*/
+  margin-top:100px;           /*팝업창 위아래 간격조절*/
+  padding: 18px;
+  background: transparent;
+}
+
+

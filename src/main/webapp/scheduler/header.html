@@ -1,0 +1,107 @@
+﻿<link href="../node_modules/startbootstrap-sb-admin-2/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="../resources/css/modal/layout.css" rel="stylesheet" />
+<link rel="stylesheet" href="../resources/css/header.css">
+<link href="../node_modules/sweetalert/dist/sweetalert.css" rel="stylesheet">
+
+<div class="header">
+	<h1>
+		<a href="/">Reizen</a>
+	</h1>
+	<a id="btn_schedule" href="/scheduler/scheduler.html">일정 만들기</a> 
+	<a id="modaltrigger" href="#loginmodal"> <i class="fa fa-power-off"
+		aria-hidden="true"></i></a>
+	<div class="login">
+    <div class="min-thumbnail"></div><span id="id"></span>
+	</div>
+	
+	<nav class="headerNav">
+		<ul>
+			<li><span><i class="fa fa-heart" aria-hidden="true"></i></span><span class="like-count"></span></li>
+			<li><span><i class="fa fa-pencil" aria-hidden="true"></i></span><span class="write-count"></span></li>
+			<li><span><a id="btnEdit" href="#updateForm"><i class="fa fa-gear" aria-hidden="true"></i><span class="edit">edit</span></a></span></li>
+		</ul>
+		<a id="btnDashBoard">대시보드</a> 
+		<a id="btnProceeding"></a> 
+		<div id="proceedingList"></div>
+		<a id="btnLogout">로그아웃</a>
+	</nav>
+</div>
+
+<div id="loginmodal" style="display: none;">
+	<div class="module form-module">
+	
+		<div class="toggle">
+			<i class="fa fa-times fa-pencil"></i>
+			<div class="tooltip">Click</div>
+		</div>
+		
+		<div class="form" id="loginForm">
+			<h2>로그인</h2>
+			<form>
+				<input type="email" id="mail" placeholder="이메일 주소" /> 
+				<input type="password" id="psw" placeholder="비밀번호" />
+				<button type="button" id="login">로그인 하기</button>
+			</form>
+      <button id="btnNaver" class="btnLogin">네이버 로그인</button>
+      <div id="naver_id_login"></div>
+			<button id="btnGoogle" class="btnLogin"><i class="fa fa-google-plus"></i> 구글 로그인</button>
+	    <div class="cta">
+	      <a href="#">비밀번호를 잊으셨어요? :)</a>
+	    </div>
+		</div>
+		
+		<div class="form" id="registerForm">
+			<h2>회원가입</h2>
+			<form id="sign-form" action="/user/signup.do" method="POST"
+				enctype="multipart/form-data">
+				<div class="preview img-wrapper"></div>
+				<div class="file-upload-wrapper">
+					<input id="thumbnail" type="file" name="files" class="file-upload-native" /> 
+					<input id="nail" type="text" disabled="disabled" placeholder="upload image" class="file-upload-text" data-file="empty.png" />
+				</div>
+				<input type="email" id="email" name="email" placeholder="이메일 주소" /> 
+				<span id="email-span" class="check"></span>
+				<input type="text" id="nickName" name="nickName" placeholder="닉네임" /> 
+				<input type="password" id="password" name="password" placeholder="비밀번호" /> 
+				<input type="password" id="checkPassword" placeholder="비밀번호 확인" />
+				<span id="pw-span" class="check"></span> 
+				<button type="submit" id="sign">회원가입</button>
+			</form>
+		</div>
+		
+	</div> <!-- .form-module -->
+</div>  <!-- #loginmodal -->
+
+<div class="module form-module" id="updateForm" style="display: none;">
+  <div class="form" style="display:block;">
+		<h2>회원 정보 수정</h2>
+		<form id="update-form" action="/user/updateUser.do" method="POST"
+			enctype="multipart/form-data">
+			<div class="preview img-wrapper"></div>
+			<div class="file-upload-wrapper">
+				<input id="updateThumb" type="file" name="files" class="file-upload-native" /> 
+				<input id="updateNail" type="text" disabled="disabled" placeholder="upload image" class="file-upload-text" data-file="empty.png" />
+			</div>
+			<span id="email-span" class="check"></span> 
+			<input type="email" id="updateEmail" name="email" disabled /> 
+			<input type="text" id="updateNickName" name="nickName"  placeholder="닉네임"/> 
+			<span id="pw-span" class="check"></span> 
+			<input type="password" name="password" placeholder="비밀번호" /> 
+			<input type="password" id="checkUpdatePwd" placeholder="비밀번호 확인" />
+			<button id="btnUpdate" type="submit">정보 수정</button>
+		</form>
+  </div>
+  <div class="out">
+    <a id="btnOut">회원 탈퇴</a>
+  </div>
+</div>
+
+<script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="../resources/js/modal/jquery.leanModal.min.js"></script>
+<script src="../resources/js/fileupload/jquery.ui.widget.js"></script>
+<script src="../resources/js/fileupload/jquery.iframe-transport.js"></script>
+<script src="../resources/js/fileupload/jquery.fileupload.js"></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=initG" async defer></script>
+<script type="text/javascript" src="../resources/js/naver.js" charset="utf-8"></script>
+<script src="../resources/js/header.js"></script>
+<script src="../resources/js/headerAjax.js"></script>

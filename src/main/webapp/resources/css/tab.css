@@ -1,0 +1,146 @@
+@CHARSET "UTF-8";
+
+/* tab */
+.tablist {/*탭들 크기조절 */
+  position: absolute;
+  top:45%;
+  padding: 0;
+  list-style: none;
+  display: table;
+  width: 100%;
+}
+.tabpanel {
+  display: none;
+  padding: 20px;
+  background: #fff;
+}
+.tabpanel.show {
+  display: block;
+}
+
+.tabpanel h1 {
+  margin: 0 0 .3em;
+}
+.tabpanel p {
+
+  border-bottom: 1pt dotted;
+  border-bottom-color: white;
+  
+}
+/* 공용 */
+@media (max-width: 600px) {
+  .tab {
+    display: block;
+    display: none;
+    margin: 0;
+    border: none;
+  }
+  
+  .tab:after {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+.tab-menu {
+  display: none;
+}
+
+  
+  .tab-active {
+    display: block;
+    top: 0;
+  }
+  
+  .tab a {
+    border-bottom: solid 1px #ddd;
+  }
+  
+  .tab-menu {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -12px;
+    width: 24px;
+    height: 22px;
+  }
+  
+  .tab-menu .line {
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+    margin-bottom: 4px;
+  }
+}
+
+
+/* *********************************************************************** */
+
+
+
+
+
+
+/*일정  */
+
+.tab:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: #fff;
+  border-top: solid 5px transparent;
+  transition: top .2s;
+}
+
+.tab:last-child {
+  border-right: solid 1px #ddd;
+}
+
+.tab a {
+  position: relative;
+  display: block;
+  padding: 15px 20px;
+  color: #666;
+  text-decoration: none;
+  z-index: 1;
+}
+
+#panel1 h1 {
+  color: #ff5e10;
+}
+
+
+
+
+/* *************************************************************** */
+
+
+/* 후기 */
+.tab-active:after {
+  top: -1px;
+}
+
+.tab-active:first-child:after {
+	position:absolute;
+	top:100%;
+  border-top-color: #a598f5;
+}
+
+.tab-active:nth-child(2):after {
+    position: absolute;
+    top: 100%;
+     border-top-color: #00ceee;
+}
+#panel2 h1 {
+  color: #00ceee;
+}
+
+
+
+
+
+

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>진행중인 일정</title>
+<!-- CSS reset -->
+<link href="../node_modules/sweetalert/dist/sweetalert.css" rel="stylesheet">
+<link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+<!-- Resource style -->
+<link href="../node_modules/startbootstrap-sb-admin-2/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+<link href="../node_modules/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
+<link href="../node_modules/startbootstrap-sb-admin-2/bower_components/morrisjs/morris.css"	rel="stylesheet">
+<link href="../resources/css/common.css" rel="stylesheet">
+<link href="../resources/css/proceeding/timeline.css" rel="stylesheet">
+<link href="../resources/css/proceeding/proceeding.css" rel="stylesheet">
+<link href="../resources/css/weather/style.css" rel="stylesheet">
+
+</head>
+<body>
+	<div id="container">
+		<header></header>
+		<section>
+			<article id="schedule">
+				<a id="btn_prev" class="moveDay" data-pre="ok"></a> <a id="btn_next"
+					class="moveDay"></a>
+				<div id="scheduleTitle">
+					<span class="date"></span><span class="day"></span><br /> <span
+						class="location"></span>
+				</div>
+				<!-- // scheduleTitle -->
+				<div id="weather"></div>
+				<!-- // weather -->
+			</article>
+			<!-- schedule -->
+
+			<article id="progress" class="cd-horizontal-timeline">
+				<div class="timeline">
+					<div class="events-wrapper">
+						<div class="events">
+							<ol></ol>
+							<span class="filling-line" aria-hidden="true"></span>
+						</div>
+						<!-- .events -->
+					</div>
+					<!-- .events-wrapper -->
+				</div>
+				<!-- .timeline -->
+			</article>
+			<!-- prograss -->
+
+			<div id="poMap">
+				<article id="post_a_comment">
+					<!-- box -->
+					<ul id="sortable"></ul>
+					<!-- // addSchedule -->
+				</article>
+				<!-- post_a_comment -->
+				<article id="map"></article>
+				<!-- map -->
+			</div>
+		</section>
+	</div>
+	<!--  전체 .container -->
+
+	<!-- 추천경로 Modal -->
+	<div class="modal modal-center fade" id="findMap" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-center" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="initMap"></div>
+					<div id="panel"></div>
+				</div>
+			</div>
+      <a class="closeBtn"><i class="fa fa-times-circle" aria-hidden="true" data-dismiss="modal" aria-label="Close"></i></a>
+		</div>
+	</div>
+
+	<!-- time update Modal -->
+	<div class="modal modal-center fade" id="timeModal" tabindex="-1"
+	  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-sm modal-center" role="document">
+	    <div class="modal-content adm-content">
+	      <div class="modal-header adm-header">
+	        <button type="button" class="close" data-dismiss="modal"
+	          aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h4 class="modal-title adm-title" id="addModalLabel">시간을 선택해주세요.</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div class="form-group adm-form-group">
+	          <select id="updateHour" class="form-control adm-form-control">
+	          </select>
+	           : 
+	          <select id="updateMin" class="form-control adm-form-control">
+	            <option value="00" selected>00</option>
+	            <option value="30">30</option>
+	          </select>
+	        </div>
+	      </div>
+	      <div class="modal-footer adm-footer">
+	        <button id="btnCancel" type="button" class="btn btn-default adm-cancel" data-dismiss="modal">취소</button>
+	        <button id="btnTimeSubmit" type="button" class="btn btn-default adm-confirm">추가</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- // time update Modal -->
+
+	<!-- route insert Modal -->
+	<div class="modal modal-center fade" id="insertRoute" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-center" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+				  <div class="leftWrap">
+           <div class="searchWrap">
+             <div class="input-group">
+		          <input id="searchInput" type="text" class="form-control" placeholder="검색어를 입력하세요." /> 
+		          <span class="input-group-btn">
+		            <button id="btnSearch" class="btn btn-default" type="button">
+		              <i class="fa fa-search" aria-hidden="true"></i>
+		            </button>
+		          </span>
+		        </div>
+		        <label class="radio-inline"> 
+		          <input type="radio" id="inlineRadio1" checked="checked"/>전체 검색
+		        </label> 
+		        <label class="radio-inline"> 
+		          <input type="radio" id="inlineRadio2"/>도시 내에서 검색
+		        </label>  
+		        <select id="citySelect" class="form-control" disabled="disabled">
+		          <option value="1">서울</option>
+		          <option value="2">인천</option>
+		          <option value="3">대전</option>
+		          <option value="4">대구</option>
+		          <option value="5">광주</option>
+		          <option value="6">부산</option>
+		          <option value="7">울산</option>
+		          <option value="8">세종특별자치시</option>
+		          <option value="31">경기도</option>
+		          <option value="32">강원도</option>
+		          <option value="33">충청북도</option>
+		          <option value="34">충청남도</option>
+		          <option value="35">경상북도</option>
+		          <option value="36">경상남도</option>
+		          <option value="37">전라북도</option>
+		          <option value="38">전라남도</option>
+		          <option value="39">제주도</option>
+		        </select>
+		        <!-- //input-group -->
+		        <nav class="searchNav">
+				      <a id="btnLocation" class="searchIcon"><i class="fa fa-paperclip" aria-hidden="true"></i></a> 
+				      <a id="btnHotel" class="searchIcon" data-cate="B02"><i class="fa fa-bed" aria-hidden="true"></i></a> 
+				      <a id="btnEat" class="searchIcon" data-cate="A05"><i class="fa fa-cutlery" aria-hidden="true"></i></a> 
+				      <a id="btnSpot" class="searchIcon" data-cate="A01"><i class="fa fa-camera" aria-hidden="true"></i></a> 
+				      <a id="btnActive" class="searchIcon" data-cate="A03"><i class="fa fa-bicycle" aria-hidden="true"></i></a> 
+				      <a id="btnShop" class="searchIcon" data-cate="A04"><i class="fa fa-shopping-bag" aria-hidden="true"></i></a> 
+				      <a id="btnFestival" class="searchIcon" data-cate="A0207"><i class="fa fa-star" aria-hidden="true"></i></a>
+				    </nav>
+		        <div class="resultWrap">
+		         <ul class="resultList"></ul>
+		         <div class="radiusWrap">
+		          <a id="btnPrev" href="#"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+		              총 <span class="resultCount"></span>개 결과
+		          <a id="btnNext" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+		         </div>
+		        </div><!-- //검색결과 list -->
+           </div><!-- //searchWrap -->
+          </div><!-- //leftWrap -->
+          <div class="rightWrap">
+            <button id="btnRadius" type="button" class="btn btn-default">내 주변 검색하기</button>
+            <div id="modalMap"></div>
+          </div>
+				</div><!-- modalBody -->
+        <a class="closeBtn"><i class="fa fa-times-circle" aria-hidden="true" data-dismiss="modal" aria-label="Close"></i></a>
+			</div>
+		</div>
+	</div>
+	
+	<script id="memoBox" type="text/x-handlebarsx-template">
+{{#each data}}
+  <a href="#" class="list-group-item"> <i class="fa fa-comment fa-fw" style="display:inline"></i>&nbsp;&nbsp;{{content}}
+     <span class="pull-right text-muted small"><em style="color:#666">{{dateAgo}}</em></span>
+  </a>
+{{/each }}
+</script>
+	<script id="cardBox" type="text/x-handlebarsx-template">
+{{#each list}}
+            <li class="ui-state-default" data-routeNo="{{routeNo}}">
+            <input class="mapX" type="hidden" value="{{location.mapX}}"/> 
+            <input class="mapY" type="hidden" value="{{location.mapY}}"/> 
+              <div class="col-md-6 size">
+                <div class="panel panel-default">
+                  <div class="panel-heading" data-index="{{travelSequence}}" data-contentId="{{location.contentId}}">
+                    <div class="row">
+                      <div class="col-xs-3">
+                        <div class="text-center">
+                          <i class="fa fa-2x" aria-hidden="true" data-type="{{location.typeId}}"></i>
+                          <span class="time">{{time}}</span>
+                        </div>
+                      </div>
+                      <div class="col-xs-9 text-left">
+                        <div class="text-right">
+                          <i class="fa fa-sticky-note memoBtn {{#if flag}}alarm{{/if}}" data-routeNo="{{routeNo}}" aria-hidden="true"></i>&nbsp;&nbsp; 
+                          <a class='infoBtn'  target="_blank" href="spot.html?cid={{location.contentId}}&tid={{location.typeId}}" style="color:#fff;">
+                          <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                          &nbsp; <a class='removeBtn'>
+                          <i class="fa fa-times" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="scheduleTitle">{{location.locateName}}</div>
+                        <div class="scheduleContent row">
+                          <div class="col-md-11">
+                            <div class="row" style="margin-left : 18px">
+                                 <div class="col-md-8">
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;{{location.address1}}&nbsp;
+                                 </div>
+                                 <div class="col-md-4">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>&nbsp;{{location.tel}}
+                                 </div>
+                            </div>
+                             
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="addSchedule col-md-6 size">
+                <a class="btn_plus"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;일정추가</a>
+                <a class="btn_way">1.5Km 추천 경로&nbsp;&nbsp;<i
+                  class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </li>
+{{/each }}
+</script>
+
+	<script id="timelineBox" type="text/x-handlebarsx-template">
+{{#each list}}
+  <li>
+    <a href="#0" data-date="{{time}}" data-index="{{travelSequence}}" data-contentId="{{location.contentId}}"
+                  class="camera"><i class="fa" data-type="{{location.typeId}}" aria-hidden="true"></i><span class="time">{{time}}</span></a>
+  </li>
+{{/each }}
+</script>
+
+<script id="resultList" type="text/x-handlebarsx-template">
+  {{#data}}
+    <li class="resultContent" data-contentId="{{contentId}}" data-typeId="{{typeId}}" data-mapx="{{mapX}}" data-mapy="{{mapY}}">
+      <div class="imgWrap"><img class="resultImg" alt="여행지 이미지" src="{{firstImage}}" /></div>
+      <div class="resultTextBox">
+        <h3>{{locateName}}</h3>
+        <h4>{{category02}}{{category03}}</h4>
+      </div>
+      <div class="resultHover">
+        <a class="mapBtn"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <a class="plusBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+        <a class="infoBtn"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+      </div>
+     </li>
+  {{/data}}
+</script>
+
+
+	<!-- Modernizr -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8Z6lI6WjzkphJ-gFAxYVtokVaNo2I3zw"></script>
+	<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="../resources/js/jquery-ui.1.12.0.js"></script>
+  <script src="../resources/js/proceeding/modernizr.js"></script>
+	<script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
+	<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../resources/js/map.js"></script>
+	<script src="../resources/js/proceeding/proceeding.js"></script>
+  <script src="../resources/js/proceeding/proceedingAjax.js"></script>
+  <script src="../resources/js/common.js"></script>
+  <script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>reizen</title>
+<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="../resources/css/common.css" />
+<link rel="stylesheet" type="text/css" href="../resources/css/main/main.css" />
+<link rel="stylesheet" type="text/css" href="../resources/css/main/jquery.fullPage.css" />
+<link href="../resources/css/main/post/style.css" rel="stylesheet">
+<link href="../resources/css/jquery-ui.css" rel="stylesheet">
+<link href="../resources/css/dashboard/dashboard.css" rel="stylesheet">
+<link href="../resources/css/main/category.css" rel="stylesheet" />
+</head>
+<body>
+<header></header>
+	<div id="fullpage">
+		<div class="section " id="section0">
+			<video autoplay loop muted data-keepplaying id="myVideo">
+				<source src="../resources/images/main/video.mp4" type="video/mp4">
+			</video>
+			<div class="layer intro">
+				<h1 class="main-text">CREATING YOUR PLAN</h1>
+				<p> 
+					<input class="button" id="areaBar" placeholder="area" /> 
+					<input class="button" id="searchBar" placeholder="search" />
+				<p />
+			</div>
+			<div id="mouse-icon">
+				<div id="scroll-wheel"></div>
+			</div>
+		</div>
+		<div class="section" id="section1">
+      <div id="scrollable">
+        <h1>어디로 여행을 가시나요?</h1>
+        <div class="cate-wrap">
+          <div class="cate-innerWrap">
+            <div id="filter-tab" class="cate-row">
+              <div class="cate-col side">필터</div>
+              <div class="filter-list"></div>
+            </div>
+            <div class="cate-row">
+              <div class="cate-col side">분류</div>
+              <div class="cate-col cateL" data-cateL="A01">자연</div>
+              <div class="cate-col cateL" data-cateL="A02">문화</div>
+					    <div class="cate-col cateL" data-cateL="A03">레포츠</div>
+					    <div class="cate-col cateL" data-cateL="A04">쇼핑</div>
+					    <div class="cate-col cateL" data-cateL="A05">음식</div>
+					    <div class="cate-col cateL" data-cateL="B02">숙박</div>
+            </div>
+            <div class="subclass-list"></div>
+            <div class="cate-row">
+              <div class="cate-col side">일정 상세 검색</div>
+              <div class="cate-col planToggle" data-wrap="people" data-togge="off">인원수</div>
+                <div class="cate-col planFilter" data-type="peopleCount" data-value="1">1명</div>
+                <div class="cate-col planFilter" data-type="peopleCount" data-value="2">2명</div>
+                <div class="cate-col planFilter" data-type="peopleCount" data-value="3">3-4명</div>
+                <div class="cate-col planFilter" data-type="peopleCount" data-value="5">5-6명</div>
+                <div class="cate-col planFilter" data-type="peopleCount" data-value="7">7명 이상</div>
+              <div class="cate-col planToggle" data-wrap="season" data-togge="off">계절</div>
+                <div class="cate-col planFilter" data-type="season" data-value="3">봄</div>
+                <div class="cate-col planFilter" data-type="season" data-value="6">여름</div>
+                <div class="cate-col planFilter" data-type="season" data-value="9">가을</div>
+                <div class="cate-col planFilter" data-type="season" data-value="12">겨울</div>
+              <div class="cate-col planToggle" data-wrap="days" data-togge="off">여행기간</div>
+                <div class="cate-col planFilter" data-type="days" data-value="1">1-3일</div>
+                <div class="cate-col planFilter" data-type="days" data-value="4">4-6일</div>
+                <div class="cate-col planFilter" data-type="days" data-value="7">7-10일</div>
+                <div class="cate-col planFilter" data-type="days" data-value="11">11-15일</div>
+                <div class="cate-col planFilter" data-type="days" data-value="15">15일 이상</div>
+            </div>
+          </div>
+        </div>
+        
+        <!--scroll  -->
+				<div id="postsize">
+					<div id="locationBox">
+						<!-- 장소 -->
+						<h1>인기 여행 장소</h1>
+						<section class="thumbnails locationList">
+							<div class="one"></div>
+							<div class="two"></div>
+							<div class="three"></div>
+						</section>
+						<div>
+							<button type="button" class="btn btn-labeled btn-info"
+								id="locationRefresh">더 보기</button>
+						</div>
+					</div>
+					<div id="scheduleBox">
+						<!-- 일정 -->
+						<br />
+						<h1>인기 여행 일정</h1>
+						<section class="thumbnails scheduleList">
+							<div class="one"></div>
+							<div class="two"></div>
+							<div class="three"></div>
+						</section>
+						<div>
+							<button type="button" class="btn btn-labeled btn-info"
+								id="scheduleRefresh">더 보기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+</div>
+</div> <!-- fullpage.js -->
+
+<!-- add모달에서 쓰는 html 과 핸들바스  -->
+<!-- time update Modal -->
+<div class="modal modal-center fade" id="scheduleModal" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-center" role="document">
+    <div class="modal-content adm-content">
+      <div class="modal-header adm-header">
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title adm-title" id="addModalLabel">어디에 추가 할까요?</h4>
+      </div>
+      <div class="modal-body">
+        <select class="form-control scheduleSelectList adm-formMargin">
+          <option class="default" value="">일정을 선택해주세요</option>
+        </select> 
+        <select class="form-control dayList adm-formMargin">
+          <option class="default">날짜를 선택해주세요</option>
+        </select> 
+        <div class="form-group adm-form-group"><p>시간을 선택해주세요.</p>
+          <select id="updateHour" class="form-control adm-form-control">
+          </select>
+           : 
+          <select id="updateMin" class="form-control adm-form-control">
+            <option value="00" selected>00</option>
+            <option value="30">30</option>
+          </select>
+        </div>
+          
+      </div>
+      <div class="modal-footer adm-footer">
+        <button id="btnCancel" type="button" class="btn btn-default adm-cancel" data-dismiss="modal">취소</button>
+        <button id="btnTimeSubmit" type="button" class="btn btn-default adm-confirm">추가</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- // time update Modal -->
+
+<script id="scheduleList" type="text/x-handlebarsx-template">
+{{#each this}}
+  <option data-no="{{scheduleNo}}">{{title}}</option>
+{{/each}}
+</script>
+<script id="dayList" type="text/x-handlebarsx-template">
+{{#this}}
+  <option data-day="{{day}}">{{time}}</option>
+{{/this}}
+</script>
+<!-- add모달에서 쓰는 html 과 핸들바스  -->
+<script id="locationListTemplate" type="text/x-handlebarsx-template">
+  <div class="post" data-no="{{contentId}}" data-tid="{{typeId}}">
+    <ul class="icons">
+      <li><a href="" class="icon style2 fa-heart non-click"></a><br><span class="icon-text">{{recommandCount}}</span></li>
+      <li><a href="" class="icon style2 fa-paperclip non-click"></a><br><span class="icon-text">{{scrapCount}}</span></li>
+      <li><a href="" class="icon style2 fa-plus btnPlus"></a><br><span class="icon-text">add</span></li>
+    </ul>
+    <a  class="thmb-image"  href="scheduler/spot.html?cid={{contentId}}&tid={{typeId}}"">
+      <img src="{{firstImage}}" alt="" />
+      <h3>{{locateName}}</h3>
+      <span>{{address1}}</span>
+    </a>
+  </div>
+</script>
+
+<script id="scheduleListTemplate" type="text/x-handlebarsx-template">
+  <div class="post" data-no="{{scheduleNo}}">
+    <ul class="icons">
+      <li><a href="" class="icon style2 fa-heart non-click"></a><br><span class="icon-text">{{recommandCount}}</span></li>
+      <li><a href="" class="icon style2 fa-paperclip non-click"></a><br><span class="icon-text">{{scrapCount}}</span></li>
+      <li><a href="http://reizen.com:8080/scheduler/scheduler.html?copyScheduleNo={{scheduleNo}}" class="icon style2 fa-plus"></a><br><span class="icon-text">add</span></li>
+    </ul>
+    <a  class="thmb-image"  href="scheduler/viewSchedule.html?shceduleNo={{scheduleNo}}">
+      <img src="" alt="" class="sceduleImg" data-no="{{scheduleNo}}"/>
+      <h3>{{title}}</h3>
+      <span>{{totalDays}}Days · {{month}}월 여행 · {{peopleCount}}명 · by </span><span class="nick-name" data-dashNo="{{user.dashNo}}">{{user.nickName}}</span>
+    </a>
+  </div>
+</script>
+<script id="subclassListing" type="text/x-handlebarsx-template">
+{{#each data}}
+  <div class="cate-col cateS" data-subNo="{{cate}}">{{name}}</div>
+{{/each}}
+</script>
+
+<script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/angular/angular.min.js"></script>
+<script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../resources/js/jquery-ui.1.12.0.js"></script>
+<script src="../resources/js/main/jquery.fullPage.js"></script>
+<script src="../resources/js/common.js"></script>
+<script src="../resources/js/main/main.js"></script>
+<script src="../resources/js/main/mainAjax.js"></script>
+<script src="../resources/js/addModal.js"></script>
+</body>
+</html>

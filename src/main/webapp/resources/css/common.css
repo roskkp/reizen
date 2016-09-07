@@ -1,0 +1,321 @@
+@CHARSET "UTF-8";
+
+@IMPORT url("reset.css");
+
+html {
+  scrollbar-3dLight-Color: #efefef; 
+  scrollbar-arrow-color: #dfdfdf; 
+  scrollbar-base-color: #efefef; 
+  scrollbar-Face-Color: #dfdfdf; 
+  scrollbar-Track-Color: #efefef; 
+  scrollbar-DarkShadow-Color: #efefef; 
+  scrollbar-Highlight-Color: #efefef; 
+  scrollbar-Shadow-Color: #efefef;
+  height: 100%; 
+}
+
+::-webkit-scrollbar {
+  width: 3px; 
+  height: 3px; 
+}
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.3); 
+  -webkit-border-radius: 3px; 
+  border-radius:3px; 
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.5); 
+  -webkit-border-radius: 3px; 
+  border-radius: 3px; 
+}
+
+a {
+	cursor: pointer;
+}
+
+
+/**********       헤더         ***********/
+header {
+  width:100%;
+  height:60px;
+  position:fixed;
+  top:0px;
+  left:0px;
+  background-color: #fff;
+  z-index:600;
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  color: #4682b4;
+  transition: background-color 0.5s;
+  -webkit-transition: background-color 0.5s;
+}
+
+header > div.header {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index:700;
+  display: flex;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0px;
+  font-size:2em;
+  position: fixed;
+  left: 50%;
+  margin-left: -38px;
+}
+
+div.header > h1 > a {
+  font-family: "NanumB";
+  text-decoration: none;
+  color: #4682b4;
+}
+
+/* 이미지  프사*/
+header > .header > .login > .min-thumbnail {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-block;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+header div.header > a#btn_schedule {
+  height:40px;
+  display:block;
+  border:1px solid #4682b4;
+  border-radius: 3px;
+  color: #4682b4;
+  font-size:1.1em;
+  line-height:35px;
+  padding: 0px 15px;
+  position: fixed;
+  top: 10px;
+  left:40px;
+}
+
+header > div.header > a#btn_schedule:hover {
+  border:1px solid #4682b4;
+  background-color: #4682b4;
+  color:#fff;
+}
+
+header > div.header > a#modaltrigger {
+  color: #4682b4;
+  display:block;
+  cursor: pointer;
+  font-size: 2em;
+  position: fixed;
+  top: 10px;
+  right: 70px;
+  transition: 1s ease;
+  transform-origin: center;
+}
+
+header > div.header nav {
+  width:180px;
+  height: 0px;
+  z-index:100;
+  overflow-y: hidden;
+  position:absolute;
+  top:75px;
+  right:40px;
+  color: #fff;
+  transition: all 0.5s;
+  border-radius: 5px;
+  background-color: rgba(255,255,255,0.15);
+}
+
+a#btnDashBoard, a#btnProceeding, a#btnLogout {
+  text-align:center;
+  color: #fff;
+  display:block;
+  height:40px;
+  line-height: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  cursor: pointer;
+}
+
+.badge {
+	background-color:#ffabab;
+}
+
+header > div.header nav a#btnLogout {
+  border-bottom: none;
+}
+
+header > div.header nav > a:hover, #proceedingList > a:hover {
+	transition: 0.3s ease;
+  background-color: rgba(0,0,0,0.3);
+}
+
+header > div.header nav > ul {
+  width:100%;
+  height: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  overflow: hidden;
+  padding: 15px 0px;
+  margin: 0px;
+  text-align: center;
+  list-style: none;
+}
+
+header > div.header nav > ul > li {
+  width:33%;
+  font-size:1.5em;
+  float:left;
+  padding: 0px;
+}
+
+header > div.header nav > ul > li #btnEdit {
+	color: #fff;
+}
+
+header > div.header nav > ul > li:hover, header > div.header nav > ul > li:hover #btnEdit {
+	transition: 0.3s ease;
+	color: #ffabab;
+}
+
+header > div.header nav > ul > li span {
+	display: block;
+  font-size: 20px;
+}
+
+header > div.header nav > ul > li i {
+}
+
+header > div.header > div.login {
+  height:100%;
+  font-size: 1.3em;
+  line-height:60px;
+  position: absolute;
+  top: 0px;
+  right: 40px;
+  display: none;
+  cursor: pointer;
+}
+
+nav div#proceedingList {
+	border-bottom: 1px solid rgba(255,255,255,0.5);
+	display: none;
+}
+
+#proceedingList > a {
+  text-align:center;
+  color: #fff;
+  display:block;
+  height:40px;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+
+/********************************************/
+/*                                 탑버튼                                            */
+/********************************************/
+
+a#btn_top {
+  display: block;
+  position:fixed;
+  bottom:100px;
+  right: 100px;
+  font-size: 3em;
+  display:none;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/*****************Grid 패딩죽이기**************/
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+/*****************Grid 마진죽이기**************/
+.row-no-margin > [class*="col-"] {
+  margin-right: 0px !important;
+  margin-left:0px !important; 
+}
+/***********부트스트랩 a 언더라인 제거*****/
+/* !important 안걸었음으로 순서 중요함 */
+/* 선택자를 광역으로 걸어서 텍스트 데코라인 필요할때가 있을수 도 있음 */
+a:focus, a:hover{
+	text-decoration: none;
+} 
+/*------------ Modal -------------*/
+.modal.modal-center {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal.modal-center:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+#list > span {
+  display: inline;
+}
+.modal-dialog.modal-center {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle; 
+}
+.adm-content{
+	border-radius: 5px;
+}
+.adm-header,.adm-footer{
+	border: 0px;
+}
+.adm-cancel{
+	background-color: #949494;
+	color: #fff;
+}
+.adm-cancel:hover{
+  background-color: #747474;
+  color: #fff;
+}
+.adm-confirm{
+	 background-color: #f9a8a8;
+	 /* blue : #68c9fe */
+  color: #fff;
+}
+.adm-confirm:hover{
+	background-color:#f79898;
+	color: #fff;
+}
+.adm-formMargin{
+	margin-bottom: 10px;
+}
+.adm-form-group{
+	margin: 0px;
+	display: none;
+	text-align: center;
+	width: 100%;
+}
+.adm-form-group > p{
+	margin-bottom: 5px;
+}
+.adm-title{
+	text-align:center;
+	color: #333; 
+	font-weight: bold;
+}
+.dayList{
+	display: none;
+}
+.adm-form-control{
+	width: 80px; 
+	display: inline-block;
+}

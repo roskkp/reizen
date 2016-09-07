@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DashBoard</title>
+<link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../node_modules/sweetalert/dist/sweetalert.css" rel="stylesheet">
+<link href="../resources/css/common.css" rel="stylesheet">
+<link href="../resources/css/dashboard/dashboard.css" rel="stylesheet">
+</head>
+<body>
+	<header></header>
+	<div class="background-img"></div>
+	<div class="container dashboard-cont">
+		<section class="dashboard-section">
+			<!-- 탑바 아래 대시보드 썸네일 포함 이미지 -->
+			<div class="dashboard-main">
+				<div class="user-wrapper">
+					<div class="user-thumbnail"></div>
+					<div class="user-nickname"></div>
+				</div>
+			</div>
+			<!-- 포스팅된 일정 , 메모 -->
+			<article class="tab">
+				<div id="myTabs">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a href="#myschedule"
+							aria-controls="home" role="tab" data-toggle="tab">계획된 일정 (<span></span>)</a></li>
+						<li role="presentation"><a href="#scrap-schedule"
+							aria-controls="profile" role="tab" data-toggle="tab">스크랩한 일정 (<span></span>)</a></li>
+						<li role="presentation"><a href="#scrap-location"
+							aria-controls="profile" role="tab" data-toggle="tab">스크랩한 장소 (<span></span>)</a></li>
+					</ul>
+				</div>
+			</article>
+			<!-- Tab panes -->
+			<div class="tab-content dashboard-content">
+				<div role="tabpanel" class="tab-pane active" id="myschedule">
+              <section class="thumbnails" >
+              <div class="one"> </div>
+              <div class="two"> </div>
+              <div class="three"> </div>
+              </section>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="scrap-schedule">
+				       <section class="thumbnails" >
+              <div class="one"> </div>
+              <div class="two"> </div>
+              <div class="three"> </div>
+              </section>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="scrap-location">
+				      <section class="thumbnails" >
+              <div class="one"> </div>
+              <div class="two"> </div>
+              <div class="three"> </div>
+              </section>
+				</div>
+			</div>
+		</section>
+	</div>
+<!-- add모달에서 쓰는 html 과 핸들바스  -->	
+<!-- time update Modal -->
+<div class="modal modal-center fade" id="scheduleModal" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-center" role="document">
+    <div class="modal-content adm-content">
+      <div class="modal-header adm-header">
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title adm-title" id="addModalLabel">어디에 추가 할까요?</h4>
+      </div>
+      <div class="modal-body">
+        <select class="form-control scheduleSelectList adm-formMargin">
+          <option class="default" value="">일정을 선택해주세요</option>
+        </select> 
+        <select class="form-control dayList adm-formMargin">
+          <option class="default">날짜를 선택해주세요</option>
+        </select> 
+        <div class="form-group adm-form-group"><p>시간을 선택해주세요.</p>
+          <select id="updateHour" class="form-control adm-form-control">
+          </select>
+           : 
+          <select id="updateMin" class="form-control adm-form-control">
+            <option value="00" selected>00</option>
+            <option value="30">30</option>
+          </select>
+        </div>
+          
+      </div>
+      <div class="modal-footer adm-footer">
+        <button id="btnCancel" type="button" class="btn btn-default adm-cancel" data-dismiss="modal">취소</button>
+        <button id="btnTimeSubmit" type="button" class="btn btn-default adm-confirm">추가</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- // time update Modal -->
+<script id="scheduleList" type="text/x-handlebarsx-template">
+{{#each this}}
+  <option data-no="{{scheduleNo}}">{{title}}</option>
+{{/each}}
+</script>
+<script id="dayList" type="text/x-handlebarsx-template">
+{{#this}}
+  <option data-day="{{day}}">{{time}}</option>
+{{/this}}
+</script>      
+<!-- add모달에서 쓰는 html 과 핸들바스  -->
+<script id="scheduleListTemplate" type="text/x-handlebarsx-template">
+          <div class="post" data-no="{{scheduleNo}}">
+            <ul class="icons">
+              <li><a href="" class="icon style2 fa-heart non-click"></a><br><span class="icon-text">{{recommandCount}}</span></li>
+              <li><a href="" class="icon style2 fa-paperclip non-click"></a><br><span class="icon-text">{{scrapCount}}</span></li>
+              <li><a href="http://reizen.com:8080/scheduler/scheduler.html?scheduleNo={{scheduleNo}}" class="icon style2 fa-pencil"></a><br><span class="icon-text">edit</span></li>
+              <li><a href="" class="icon style2 fa-remove remove"></a><br><span class="icon-text">remove</span></li>
+            </ul>
+              <a class="thmb-image" href="viewSchedule.html?shceduleNo={{scheduleNo}}">
+                    <img src="{{thumbImg}}" alt="" class="sceduleImg" data-no="{{scheduleNo}}"/>
+                    <h2>{{title}}</h2>
+                     <span>{{totalDays}}Days · {{month}}월 여행 · {{peopleCount}}명 · by </span><span class="nick-name" data-dashNo="{{user.dashNo}}">{{user.nickName}}</span>
+                  </a> 
+           </div>
+</script> 
+<script id="scrapListTemplate" type="text/x-handlebarsx-template">
+          <div class="post" data-no="{{scheduleNo}}">
+            <ul class="icons">
+              <li><a href="" class="icon style2 fa-heart non-click"></a><br><span class="icon-text">{{recommandCount}}</span></li>
+              <li><a href="" class="icon style2 fa-paperclip non-click"></a><br><span class="icon-text">{{scrapCount}}</span></li>
+              <li><a href="http://reizen.com:8080/scheduler/scheduler.html?copyScheduleNo={{scheduleNo}}" class="icon style2 fa-plus"></a><br><span class="icon-text">add</span></li>
+              <li><a href="" class="icon style2 fa-remove remove"></a><br><span class="icon-text">remove</span></li>
+            </ul>
+              <a class="thmb-image" href="images/fulls/01.jpg">
+                    <img src="{{thumbImg}}" alt="" />
+                    <h2>{{title}}</h2>
+                     <span>{{totalDays}}Days · {{month}}월 여행 · {{peopleCount}}명 · by </span><span class="nick-name" data-dashNo="{{user.dashNo}}">{{user.nickName}}</span>
+                  </a> 
+           </div>
+</script>
+<script id="locationListTemplate" type="text/x-handlebarsx-template">
+          <div class="post"  data-no="{{contentId}}" data-tid="{{typeId}}">
+            <ul class="icons">
+              <li><a href="" class="icon style2 fa-heart non-click"></a><br><span class="icon-text">{{recommandCount}}</span></li>
+              <li><a href="" class="icon style2 fa-paperclip non-click"></a><br><span class="icon-text">{{scrapCount}}</span></li>
+              <li><a href="" class="icon style2 fa-plus btnPlus"></a><br><span class="icon-text">add</span></li>
+              <li><a href="" class="icon style2 fa-remove remove"></a><br><span class="icon-text">remove</span></li>
+            </ul>
+                  <a  class="thmb-image"  href="spot.html?cid={{contentId}}&tid={{typeId}}">
+                    <img src="{{firstImage}}" alt="" />
+                    <h2>{{locateName}}</h2>
+                    <span>{{address1}}</span>
+                  </a>
+            </div>
+</script>
+
+  <!-- java script file load  -->
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
+<script src="../resources/js/common.js"></script>
+<script src="../resources/js/dashboard/dashboard.js"></script>
+<script src="../resources/js/dashboard/dashboardAjax.js"></script>
+<script src="../resources/js/addModal.js"></script>
+</body>
+</html>

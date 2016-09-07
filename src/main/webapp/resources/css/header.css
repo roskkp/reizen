@@ -1,0 +1,243 @@
+/*file uploads  */
+*,
+*::after,
+*::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+#email-span{
+	position: absolute;
+	top:372px;
+}
+#pw-span{
+	position: absolute;
+	bottom: 83px;
+}
+.check{
+	height : 20px;
+	font-size: 13px;
+	color: rgba(255,0,0,0.7);
+}
+.preview {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    border: 2px solid rgb(204, 225, 232);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.file-upload-wrapper {
+    position: relative;
+    z-index: 5;
+    display: block;
+    width: 204px;
+    height: 40px;
+    margin: 20px auto;
+  /*   border-right: 2px dotted rgb(33, 122, 105);
+    border-bottom: 2px dotted rgb(33, 122, 105);
+    border-left: 2px dotted rgb(33, 122, 105); */
+}
+
+.file-upload-native,
+.file-upload-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    cursor: pointer;
+}
+
+.file-upload-native:focus,
+.file-upload-text:focus {
+    outline: none;
+}
+
+.file-upload-text {
+    z-index: 10;
+    padding: 5px 15px 8px;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.4;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 1px;
+    text-overflow: ellipsis;
+    color: rgb(144, 162, 148);
+    border: 0;
+    background-color: transparent;
+}
+
+.file-upload-native {
+    z-index: 15;
+    opacity: 0;
+}
+
+/* Pen Title */
+.pen-title {
+  padding: 50px 0;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.pen-title h1 {
+  margin: 0 0 20px;
+  font-size: 48px;
+  font-weight: 300;
+}
+.pen-title span {
+  font-size: 12px;
+}
+.pen-title span .fa {
+  color: #33b5e5;
+}
+.pen-title span a {
+  color: #33b5e5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Form Module */
+.form-module {
+  position: relative;
+  background: #ffffff;
+  max-width: 320px;
+  width: 100%;
+  border-top: 5px solid #2b75b4;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+.form-module .toggle {
+  cursor: pointer;
+  position: absolute;
+  top: -0;
+  right: -0;
+  background: #2b75b4;
+  width: 30px;
+  height: 30px;
+  margin: -5px 0 0;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: center;
+}
+.form-module .toggle .tooltip {
+  position: absolute;
+  top: 5px;
+  right: -45px;
+  display: block;
+  background: rgba(0, 0, 0, 0.6);
+  width: auto;
+  padding: 5px;
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.form-module .toggle .tooltip:before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: -5px;
+  display: block;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid rgba(0, 0, 0, 0.6);
+}
+.form-module .form {
+  display: none;
+  padding: 40px;
+}
+.form-module .form:nth-child(2) {
+  display: block;
+}
+.form-module h2 {
+  margin: 0 0 20px;
+  color: #33b5e5;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+}
+.form-module input {
+	color : #333; 
+  outline: none;
+  display: block;
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  margin: 0 0 20px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+}
+.form-module input:focus {
+  border: 1px solid #2b75b4;
+  color: #333333;
+}
+.form-module button {
+  cursor: pointer;
+  background: #2b75b4;
+  width: 100%;
+  border: 0;
+  padding: 10px 15px;
+  color: #ffffff;
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+  border: 1px solid #2b75b4;
+}
+.form-module button:hover {
+  background: #2569a2;
+  color:#fff;
+  border: 1px solid #2b75b4;
+}
+.form-module .cta {
+  background: #f2f2f2;
+  width: 100%;
+  box-sizing: border-box;
+  color: #666666;
+  font-size: 12px;
+  text-align: center;
+}
+.form-module .cta a {
+  color: #666;
+  text-decoration: none;
+}
+
+#btnOut {
+	cursor: pointer;
+}
+
+.out{
+	color: #666;
+	text-align: center;
+	position: absolute;
+	bottom: 10px;
+	width: 100%;
+}
+
+/* GOOGLE */
+.form-module button.btnLogin {
+  border: none;
+  margin-top: 10px;
+  background-color: #fff;
+}
+
+.form-module button#btnGoogle {
+  margin-bottom: 10px;
+	background-color: #dd4b39;
+}
+
+.form-module button#btnNaver {
+	background-color: #1EC800;
+}
+
+#loginForm {
+	margin-top: 2em;
+}
+

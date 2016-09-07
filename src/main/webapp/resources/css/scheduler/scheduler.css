@@ -1,0 +1,559 @@
+@CHARSET "UTF-8";
+
+body {
+	min-width: 1024px;
+	height: 100%;
+	min-height: 768px;
+	font-family: Nanum;
+	font-size: 14px;
+}
+
+a:hover, li:hover {
+  transition: all 0.3s;
+}
+
+
+header > div.header nav {
+  background-color: rgba(70, 130, 180, 0.8);
+}
+
+div#scheduleWrap {
+  width: 100%;
+  min-width: 1024px;
+  height: 100%;
+  position: relative;
+  transition: all 0.5s;
+  overflow: hidden;
+}
+
+
+/**********************  스케줄 리스트  ***********************/
+
+section#scheduleDay {
+	height: 100%;
+	width: 250px;
+	float: left;
+}
+
+article.selectWrap {
+	width: 100%;
+	height: 130px;
+	color: #fff;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+div.selectDay {
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  height: 90px;
+}
+
+div.selectDay h1 {
+  margin: 0px;
+  font-size: 2em;
+}
+#schedule-title{
+	text-align: center;
+	color: #fff;
+	font-size: 17px; 
+	padding-top: 5px;
+}
+#dayWrap{
+	display: flex; 
+	margin: 5px; 
+	justify-content:center;
+	align-items:center
+}
+#startDate{
+	text-align: center;
+	color: #fff;
+}
+div.editDay {
+	width: 100%;
+	height: 40px;
+  color: #fff;
+}
+
+div.editDay>a {
+	display: inline-block;
+	width: 50%;
+	height: 100%;
+	text-align: center;
+	line-height: 40px;
+	cursor: pointer;
+}
+
+div.editDay>a:first-child {
+	float: left;
+	border-right: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+div.editDay>a:last-child {
+	float: right;
+}
+
+div.editDay>a:hover {
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+article.scheduleList {
+	height: calc(100% - 130px);
+	height: -webkit-calc(100% - 130px);
+  overflow: hidden;
+}
+
+div.icon {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.event-margin {
+	margin: 0 auto;
+	width: 80%;
+}
+
+.optimizing {
+	background: #666;
+	color: #fff;
+	font-size: 1.2em;
+	height: 100%;
+	width: 100%;
+	line-height: 30px;
+	text-align: center;
+	border: 0;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	transition: all 0.3s ease 0s;
+}
+
+.optimizing>i {
+	font-size: 1em;
+}
+
+/********************** 드래그 관련  ***********************/
+ul#sortable {
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  margin: 0px;
+  padding: 5px 0 0 0;
+  overflow-x: hidden;
+  overflow-y: auto; 
+}
+
+li.dayEvents {
+  position: relative;
+  width: 230px;
+  height: 80px;
+  z-index: 300;
+  color: #fff;
+  font-size: 1.2em;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  margin: 5px auto;
+  padding: 10px;
+}
+
+li.dayEvents > div.contents > h2 {
+  font-size: 1em;
+}
+
+li.dayEvents > div.contents > h3 {
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+li.dayEvents:hover, li.dayEvents:active {
+	border-width: 2px;
+  border-color: rgba(255, 255, 255, 1);
+}
+
+/*    drag helper    */
+li.dayEventsMoving {
+  width: 230px;
+  height: 80px;
+  z-index: 300;
+  color: #fff;
+  font-size: 1.2em;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  margin: 0px auto 5px auto;
+  padding: 10px;
+}
+
+li.dayEventsMoving > div.contents > h2 {
+  font-size: 1em;
+}
+
+li.dayEventsMoving > div.contents > h3 {
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+
+
+/********************** 검색창  ***********************/
+div#contentWrap {
+	width: 100%;
+	height: 100%;
+}
+
+div#barWrap {
+  background: url('../../images/scheduler/schedulerBG.png') no-repeat 0 0;
+  background-size: cover;
+  position: absolute;
+  top:0px; left:0px;
+  width: 600px; height: 100%;
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  z-index: 300;
+}
+
+section#searchBar {
+	height: 100%;
+	width: 350px;
+	float: right;
+	border-left: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+@media screen and (max-width:1024px){
+	div#barWrap {
+	 width: 550px;
+	}
+	section#searchBar {
+	 width: 300px;
+	}
+	section#map {
+  width: calc(100% - 550px);
+  width: -webkit-calc(100% - 550px);
+  width: -moz-calc(100% - 550px);
+  width: -ms-calc(100% - 550px);
+	}
+}
+
+div.searchBox {
+	width: 300px;
+	height: 130px;
+	margin: 0px auto;
+	padding: 15px;
+	z-index: 300;
+	color: #fff;
+}
+
+div.searchBox > div.input-group {
+	margin-bottom: 5px;
+}
+
+select#citySelect {
+	margin-top: 5px;
+}
+
+/* Radio */
+
+input[type="radio"] {
+    background-color: #fff;
+    border-radius: 14px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 15px;
+    position: relative;
+    width: 14px;
+    height: 14px;
+    -webkit-appearance: none;
+}
+
+input[type="radio"]:after {
+    content: '';
+    display: block;
+    position: relative;
+    height: 14px;
+    width: 14px;
+    background-color: #fff;
+    border-radius: 14px;
+}
+
+input[type="radio"]:checked:after {
+    background-color: #ffabab;
+}
+
+input[type="radio"]:focus {
+	outline:0;
+}​
+
+
+/********************  결과창  *************************/
+
+#resultWrap{ /*얘가 작동을 안함*/
+	border-top: 1px solid rgba(255, 255, 255, 0.7);
+	height: calc(100% - 130px);
+	height: -webkit-calc(100% - 130px);
+	text-align: center;
+}
+.resultHover {
+  opacity: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  color: #fff;
+  transition: all 0.5s;
+}
+.resultHover a {
+  font-size: 1.3em;
+  margin: 0 7px;
+}
+.resultHover:hover {
+  opacity: 1;
+}
+ul#draggable {
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+ul#draggable>li.resultContent {
+	width: 100%;
+	height: 100px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	display: flex;
+	align-items: center;
+	padding: 0px 10px;
+	color: #fff;
+  line-height: 1.5em;
+}
+
+ul#draggable>li:hover {
+	background-color: rgba(70, 130, 180, 0.4);
+}
+
+img.resultImg {
+	resize: both;
+	width: 100px;
+	height:70px;
+	border-radius: 5px;
+}
+
+ul#draggable>li.resultContent>div.resultTextBox {
+	width: 100%;
+	height: 80%;
+	margin-left: 15px;
+}
+
+ul#draggable>li.resultContent h3 {
+	font-size: 1.3em;
+}
+
+ul#draggable>li.resultContent h4 {
+	font-size: 1em;
+	line-height: 2em;
+}
+
+ul#draggable>li.resultContent a.infoBtn {
+	font-size: 1.3em;
+}
+
+
+/********************  검색 아이콘  *************************/
+
+nav.searchNav {
+  position: absolute;
+  top: 0px;
+  z-index: 200;
+}
+
+@media ( max-width : 1024px) {
+  nav.searchNav {
+    width: 50px;
+    left: 550px;
+  }
+}
+
+@media ( min-width : 1025px) { /* 1024 해상도 이상 */
+  nav.searchNav {
+    width: 60px;
+    left: 600px;
+  }
+}
+
+nav.searchNav a.searchIcon {
+  display: block;
+  color: #666;
+  background-color: rgba(255, 255, 255, 0.5);
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  position: relative;
+  border-bottom: 1px dotted rgba(255, 255, 255, 1);
+  cursor: pointer;
+}
+
+nav.searchNav a.searchIcon:last-child {
+  border: 0px;
+  border-bottom-right-radius: 5px;
+}
+
+@media ( max-width : 1024px ) {
+  nav.searchNav a.searchIcon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media ( min-width : 1025px) { /* 1024 해상도 이상 */
+  nav.searchNav a.searchIcon {
+    width: 60px;
+    height: 60px;
+    font-size: 2em;
+  }
+}
+
+nav.searchNav a.searchIcon:hover {
+  background-color: #fff;
+}
+
+
+/********************  맵  *************************/
+section#map {
+	height: 100%;
+	width: calc(100% - 600px);
+	width: -webkit-calc(100% - 600px);
+	width: -moz-calc(100% - 600px);
+	width: -ms-calc(100% - 600px);
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: 100;
+}
+
+a#btnRoute {
+	position: absolute;
+	top: 50px;
+	right: 50px;
+	z-index: 500;
+	display: block;
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 50px;
+	height: 50px;
+	border-radius: 50px;
+	border: 2px solid #fff;
+	color: #fff;
+	font-size: 1.2em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+a#btnRoute:hover {
+	background-color: #4682b4;
+}
+
+a#routeRefresh {
+	display:none;
+  position: absolute;
+  top: 105px;
+  right: 50px;
+  z-index: 500;
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  border: 2px solid #fff;
+  color: #fff;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+a#routeRefresh:hover {
+  background-color: #4682b4;
+}
+
+/***************** 모달 가운데 정렬 ***************/
+.modal.modal-center {
+	text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+	.modal.modal-center:before {
+		display: inline-block;
+		vertical-align: middle;
+		content: " ";
+		height: 100%;
+	}
+}
+
+.modal-dialog.modal-center {
+	display: inline-block;
+	text-align: left;
+	vertical-align: middle;
+}
+
+/********************** 달력 팝업  ***********************/
+#myModalLabel {
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+}
+
+#updateDay>.modal-dialog {
+	width: 400px;
+}
+
+#title {
+	margin-bottom: 20px;
+}
+/* 팁 */
+#tip{
+	width: 90%;
+	margin-top: 15px;
+}
+
+<!-- 경로최적화 맵 -->
+#routeMap {
+  height: 400px !important;
+}
+
+.bestRouteDiv {
+	height: 600px !important;
+}
+
+.bestRouteModal {
+	width: 600px;
+}
+
+g {
+	width: 150px;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	word-wrap:normal;
+}
+
+.startPoint {
+	float: left;
+	width: 165px;
+}
+
+.endPoint {
+	float: left;
+	left: 10px;
+	width: 165px;
+}
+
+.dropdown-toggle {
+	width: 150px;
+}

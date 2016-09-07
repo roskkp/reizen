@@ -1,0 +1,54 @@
+@CHARSET "UTF-8";
+
+
+@font-face {
+  font-family: Nanum;
+  src: url('../fonts/NanumBarunGothicLight.TTF') format('truetype');
+  src: url('../fonts/NanumBarunGothicLight.eot') format('embedded-opentype');
+}
+
+@font-face {
+  font-family: NanumB;
+  src: url('../fonts/NanumBarunGothic.TTF') format('truetype');
+  src: url('../fonts/NanumBarunGothic.eot') format('embedded-opentype');
+}
+
+@font-face {
+  font-family: NanumSB;
+  src: url('../fonts/NanumBarunGothicBold.TTF') format('truetype');
+  src: url('../fonts/NanumBarunGothicBold.eot') format('embedded-opentype');
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: Nanum;
+	font-size: 14px;
+  padding-top: 60px;
+  height:100%;
+}
+
+a, button {
+  -webkit-tap-highlight-color: transparent;	
+}
+
+a:link {
+	text-decoration: none;
+}
+
+a img {
+	border: 0px;
+}
+
+ul, ol, dl {
+	list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0px;
+	padding: 0px;
+}

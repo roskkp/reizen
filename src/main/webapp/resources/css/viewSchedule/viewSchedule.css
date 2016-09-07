@@ -1,0 +1,1013 @@
+@CHARSET "UTF-8";
+/* CSS design by @jofpin */
+@import url(http://fonts.googleapis.com/css?family=Raleway|Varela+Round|Coda);
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+/* 후기************************************************** */
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700|Oswald:400,300,700);
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,900);
+@import url(https://fonts.googleapis.com/css?family=Audiowide);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,900);
+
+/* .port{
+	margin-top: 5%;
+}
+
+.tran {
+border: 0px solid #ffffff;
+    background: #dc9acb;
+    padding: 5.5px 13px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 12px;
+    text-decoration: none;
+    vertical-align: middle;
+    position: absolute;
+    margin-left: 50%;
+    top: 77%;
+    left: 29%;
+    margin-top: 22%;
+   }
+.tran:hover {
+   border: 0px solid #0a3c59;
+   background: #3e779d;
+   color: #fff;
+   }
+.price-btn{
+	 border: 0px solid #ffffff;
+   background: #deafde;
+   padding: 6px 12px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   color: #fffcff;
+   font-size: 12px;
+   text-decoration: none;
+   vertical-align: middle;
+   margin-right: 50%;
+}
+.price-btn:hover {
+   border: 0px solid #ffffff;
+   background: #7db1d4;
+   color: #ffffff;
+   }
+ */
+/* 후기수정 close */
+.clo{
+	color: #f3bbbb;
+}
+
+
+/*맵아래에잇는 버튼   */
+
+.mapnum {
+     border: 0px solid #ffffff;
+    background: #ffffff;
+    padding: 3.5px 7px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    color: #8b8d9e;
+    font-size: 12px;
+    text-decoration: none;
+    vertical-align: middle;
+    margin-left: 1%;
+    margin-right: 2%;
+   }
+   .mapnum:HOVER{
+   color: #c194c0;
+   }
+
+/* .mapnum:active {
+   text-shadow: #ffffff 0 1px 0;
+   border: 0px solid #ffffff;
+   background: #ffffff;
+   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#7db1d4));
+   background: -webkit-linear-gradient(top, #ffffff, #ffffff);
+   background-image: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%);
+   color: #ffffff;
+   } */
+
+/*후기삭제  */
+
+.deletePicts{
+	    color:#828990;
+    text-decoration: none;
+    font-size: x-large;
+}
+
+
+/* 후기타이틀 글씨 */
+.modal-title {
+    margin: 0;
+    color: #f3bbbb;
+    line-height: 1.42857143;
+}
+/* 후기 */
+.addPost{
+    width: 100%;
+    height: 27px;
+    background-color: rgba(255, 255, 255, 0.32);
+    color: #9a7c7c;
+}
+.addPost:hover{
+
+    background-color: rgba(255, 255, 255, 0.32);
+    color: #9a7c7c;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color:#f3bbbb;
+    border-color: #f3bbbb;
+}
+.mapName{
+	color: white
+}
+
+.btn-primary {
+    color: #f3bbbb;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal-content{
+	  background-color: #fff;
+    width: 70%;
+    margin-left: 10%;
+	
+	
+}
+.fa-arrow-right{
+	color: white;
+}
+
+.update:hover {
+    color: rgb(160, 134, 134);
+    background-color: rgba(255, 255, 255, 0.65);
+    border-color: rgb(160, 134, 134);
+}
+
+.update{
+    color: rgb(160, 134, 134);
+    background-color: rgba(255, 255, 255, 0.65);
+    width: 167%;
+}
+
+.price{
+    color: #f3bbbb;
+    width: 191px;
+    height: 40px;
+    background-color: #ffffff;
+    /* border: 1px solid #f3bbbb; */
+    margin-left: -150px;
+    margin-top: -19px;
+    position: fixed;
+    left: 51%;
+    top: 30%;
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: box-shadow 320ms;
+    /* box-shadow: 0px 0px 8px 10px rgba(0,0,0,0.1); */
+    border-radius: 3px;
+    border-color: #f3bbbb;
+    font-size: 18px;
+    border: 0px;
+    box-shadow: 0px 0px 1px 1px #f3bbbb;
+}
+
+.price:focus {
+
+    outline: 0px;
+    outline-offset: 0px;
+    box-shadow: 0px 0px 1px 5px rgba(0,0,0,0.12);
+}
+
+.price:placeholder {
+    color: #f3bbbb;
+}
+
+
+.cont {
+
+    margin-top: 6%;
+    padding: 10px;
+    font-size: 12px;
+    background-color: rgba(255,253,231 ,0.1);
+    border: 1px solid #f3bbbb;
+    color:#f3bbbb;
+    width: 585px;
+}
+
+
+.cont:focus {
+    transition: 0.5s;
+    background-color: rgba(255,249,196 ,0.2);
+    border-color: #f3bbbb;
+    outline: 0;
+}
+
+
+
+
+textarea::-webkit-input-placeholder {
+color: rgba(245,245,245 ,1) !important;
+}
+ 
+textarea:-moz-placeholder { /* Firefox 18- */
+color: rgba(245,245,245 ,1) !important;
+opacity: 1;  
+}
+ 
+textarea::-moz-placeholder {  /* Firefox 19+ */
+color: rgba(245,245,245 ,1) !important;
+opacity: 1;  
+}
+ 
+textarea:-ms-input-placeholder {  
+color: rgba(245,245,245 ,1) !important;  
+}
+
+input::-webkit-input-placeholder {
+color: rgba(245,245,245 ,1) !important;
+}
+ 
+input:-moz-placeholder { /* Firefox 18- */
+color: rgba(245,245,245 ,1) !important;
+opacity: 1;  
+}
+ 
+input::-moz-placeholder {  /* Firefox 19+ */
+color: rgba(245,245,245 ,1) !important;
+opacity: 1;  
+}
+ 
+input:-ms-input-placeholder {  
+color: rgba(245,245,245 ,1) !important;  
+}
+
+#boxing {   
+    font-family: arial;
+    color: #f3bbbb;
+    border: 1px solid #f3bbbb;
+    font-size: 13px;
+}
+
+
+
+.comment {
+  color: white;
+  margin-top: 15px;
+  position: relative;
+  overflow: hidden;
+  right: 35px;
+  bottom: 158px;
+  z-index: 2;
+}
+
+
+.file {
+    /* box-sizing: border-box; */
+    border: 1px solid #f3bbbb;
+    width: 93%;
+    /* font-size: 16px; */
+    padding-left: 1px;
+    position: absolute;
+    top: -3%;
+    color: #f3bbbb;
+    cursor: pointer;
+}
+.file:focus,
+.file:active {
+  outline: 0;
+  border-color: #808080;
+}
+.file::-webkit-file-upload-button {
+  -webkit-appearance: none;
+
+  border: 0;
+  color: #fff;
+  font-size: 14px;
+  background: #f3bbbb;
+  padding: 16px;
+  
+  margin-left: -15px;
+}
+
+
+.tel{
+	    position: absolute;
+    margin-top: 5%;
+    color: white;
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 0px solid #e5e5e5;
+}
+
+
+.te{
+    position: absolute;
+    top: 20%;
+    left: 33%;
+}
+.tx{
+	    border: 1px solid pink;
+    width: 100px;
+}
+
+html{
+	height: 100%;
+
+}
+body {
+  overflow: hidden;
+      background: linear-gradient( 45deg, #f1c7d9, #3e84b5 );
+}
+
+.viewContainer{
+   height: 25%;
+}
+
+.dashboard-main {
+  height: 105%;
+  background-color: #798caf;
+ /*  background-image: url('../../images/bg.jpg');  */
+  color: white;
+  background-position-x: -12px;
+  background-repeat: no-repeat;
+  background-position: initial;
+  background-size: cover;
+}
+
+.user-wrapper {
+  height: 100%
+}
+
+.user-profile {
+  height: 70%;
+  padding-top: 3.0%;
+  padding-left: 2%;
+  font-size: 12px;
+}
+
+.username {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.info {
+  display: flex;
+  padding-left: 3.5%;
+}
+
+.data  > li {
+  display: table-cell;
+}
+
+.data  > li > span {
+  font-size: 1.25em;
+  margin-right: 3.5em;
+}
+
+[class*="entypo-"]:before {
+    font-family: 'entypo', sans-serif;
+}
+
+.scheduleButton {
+  width: 60px;
+  height: 25px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #5188b1;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+
+#container{
+  margin-top: 10px;
+  height: 100%;
+  border-top: 1px solid white;
+}
+
+.scroll {
+  float: left;
+  width: 55%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-left: 7%;
+  height: calc(70% - 20px);
+}
+
+#map {
+    margin-top: 5%;
+    float: right;
+    margin-right: 4%;
+    width: 35%;
+    height: 50%;
+}
+
+.map-sub {
+  float: right;
+  width: 44%;
+  height: 200px;
+  position: relative;
+  top: 2%;
+  text-align: center;
+}
+
+.avatar {
+  float: left;
+  width: 75px;
+  height: 75px;
+  border-radius: 90px;
+  margin-right: 2%;
+}
+
+<!-- 일단 상단 유저 인포 수정 -->
+
+
+/*==================================== 
+  Our Modal Window styles
+=====================================*/
+.modal {
+  display: inline-block;
+  padding: 1em;
+}
+@media (min-width: 43.75em) {
+  .modal {
+    padding: 1.5em;
+  }
+}
+.modal > label {
+  background: #FFD300;
+  border: 1px solid #f0c600;
+  border-radius: .2em;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.75em 1.5em;
+  text-shadow: 1px 1px 1px #fff;
+  transition: all 0.55s;
+}
+.modal > label:hover {
+  transform: scale(0.97);
+}
+.modal__overlay {
+  background: #ffffff;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  text-shadow: none;
+  top: 0;
+  z-index: 600;
+}
+.modal__wrap {
+  padding: 1em 0;
+  position: relative;
+  margin: 0 auto;
+  max-width: 500px;
+  width: 90%;
+}
+@media (min-width: 50em) {
+  .modal__wrap {
+    padding: 1.75em;
+  }
+}
+@media (min-height: 37.5em) {
+  .modal__wrap {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -80%);
+  }
+}
+.modal__wrap label {
+    background: #FFD300;
+    border-radius: 50%;
+    color: #000000;
+    border-color: 1 aqua;
+    cursor: pointer;
+    display: inline-block;
+    height: 1.5em;
+    line-height: 1.5;
+    position: absolute;
+    right: -5%;
+    /* top: -400%; */
+    margin-top: -51%;
+    width: 1.5em;
+}
+.modal__wrap h2 {
+  color: #FFD300;
+  margin-bottom: 1em;
+  text-transform: uppercase;
+}
+.modal__wrap p {
+  color: #FFD300;
+  text-align: justify;
+}
+.modal input:focus ~ label {
+  transform: scale(0.97);
+}
+
+
+.modal__overlay {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.75s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: -100;
+}
+
+input:checked ~ .modal__overlay {
+    width: 500px;
+    height: 500px;
+    top: 10%;
+    left: 25%;
+    opacity: 1;
+    transform: scale(1);
+    border: 1px solid;
+    z-index: 600;
+}
+
+
+
+
+
+
+
+
+/* ************************************************ */
+.memo{
+  margin-top: 1%;
+  text-align: center;
+  color: #7171ea;
+  font-size: medium;
+}
+
+
+.po{
+    font-weight: 100;
+    font-size: 17px;
+    text-align: center;
+    border-bottom: 1pt dotted;
+}
+.scriptImage{
+    margin-top: 5%;
+    width: 150%;
+    height: 300px;
+    border-radius: 1em;
+    margin-left: 10%;
+}
+.accordion{
+    background-color: rgba(255, 255, 255, 0.32);
+    border-radius: 0.5em;
+    color: #7d7d7d;
+    font-size: small;
+    /* font-weight: 400; */
+    /* width: 86%; */
+    margin-top: 111px;
+    width: 100%;
+}
+.postBox{
+  width:60%;
+}
+/* 후기 보기버튼*/
+
+
+
+/*좋아요버튼  */
+.like-toggle{
+  border: none;
+  outline: none;
+}
+
+.meta{
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  margin: 0;
+  color: #111;
+}
+
+.meta.hidden{
+  margin-bottom: 28px;
+}
+
+.hidden{
+  font-size: 0;
+}
+
+
+
+.one{
+    position: absolute;
+    right: 15%;
+    top: 90%;
+    width: 17px;
+    height: 17px;
+    border-radius: 100px;
+    background: #0cf;
+    color: #2569a2;
+    font-size: 5px;
+}
+
+.one.active{
+  color: #F26D7D;
+}
+
+@keyframes beat {
+  0% {font-size: 25px;}
+    25% {font-size: 1px;}
+    50% {font-size: 25px;}
+  75% {font-size: 1px;}
+  100% {font-size: 25px;}
+}
+
+@-webkit-keyframes beat {
+  0% {font-size: 25px;}
+    25% {font-size: 1px;}
+    50% {font-size: 25px;}
+  75% {font-size: 1px;}
+  100% {font-size: 25px;}
+}
+
+@keyframes expand {
+  0% {width: 50px;}
+  100% {width: 80px;}
+}
+
+.like-toggle:hover{
+  background: #ddd;
+}
+/* *************************************************************** */
+
+
+/* *********************************************************************** */
+
+
+
+
+
+
+
+
+
+/* *************************************************************** */
+
+
+
+
+
+
+/* 일정 */
+
+/*일정  */
+.poImage
+{
+    width: 300px;
+    height: 250px;
+    /* position: absolute; */
+    border-radius: 1em;
+    margin-top: -6%;
+    /* top: 30%; */
+}
+.tab {
+  position: relative;
+  background-color: #fff;
+  display: table-cell;
+  margin-right: -4px;
+  text-transform: uppercase;
+  text-align: center;
+  transform: background-color 1s;
+  border-left: solid 1px #ddd;
+  border-top: solid 1px #ddd;
+}
+.tab:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: #fff;
+  border-top: solid 5px transparent;
+  transition: top .2s;
+}
+
+.tab:last-child {
+  border-right: solid 1px #ddd;
+}
+
+.tab a {
+  position: relative;
+  display: block;
+  padding: 15px 20px;
+  color: #666;
+  text-decoration: none;
+  z-index: 1;
+}
+
+#panel1 h1 {
+  color: #ff5e10;
+}
+
+.fill {/*button  */
+    position: relative;
+    height: 45px;
+    width: 150px;
+    margin: -8px -105px;
+    padding: 5px 5px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: #7a6bb3;
+    border: 2px rgb(255, 255, 255) solid;
+    border-radius: 4px;
+    text-transform: uppercase;
+    outline: 0;
+    overflow: hidden;
+    background: rgb(153, 210, 243);
+    z-index: 1;
+    cursor: pointer;
+    transition: 0.08s ease-in;
+    -o-transition: 0.08s ease-in;
+    -ms-transition: 0.08s ease-in;
+    -moz-transition: 0.08s ease-in;
+    -webkit-transition: 0.08s ease-in;
+}
+
+.fill:hover {
+  color: whitesmoke;
+}
+
+.fill:before {
+  content: "";
+  position: absolute;
+  background: #3494cb ;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: -1;
+  -webkit-transition: top 0.09s ease-in;
+}
+
+.fill:hover:before {
+  top: 0;
+}
+/*timeline  */
+
+#container {
+    width: 100%;
+    top: 45%;
+}
+
+ol.timeline {
+    border-left: 0.2em solid;
+    border-color: rgb(214, 230, 239);
+    padding-left: 2em;
+    margin-left: 15%;
+    list-style: none;
+ /*    height: 100%; */
+}
+
+.timeline > li {
+    position: relative;
+    margin-top: 20pt;
+    color: white;
+}
+
+.timeline > li:before {
+    background-color: rgb(52, 148, 203);
+    text-align: center;
+
+    width: 2em;
+    height: 2em;
+    line-height: 2em;
+
+    font-size: 100%;
+
+    border: 0.2em solid rgb(107, 191, 238);
+    border-radius: 50%;
+
+    position: absolute;
+    left: -3.2em;
+}
+.timeline > li.call:before {
+    content: "\260E";
+}
+.timeline > li.flight:before {
+    content: '\2708';
+}
+.timeline > li.todo:before {
+    content: '\2714';
+}
+.timeline > li.email:before {
+    content: '\0040';
+}
+
+.timeline > li time {
+    display: block;
+    float: left;
+    color:#519fb7;
+    position: absolute;
+    left: -10em;
+    text-align: right;
+}
+.timeline > li time > * {
+    display: block;
+}
+.timeline > li time small {
+    color: #585858;
+    font-size: 80%;
+}
+/* .timeline > li time big {
+    color: rgb(107, 191, 238);
+    font-size: 200%;
+} */
+/* .timeline > li:nth-child(even) time big {
+       background-color: rgba(255, 255, 255, 0); dark blue
+}
+ */
+ 
+.timeline > li article {
+     background-color: rgba(255, 255, 255, 0);
+    margin: 0;
+    padding: 7pt 2em;
+    border-radius: 5pt;
+    width: 500%;
+    height: 200px;
+}
+
+/* .timeline > li article:after {
+    content: "\25C0";
+    color: rgb(107, 191, 238);
+    position: absolute;
+    top: 0.75em; left: -0.6em;
+} */
+/* http://css-tricks.com/how-nth-child-works/ */
+.timeline > li:nth-child(even) article {
+        background-color: rgba(255, 255, 255, 0); /* dark blue */
+}
+/* .timeline > li:nth-child(even) article:after {
+    color: rgb(52, 148, 203); dark blue
+} */
+
+.timeline > li article h3 {
+    padding-bottom: 10pt;
+    font-weight: 100;
+    font-size: 18px;
+    /* width: 100%; */
+    color: white;
+    border-bottom: 1pt dotted;
+    margin-bottom: 98pt;
+}
+
+/*Map  */
+#map {
+    background-color: #f19a9a;
+}
+
+
+
+
+
+
+
+
+/*후기 *****************************************************  */
+
+/* 후기 */
+.tab-active:after {
+  top: -1px;
+}
+
+.tab-active:first-child:after {
+  position:absolute;
+  top:100%;
+  border-top-color: #a598f5;
+}
+
+.tab-active:nth-child(2):after {
+    position: absolute;
+    top: 100%;
+     border-top-color: #00ceee;
+}
+#panel2 h1 {
+  color: #00ceee;
+}
+
+strong {
+  font-weight: 600;
+  color: white;
+}
+h1 {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1.5px;
+  color: #333333;
+  font-weight: 100;
+  font-size: 2.4em;
+}
+#content {
+  margin-top: -21%;
+  margin-left:20%;
+  text-align: center;
+}
+/* Timeline */
+.line {
+  border-left: 1px solid #4298c3;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #333;
+  font-family: 'Source Sans Pro', sans-serif;
+ /*  margin: 50px auto; */
+  letter-spacing: 0.5px;
+  position: relative;
+  line-height: 7.5em;
+  font-size: 1.03em;
+  padding: 30px;
+  list-style: none;
+  text-align: left;
+  font-weight: 1;
+  max-width: 70%;
+}
+.line h1,
+.line h2,
+.line h3 {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1.5px;
+  font-weight: 100;
+  font-size: 1.4em;
+}
+.line .event {
+  border-bottom: 1px dashed #4298c3;
+/*   padding-bottom: 100px; */
+  margin-bottom: 30px;
+  position: relative;
+}
+.line .event:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border: none;
+}
+.line .event:before,
+.line .event:after {
+  position: absolute;
+  display: block;
+  top: 0;
+}
+.line .event:before {
+  left: -217.5px;
+  color: #717171;
+  content: attr(data-date);
+  text-align: right;
+  font-weight: 400;
+  font-size: 0.9em;
+  min-width: 120px;
+}
+.line .event:after {
+  box-shadow: 0 0 0 4px #169eda;
+  left: -57.85px;
+  background: #91c740;
+  border-radius: 50%;
+  height: 11px;
+  width: 11px;
+  content: "";
+  top: 50px;
+}
+@media (max-width: 800px) {
+
+  .line .event:before {
+    left: -0.5px;
+    top: 28px;
+    background-color: #4298c3;
+    color: white;
+    margin-top: 8px;
+    padding: 2px 8px 2px 8px;
+    content: attr(data-date);
+    text-align: right;
+    font-weight: 400;
+    font-size: 0.9em;
+    min-width: 120px;
+  }
+  .line .event p {
+      top: 27px;
+      padding: 10px 0px 10px 0px;
+      position: relative;
+  }
+}
+
+

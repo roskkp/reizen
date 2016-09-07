@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>reizen</title>
+<link rel="stylesheet"
+	href="../node_modules/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css">
+<link rel="stylesheet"
+	href="../node_modules/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet"
+	href="../node_modules/startbootstrap-sb-admin-2/bower_components/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="../node_modules/sweetalert/dist/sweetalert.css">
+<link rel="stylesheet" href="../resources/css/jquery-ui.css">
+<link rel="stylesheet" href="../resources/css/common.css">
+<link rel="stylesheet" href="../resources/css/scheduler/scheduler.css">
+</head>
+
+<body>
+	<header></header>
+	<div id="scheduleWrap">
+		<div id="barWrap">
+			<section id="scheduleDay">
+				<article class="selectWrap">
+					<div class="selectDay" style="display: block">
+						<div id="schedule-title"></div>
+						<div id="dayWrap">
+							<a id="btnPrev"><i class="fa fa-chevron-left"
+								aria-hidden="true"></i></a> &nbsp;&nbsp;&nbsp;
+							<h1 id="daysInfo" data-date="" data-day=""></h1>
+							&nbsp;&nbsp;&nbsp; <a id="btnNext"><i
+								class="fa fa-chevron-right" aria-hidden="true"></i></a>
+						</div>
+						<div id="startDate"></div>
+					</div>
+					<div class="editDay">
+						<a id="btnAdd">day 추가</a> <a id="btnDelete">day 삭제</a>
+					</div>
+				</article>
+				<article class="scheduleList">
+					<ul id="sortable" class="connect">
+					</ul>
+					<!-- // 여행지 리스트 (dragable) -->
+				</article>
+			</section>
+			<!-- // scheduleDay -->
+			<section id="searchBar">
+				<div class="searchBox">
+					<div class="input-group">
+						<input id="searchInput" type="text" class="form-control"
+							placeholder="검색어를 입력하세요." /> <span class="input-group-btn">
+							<button id="btnSearch" class="btn btn-default" type="button">
+								<i class="fa fa-search" aria-hidden="true"></i>
+							</button>
+						</span>
+					</div>
+					<label class="radio-inline"> <input type="radio"
+						id="inlineRadio1" checked="checked" />전체 검색
+					</label> <label class="radio-inline"> <input type="radio"
+						id="inlineRadio2" />도시 내에서 검색
+					</label> <select id="citySelect" class="form-control" disabled="disabled">
+						<option value="1">서울</option>
+						<option value="2">인천</option>
+						<option value="3">대전</option>
+						<option value="4">대구</option>
+						<option value="5">광주</option>
+						<option value="6">부산</option>
+						<option value="7">울산</option>
+						<option value="8">세종특별자치시</option>
+						<option value="31">경기도</option>
+						<option value="32">강원도</option>
+						<option value="33">충청북도</option>
+						<option value="34">충청남도</option>
+						<option value="35">경상북도</option>
+						<option value="36">경상남도</option>
+						<option value="37">전라북도</option>
+						<option value="38">전라남도</option>
+						<option value="39">제주도</option>
+					</select>
+					<!-- /input-group -->
+				</div>
+				<!-- // searchBox -->
+				<!-- resultWrap css가 왜 안먹는지 모르겠음 ㅡㅡ -->
+				<div id="resultWrap"
+					style="border-top: 1px solid rgba(255, 255, 255, 0.7); height: calc(100% - 130px); height: -webkit-calc(100% - 130px); text-align: center;">
+					<img id="tip" src="../resources/images/scheduler/tip.png" />
+					<ul id="draggable" class="connect"></ul>
+				</div>
+			</section>
+			<!-- //searchBar -->
+			<nav class="searchNav">
+				<a id="btnLocation" class="searchIcon"><i
+					class="fa fa-paperclip" aria-hidden="true"></i></a> <a id="btnHotel"
+					class="searchIcon" data-cate="B02"><i class="fa fa-bed"
+					aria-hidden="true"></i></a> <a id="btnEat" class="searchIcon"
+					data-cate="A05"><i class="fa fa-cutlery" aria-hidden="true"></i></a>
+				<a id="btnSpot" class="searchIcon" data-cate="A01"><i
+					class="fa fa-camera" aria-hidden="true"></i></a> <a id="btnActive"
+					class="searchIcon" data-cate="A03"><i class="fa fa-bicycle"
+					aria-hidden="true"></i></a> <a id="btnShop" class="searchIcon"
+					data-cate="A04"><i class="fa fa-shopping-bag"
+					aria-hidden="true"></i></a> <a id="btnFestival" class="searchIcon"
+					data-cate="A0207"><i class="fa fa-star" aria-hidden="true"></i></a>
+			</nav>
+			<!-- //nav -->
+		</div>
+		<!-- //barWrap -->
+		<section id="map"></section>
+		<a id="btnRoute"><i class="fa fa-map-o" aria-hidden="true"></i></a> <a
+			id="routeRefresh"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+	</div>
+	<!-- //scheduleWrap -->
+
+	<!-- day update Modal -->
+	<div class="modal modal-center fade" id="updateDay" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-center" role="document">
+			<div class="modal-content adm-content">
+				<div class="modal-header adm-header">
+					<h4 class="modal-title adm-title" id="myModalLabel">여행 시작하기</h4>
+				</div>
+				<div class="modal-body">
+					<input id="title" type="text" class="form-control"
+						placeholder="여행의 제목">
+					<div id="dateText"></div>
+					<div id="datepicker"></div>
+				</div>
+				<div class="modal-footer adm-footer">
+					<button id="btnDaySubmit" type="button"
+						class="btn btn-default adm-confirm" data-dismiss="modal">시작하기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- // day update Modal -->
+
+
+	<!-- time select Modal -->
+	<div class="modal modal-center fade" id="selectTime" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-center" role="document">
+			<div class="modal-content adm-content">
+				<div class="modal-header adm-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title adm-title" id="myModalLabel">시간을
+						선택해주세요!</h4>
+				</div>
+				<div class="modal-body" style="text-align: center">
+					<select id="s-updateHour"
+						class="form-control adm-form-control updateHour">
+					</select> : <select id="s-updateMin" class="form-control adm-form-control">
+						<option value="00" selected>00</option>
+						<option value="30">30</option>
+					</select>
+				</div>
+				<div class="modal-footer adm-footer">
+					<button id="btnCancel" type="button"
+						class="btn btn-default adm-cancel" data-dismiss="modal">취소</button>
+					<button id="s-btnTimeSubmit" type="button"
+						class="btn btn-default adm-confirm" data-dismiss="modal">추가</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- // time select Modal -->
+
+
+	<!-- time update Modal -->
+	<div class="modal modal-center fade" id="updateTime" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-center" role="document">
+			<div class="modal-content adm-content">
+				<div class="modal-header adm-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title adm-title" id="myModalLabel">시간을
+						변경해주세요!</h4>
+				</div>
+				<div class="modal-body" style="text-align: center">
+					<select id="updateHour"
+						class="form-control adm-form-control updateHour">
+					</select> : <select id="updateMin" class="form-control adm-form-control">
+						<option value="00" selected>00</option>
+						<option value="30">30</option>
+					</select>
+				</div>
+				<div class="modal-footer adm-footer">
+					<button id="btnCancel" type="button"
+						class="btn btn-default adm-cancel" data-dismiss="modal">취소</button>
+					<button id="btnTimeSubmit" type="button"
+						class="btn btn-default adm-confirm" data-dismiss="modal">추가</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- // time update Modal -->
+
+	<!-- best Route Modal -->
+	<div class="modal modal-center fade" id="bestRoute" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-center bestRouteModal"
+			role="document">
+			<div class="modal-content adm-content">
+				<div class="modal-header adm-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title adm-title" id="myModalLabel">경로 최적화!!</h4>
+				</div>
+				<div class="modal-body bestRouteDiv">
+					<div id="routeMap" class="route-maps"></div>
+				</div>
+				<div class="modal-footer adm-footer">
+					<div class="dropup startPoint">
+						<button class="btn btn-default dropdown-toggle btnStart"
+							type="button" id="dropdownMenu1" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							<g class="btnStart">시작 장소</g>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu dropStart"
+							aria-labelledby="dropdownMenu1">
+						</ul>
+					</div>
+					<div class="dropup endPoint">
+						<button class="btn btn-default dropdown-toggle btnEnd"
+							type="button" id="dropdownMenu2" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							<g class="btnEnd">도착 장소</g>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu dropEnd" aria-labelledby="dropdownMenu2">
+						</ul>
+					</div>
+					<button id="btnActive" type="button" class="btn btn-default">최적화</button>
+					<button id="btnCancel" type="button"
+						class="btn btn-default adm-cancel" data-dismiss="modal">취소</button>
+					<button id="btnRotueSubmit" type="button"
+						class="btn btn-default adm-confirm" data-dismiss="modal">적용</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- // best Route Modal -->
+
+	<!--day move Modal -->
+	<div class="modal modal-center fade" id="dayMove" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-center" role="document">
+			<div class="modal-content adm-content">
+				<div class="modal-header adm-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title adm-title" id="addModalLabel">이동 할 날짜를
+						선택해 주세요.</h4>
+				</div>
+				<div class="modal-body">
+					<select class="form-control adm-formMargin">
+						<option class="default">날짜를 선택해주세요</option>
+					</select>
+					<div class="form-group adm-form-group">
+						<p>시간을 선택해주세요.</p>
+						<select id="m-updateHour"
+							class="form-control adm-form-control updateHour">
+						</select> : <select id="m-updateMin" class="form-control adm-form-control">
+							<option value="00" selected>00</option>
+							<option value="30">30</option>
+						</select>
+					</div>
+
+				</div>
+				<div class="modal-footer adm-footer">
+					<button id="btnCancel" type="button"
+						class="btn btn-default adm-cancel" data-dismiss="modal">취소</button>
+					<button id="btnMoveDayConfirm" type="button"
+						class="btn btn-default adm-confirm" data-dismiss="modal">변경</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--day move Modal -->
+
+	<script type="text/javascript"
+		src="../node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="../resources/js/jquery-ui.1.12.0.js"></script>
+	<script type="text/javascript"
+		src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../resources/js/common.js"></script>
+	<script type="text/javascript"
+		src="../resources/js/scheduler/scheduler.js"></script>
+	<script type="text/javascript"
+		src="../resources/js/scheduler/schedulerAjax.js"></script>
+	<script type="text/javascript"
+		src="../node_modules/handlebars/dist/handlebars.min.js"></script>
+	<script async defer
+		src="https://maps.google.co.kr/maps/api/js?key=AIzaSyB8Z6lI6WjzkphJ-gFAxYVtokVaNo2I3zw&callback=initMap"></script>
+	<script type="text/javascript"
+		src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+	<script id="dayList" type="text/x-handlebarsx-template">
+{{#this}}
+  <option data-day="{{day}}">{{time}}</option>
+{{/this}}
+</script>
+	<script id="searchResult" type="text/x-handlebars-template">
+  {{#data}}
+    <li class="resultContent" data-contentId="{{contentId}}" data-typeId="{{typeId}}">
+      <div><img class="resultImg" alt="여행지 이미지" src="{{firstImage}}" /></div>
+      <div class="resultTextBox">
+        <h3>{{locateName}}</h3>
+        <h4>{{category03}}</h4>
+       </div>
+       <a class="infoBtn" target="_blank" href="http://reizen.com:8080/scheduler/spot.html?cid={{contentId}}&tid={{typeId}}"><i class="fa fa-info-circle" aria-hidden="true" style="color:#fff"></i></a>
+      </li>
+  {{/data}}
+  </script>
+
+	<script id="scheduleList" type="text/x-handlebars-template">
+    {{#list}}
+      <li class="dayEvents dropped" data-contentid="{{location.contentId}}" data-routeNo="{{routeNo}}" data-mapx="{{location.mapX}}" data-mapy="{{location.mapY}}">
+        <div class="contents">
+          <h3><i class="fa" aria-hidden"true" data-type="{{location.typeId}}"></i> <span class="scheduleTime">{{time}}</span></h3>
+          <h2>{{location.locateName}}</h2>
+        </div>
+      <div class="resultHover">
+        <a class="mapBtn"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <a class="editBtn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+        <a class="removeBtn"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+       </li>
+    {{/list}}
+  </script>
+
+	<script id="routeSelector" type="text/x-handlebars-template">
+    {{#list}}
+      <li><a href="#" data-index="{{index}}">{{name}}</a></li>
+    {{/list}}
+  </script>
+</body>
+</html>

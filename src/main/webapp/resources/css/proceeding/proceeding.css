@@ -1,0 +1,536 @@
+@CHARSET "UTF-8";
+
+/**********       전체         ***********/
+html {
+	min-width: 1024px;
+	/* min-height: 768px; */
+}
+
+body {
+	background: #f9ab5b; /* Old browsers */
+	background: -moz-linear-gradient(45deg, #f9ab5b 1%, #427dd6 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(45deg, #f9ab5b 1%,#427dd6 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(45deg, #f9ab5b 1%,#427dd6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9ab5b', endColorstr='#427dd6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  background-attachment: fixed;
+}
+
+section {
+	width: 90%;
+	margin: 50px auto 0px auto;
+	/* overflow: hidden; */
+	position: relative;
+}
+
+section article {
+	width: 100%;
+}
+
+
+/**********       상단 nav         ***********/
+#schedule {
+	margin: 0 auto;
+	width: 500px;
+	height: 90px;
+	color: #fff;
+	text-align: center;
+	font-size: 24px;
+	line-height: 42px;
+	position: relative;
+}
+
+#schedule #scheduleTitle {
+  position: absolute;
+  top:0px;
+  left:112px;
+}
+
+#schedule #scheduleTitle span {
+	
+}
+
+#schedule #scheduleTitle span.location {
+	font-size: 50px;
+	font-family:NanumB;
+}
+
+#schedule>a {
+	display: block;
+	width: 22px;
+	height: 40px;
+	background-image: url(../../images/arrow_white.png);
+	background-size: 22px 40px;
+	float: left;
+	margin-top: 25px;
+}
+
+#schedule>a#btn_prev {
+	transform: rotate(-180deg);
+}
+
+#schedule>a#btn_next {
+	float: right;
+}
+
+
+/**********       날씨         ***********/
+div#weather {
+  position: absolute;
+  top:-30px;
+  right:112px;
+	width: 150px;
+	height: 150px;
+}
+
+#weather_tc {
+    font-size: 16px;
+    margin-top: -50px;
+}
+
+/**********       프로그레스 바         ***********/
+
+#progress {
+  margin-top: 30px;
+  width: 100%;
+  height: 90px;
+  position: relative;
+}
+
+.cd-horizontal-timeline {
+	margin: 0;
+}
+
+
+
+/**********       하단 wrap         ***********/
+#poMap {
+  overflow:hidden;
+  margin-top: 40px;
+}
+
+
+/**********       지도         ***********/
+#map {
+  float: right;
+  width: 54%;
+  height: 540px;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.labels {
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/**********       스케줄 리스트         ***********/
+
+#post_a_comment {
+  float: left;
+  width: 45% !important;
+  height: 540px;
+  overflow-x: hidden;
+}
+
+.size {
+  width: 100% !important;
+  float: none;
+  padding:0px;
+}
+
+/* 2016-07-28 좌측 리스트 제목 CSS / 회색조, 글씨 크기 */
+.ui-state-default{
+	border-radius:5px;
+	margin:5px 5px 20px 5px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0), 0 0 0.5em 0
+    rgba(0, 0, 0, 0.3);
+}
+.panel-active{
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0), 0 0 0.6em 0
+    rgba(255, 133, 133,1);
+}
+.list-group-item{
+	text-align:left;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+.infoBtn, .removeBtn, .moveDay, .btn_way, .memoBtn{
+	cursor: pointer;
+}
+.card-title {
+  font-size: 35px;
+}
+
+.card-content {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.card {
+  color: #505050;
+}
+
+.row {
+	 display:flex; 
+	 align-items:center;
+	 padding: 2px 0px;
+}
+
+div.panel {
+  margin-bottom: 1px;
+  border:1px solid #fff;
+  border-radius:5px 5px 0px 0px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.panel-body{
+	text-align: center;
+}
+div.panel-heading {
+	color: #fff !important;
+	background-color:rgba(255, 255, 255, 0) !important;
+	padding: 0px 15px;
+	border: 0px !important;
+}
+
+div.panel-heading.panel-heading-hover {
+	background-color:#f9bfbf;
+}
+
+div.text-right {
+	overflow: hidden;
+	float:right;
+}
+
+div.addSchedule {
+	padding: 7px 30px;
+	height: 36px;
+	background: rgba(255,255,255,0.1);
+	border-top:0;
+	border-radius: 0px 0px 5px 5px;
+}
+
+div.addSchedule a {
+	display:inline-block;
+	font-size: 16px;
+	color:#fff;
+	text-decoration: none;
+}
+
+div.addSchedule a.btn_plus {
+	
+}
+
+div.addSchedule a.btn_way {
+  float:right;
+}
+
+img.acting {
+}
+
+span.time {
+	display:block;
+}
+
+div.scheduleTitle {
+	font-size:1.8em;
+}
+
+div.scheduleContent div {
+  padding:0px;
+}
+
+
+
+/******************** 모달 가운데 정렬 ***************/
+.modal.modal-center {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal.modal-center:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog.modal-center {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle; 
+}
+
+
+/******************** 길찾기 모달 **********************/
+
+div#initMap {
+  width:100%;
+  max-width: 600px;
+  height:400px;
+  overflow: hidden;
+}
+
+div#panel {
+  width:100%;
+  max-width: 600px;
+  margin-top: 20px;
+  height:200px;
+  overflow-y: scroll;
+}
+
+.modal-title {
+  color: #333;
+  text-align: center;
+}
+a.closeBtn {
+	position: absolute;
+	top: -17px;
+	right: -40px;
+	color: #fff;
+	font-size: 2.5em;
+}
+
+a.closeBtn i.fa {
+	display: block;
+}
+
+.alarm {
+}
+
+.alarmOn {
+  color: yellow;
+  opacity: 0.7;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0), 0 0 0.8em 0 yellow;
+}
+
+/******************** 검색 모달 **********************/
+
+div#insertRoute {
+  color: #666;  
+}
+
+div#insertRoute div.modal-dialog {
+	width: 800px;
+}
+
+div.modal-body {
+	overflow: hidden;
+}
+
+div.leftWrap {
+	width: 40%;
+	float: left;
+}
+
+div.rightWrap {
+	width: 58%;
+	float: right;
+}
+
+#btnRadius {
+	position: absolute;
+	right: 30px;
+	top: 30px;
+	z-index: 300;
+}
+
+select#citySelect {
+	margin-top: 5px;
+}
+
+div.searchWrap > div.input-group {
+	margin-bottom: 5px;
+}
+
+div.resultWrap{
+  height: 550px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+ul.resultList {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.resultListUp {
+	height: 510px !important;
+}
+
+@media screen and (max-width:1024px){
+	div.resultWrap{
+		height: 350px;
+	}
+	.resultListUp {
+	  height: 310px !important;
+	}
+}
+
+ul.resultList li.resultContent {
+  width: 100%;
+  height: 80px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  color: #666;
+  line-height: 1.5em;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+ul.resultList>li:hover {
+  background-color: rgba(70, 130, 180, 0.1);
+}
+
+span.index {
+	color: #fff;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	background-color: steelblue;
+	width: 24px;
+	height: 24px;
+	border-radius: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2em;
+}
+
+div.imgWrap {
+	height: 90%;
+}
+
+img.resultImg {
+  resize: both;
+  width: 100px;
+  height: 100%;
+  border-radius: 5px;
+}
+
+ul.resultList>li.resultContent>div.resultTextBox {
+  width: 100%;
+  height: 90%;
+  margin-left: 15px;
+}
+
+ul.resultList>li.resultContent h3 {
+  font-size: 1.3em;
+}
+
+ul.resultList>li.resultContent h4 {
+  font-size: 1em;
+  line-height: 2em;
+}
+
+ul.resultList>li.resultContent>div.resultHover {
+	opacity: 0;
+  display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+  border-radius: 3px;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	transition: all 0.5s;
+}
+
+ul.resultList>li.resultContent div.resultHover a {
+  font-size: 2em;
+}
+
+ul.resultList>li.resultContent:hover div.resultHover {
+	opacity: 1;
+}
+
+a.mapBtn, a.plusBtn {
+	margin-right: 20px;
+}
+
+ul.pager {
+	margin: 0;
+}
+
+/* Radio */
+
+.radio-inline input[type="radio"] {
+    background-color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+    width: 10px;
+    height: 10px;
+    -webkit-appearance: none;
+}
+
+input[type="radio"]:after {
+    content: '';
+    display: block;
+    position: relative;
+    height: 10px;
+    width: 10px;
+    background-color: #fff;
+    border: 1px solid steelblue;
+    border-radius: 10px;
+}
+
+input[type="radio"]:checked:after {
+    background-color: steelblue;
+}
+
+input[type="radio"]:focus {
+  outline:0;
+}
+
+nav.searchNav {
+	width: 100%;
+	height: 34px;
+	margin-top: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+nav.searchNav a.searchIcon {
+	display: inline-block;
+	width: calc((100% - 30px) / 7);
+	text-align: center;
+	font-size: 1.5em;
+}
+
+nav.searchNav a.searchIcon:hover {
+	color: steelblue;
+}
+
+div.radiusWrap {
+	text-align: center;
+}
+
+a#btnPrev, a#btnNext {
+	color: steelblue;
+}
+
+.modal ::-webkit-scrollbar {
+  width: 2px; 
+  height: 2px; 
+}
+
+.modal ::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.2); 
+  -webkit-border-radius: 2px; 
+  border-radius:2px; 
+}
+
+.modal ::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.4); 
+  -webkit-border-radius: 2px; 
+  border-radius: 2px; 
+}
