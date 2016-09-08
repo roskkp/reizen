@@ -557,3 +557,7 @@ g {
 .dropdown-toggle {
 	width: 150px;
 }
+
+.marker-hover{
+	background-color: rgba(70, 130, 180, 0.4);
+}

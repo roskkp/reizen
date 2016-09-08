@@ -15,9 +15,10 @@ var routeMap;
 var spotPath;
 var marker = [];
 var routeData;
-
+var infinityScroll = true;
 var emptySchedule = true;
 var typeId='';
+var aroundMarkerList= [];
 $(function() {
 	$(window).unload(function () { // 윈도우 벗어날때 스케줄 넘버 삭제
 			if(emptySchedule){ // 스케줄이 없다면 
@@ -67,7 +68,7 @@ $(function() {
 		scheduleNo=(location.href.substr(location.href.lastIndexOf('=') + 1)).replace("#","");
 		$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
 			console.log(result);
-			$day.attr('data-date', result[0].time);
+			$('#daysInfo').attr('data-date', result[0].time);
 		});
 
 		listAjax(scheduleNo, 1);
@@ -470,6 +471,9 @@ $('.searchIcon').not('#btnLocation').off('click').on('click', function(){
 });
 
 $('#draggable').scroll(function(){
+	if(!infinityScroll){
+		return;
+	}
 	var scrolltop = parseInt($('#draggable').scrollTop());
 	var scrollWhere =$('#draggable')[0].scrollHeight-parseInt($('#draggable').css('height').replace('px',''));
 	if( $(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight ){
@@ -529,6 +533,7 @@ $(document).on('change','.m-updateHour,.m-updateMin',function(){
 		} //else
 	});
 })
+
 $('#btnMoveDayConfirm').on('click',function(){ // 일정 변경 확인버튼
 	event.preventDefault();
 	var time = $('#m-updateHour option:selected').val()+':'+$('#m-updateMin option:selected').val();
@@ -586,8 +591,9 @@ $(document).on('click', '.mapBtn', function(event){
 	aroundSearch(mapX,mapY);
 });
 
-function pointMap(mapX, mapY,maps) {
-
+function pointMap(mapX, mapY,maps) { // 주변 검색 
+	var $list = $('#sortable li');
+	var spots = [];
 	var myLatLng = {
 			lat : mapY,
 			lng : mapX
@@ -599,19 +605,58 @@ function pointMap(mapX, mapY,maps) {
 		disableDefaultUI: true
 	});
 
-	var marker = new google.maps.Marker({
-		position : myLatLng,
-		map : map,
-		title : 'Hello World!'
-	});
-	if(maps.length>0){
+	if(maps.length>0){ // 주변 결과 찍음 MAX 100개 
+		aroundMarkerList = [];
+		var i = 0;
 		maps.forEach(function(value,key){
-			var marker = new google.maps.Marker({
+			var aroundMarker = new google.maps.Marker({
 				position: {lat: value.lat, lng: value.lng},
-				map: map
+				map: map,
+				label:'t',
+				dataIndex: i // 사용자 정의 속성
 			});
+			aroundMarker.addListener('mouseover',function(){ // 마커 오버
+				$('#draggable li').eq(this.dataIndex).addClass('marker-hover');
+			})
+			aroundMarker.addListener('mouseout',function(){ // 마커 아웃
+				$('#draggable li').eq(this.dataIndex).removeClass('marker-hover');
+			})
+			i++;
+			aroundMarkerList.push(aroundMarker); // 리스트로 저장 리스트 = 전역변수
+		})
+		$('.resultContent').off().hover(function(){ // 좌측 주변 검색 결과 리스트 이벤트 걸기
+			aroundMarkerList[$(this).index()].setVisible(false);
+		},function(){
 		})
 	}
+	for(var i=0; i<$list.length; i++){
+		var map1 = parseFloat($list.eq(i).data('mapy'));
+		var map2 = parseFloat($list.eq(i).data('mapx'));
+		spots[i]={
+				lat: map1, 
+				lng: map2
+		}
+	}
+	var spotPath = new google.maps.Polyline({
+		path: spots,
+		geodesic: true,
+		strokeColor: '#FF0000',
+		strokeOpacity: 1.0,
+		strokeWeight: 2
+	});
+
+	var labels = '123456789';
+
+	for(var i=0; i<spots.length; i++){
+		var marker=[];
+		marker[i] = new google.maps.Marker({
+			position: spots[i],
+			map: map,
+			label: labels[i]
+		});
+	}
+
+	spotPath.setMap(map);
 
 }
 
@@ -647,7 +692,7 @@ function routeMap(){
 		var marker = new google.maps.Marker({
 			position : myLatLng,
 			map : map,
-			title : 'Hello World!'
+			label: '1'
 		});
 		return;
 	}

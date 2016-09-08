@@ -57,7 +57,7 @@ function searchAjax(){
 					var resultset = template(result);
 
 					var draggable = $('#draggable'); 
-
+					infinityScroll = true;
 					draggable.append(resultset);
 					doDrag();
 
@@ -380,8 +380,8 @@ function aroundSearch(mapX,mapY){
 				console.log('search error');
 				return;
 			}else{
+				$('#tip').remove();
 				var data = result.data;
-				alert(data.length);
 				var maps = []; 
 				if(data.length>0){
 					var source = $('#searchResult').text();
@@ -398,7 +398,11 @@ function aroundSearch(mapX,mapY){
 						var lng = parseFloat(result.data[i].mapX);
 						maps.push({lat:lat, lng:lng});
 					}
+					
 					pointMap(mapX, mapY, maps);
+					infinityScroll = false;
+					
+
 				}else {
 					return; 
 				}
