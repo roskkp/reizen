@@ -92,38 +92,15 @@ $( "#searchBar" ).autocomplete({
 	},
 	//조회를 위한 최소글자수
 	minLength: 1,
-	select: function( event, ui ) {
-//		areaCode = '';
-//		localCode = '';
-//		if ( searchData[0] != null ) {
-//			for (var i = 0; i < searchData.length; i++) {
-//				var datas = searchData[i].split("/");
-//				if (datas[0]+" "+datas[1]+" " == ui.item.value && datas.length == '4') {
-//					areaCode = searchData[i].split("/")[2];
-//					localCode = searchData[i].split("/")[3];
-//				} else if (datas[0]+" " == ui.item.value && datas.length == '2') {
-//					areaCode = searchData[i].split("/")[1];
-//				}
-//			}
-//		} else {
-//			areaCode = searchData.split("/")[2];
-//			localCode = searchData.split("/")[3];
-//		}
-//		console.log("selected: "+ui.item.value);
-//		console.log("areaCode: "+areaCode);
-//		console.log("localCode: "+localCode);
-	}
 });
 
 function searchLocation(){
-	cateS = new Array();
-	var index = 0;
 	for (var i = 0; i < $('.filter-value').length; i++) {
-		if ($($('.filter-value')[i]).attr('data-cate') != 'undefined') {
-			cateS[index] = $($('.filter-value')[i]).attr('data-cate');
-			index++;
-		}
+		console.log($($('.filter-value')[i]).length)	
 	}
+	
+	cateS = categoryJson(cateS,9);
+	cateL = categoryJson(cateL,3);
 	$.ajax({
 		url: reizenUrl+"location/searchkeyword.do",
 		method: 'post',
@@ -134,7 +111,8 @@ function searchLocation(){
 			'localCode': localCode,
 			'page': locationPage,
 			'size': size,
-			'cateS': JSON.stringify(cateS).replace('[','').replace(']','')
+			'cateS': JSON.stringify(cateS).replace('[','').replace(']',''),
+			'cateL': JSON.stringify(cateL).replace('[','').replace(']','')
 		},
 		success: function(result){
 			if (result.status == 'success') {

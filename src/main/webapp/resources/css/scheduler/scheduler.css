@@ -561,3 +561,11 @@ g {
 .marker-hover{
 	background-color: rgba(70, 130, 180, 0.4);
 }
+nav.searchNav a.btn-click {
+	background-color: #666;
+	color: white;
+}
+
+nav.searchNav a.btn-click:hover {
+  background-color: gray;
+}

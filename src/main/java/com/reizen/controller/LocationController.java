@@ -50,17 +50,20 @@ public class LocationController {
   
   @RequestMapping(path="searchkeyword", method=RequestMethod.POST , produces="application/json;charset=utf-8")
   @ResponseBody
-  public String searchKeyword(String keyword, String areaCode, String localCode, String category, String date, int page, int size, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS){
+  public String searchKeyword(String keyword, String areaCode, String localCode, String category, String date, int page, int size, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS, @RequestParam(value="cateL", defaultValue = "") List<Object> cateL){
     Map<String, Object> params = new HashMap<>();
     params.put("keyword", keyword);
     params.put("areaCode", areaCode);
     params.put("localCode", localCode);
     params.put("category", category);
     params.put("cateS", cateS);
+    params.put("cateL", cateL);
     params.put("cateSSize", cateS.size());
+    params.put("cateLSize", cateL.size());
     params.put("date", date);
     params.put("startNo", (page-1)*size);
     params.put("size", size);
+    System.out.println(params);
     Map<String, Object> result = new HashMap<>();
     try {
       result = locationService.selectLocations(params);
@@ -350,7 +353,9 @@ public class LocationController {
   public String checkAlarm(@RequestParam("data") String routeNumbers){
     Map<String, Object> result = new HashMap<String, Object>();
     try {
-      result.put("data", memoService.checkAlarm(routeNumbers.replace("[", " ").replace("]", " ")));
+      if (!routeNumbers.equals("[]")) {
+        result.put("data", memoService.checkAlarm(routeNumbers.replace("[", " ").replace("]", " ")));  
+      }
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
