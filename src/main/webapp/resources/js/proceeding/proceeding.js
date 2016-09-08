@@ -22,10 +22,12 @@ $(function(){
 						load();
 					}
 				}else{ // 세션에 데이터가 없을때
+					sessionStorage.clear();
+					sessionCheck();
 					swal("세션 만료", "세션이 만료되었습니다. 다시 로그인 해 주세요.", "warning"); 
-					setTimeout(function(){ // 3초뒤 자동 이동
+					setTimeout(function(){ // 2초뒤 자동 이동
 						window.location.href='main.html';
-					},3000);
+					},2000);
 				}
 			}, error  : function(){
 				alert('ajax error');
@@ -140,10 +142,7 @@ function load() {
 			}
 		});		
 		
-		setInterval(() => {
-			checkAlarm();
-//		}, 180000);
-		}, 1000);
+		setInterval(checkAlarm(), 1000*60*3);
 		(function ($) { //좌측 카드 드래그 document ready 가 아님 
 			$("#sortable").sortable({
 				revert : true,
@@ -205,7 +204,6 @@ function load() {
 		$(document).on('click','.memoBtn',function(e){		// 메모버튼 클릭 이벤트 리스너
 			$panelHeading = $(this).parents('.panel-heading');
 			if ($panelHeading.next().hasClass('in')) {
-				alert("in & out")
 				$panelHeading.next().removeClass('in');
 				e.stopPropagation();
 				return;

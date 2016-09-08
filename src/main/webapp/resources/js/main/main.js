@@ -13,6 +13,7 @@ var scheduleTemplate;
 var cateSource;
 var cateTemplate;
 var size = 6;
+var cateL;
 var cateS;
 var nop;
 var month;
@@ -65,10 +66,11 @@ $(function(){
 
 	$('.cateL').on('click',function(){ // 대분류 선택시 소분류 리스팅
 		var $this = $(this);
-		if(addFilterValue($this.text())){ // filter max and duplication check
+		if(addFilterValue($this.text(),$this.attr('data-cateL'))){ // filter max and duplication check
 			searchCategoryM($this.attr('data-cateL'));
 			$('.subclass-list').animate({ height : '80px'});
 		}
+		searchLocation();
 	});
 	
 	
@@ -248,3 +250,14 @@ function addFilterPlan(str, type, no){ // 중복코드 있습니다 ㅜㅜ
 	return true;
 }
 
+function categoryJson(array,length){
+	array = new Array();
+	var index = 0;
+	for (var i = 0; i < $('.filter-value').length; i++) {
+		if ($($('.filter-value')[i]).attr('data-cate') != 'undefined' && $($('.filter-value')[i]).attr('data-cate').length == length) {
+			array[index] = $($('.filter-value')[i]).attr('data-cate');
+			index++;
+		}
+	}
+	return array;
+}

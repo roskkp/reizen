@@ -557,3 +557,12 @@ g {
 .dropdown-toggle {
 	width: 150px;
 }
+
+nav.searchNav a.btn-click {
+	background-color: #666;
+	color: white;
+}
+
+nav.searchNav a.btn-click:hover {
+  background-color: gray;
+}

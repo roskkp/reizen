@@ -12,6 +12,7 @@
   "dependencies": {
     "angular": "^1.5.8",
     "body-parser": "^1.14.2",
+    "bootstrap": "^3.3.7",
     "dateformat": ">= 1.0.12",
     "express": "^4.13.4",
     "handlebars": "^4.0.5",

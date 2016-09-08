@@ -301,7 +301,7 @@ $(function() {
 	})
 	
 	var test = true;
-	$(document).on('click','#btnActive',function(){
+	$(document).on('click','#btnTheorem',function(){
 		if ($('.btnStart').attr('data-start') == null && $('.btnEnd').attr('data-end') == null) {
 			swal("시작 & 도착 장소를 선택해주세요.")
 			return;
@@ -318,12 +318,20 @@ $(function() {
 
 $('#searchBar').on('keydown', function(event){
 	if( event.keyCode == 13 ){
+		for (var i = 0; i < $('.searchIcon').length; i++) {
+			$($('.searchIcon')[i]).removeClass('btn-click');
+		}
+		category = '';
 		$('#draggable').empty();
 		searchAjax();
 	}
 });	// searchBar
 
 $('#btnSearch').off('click').on('click', function(){
+	for (var i = 0; i < $('.searchIcon').length; i++) {
+		$($('.searchIcon')[i]).removeClass('btn-click');
+	}
+	category = '';
 	$('#draggable').empty();
 	searchAjax();
 });	// btnSearch
@@ -462,8 +470,17 @@ function updateTime(){
 
 
 $('.searchIcon').not('#btnLocation').off('click').on('click', function(){
-	$('#searchInput').val('');
-	category=$(this).attr('data-cate');
+	if (!$(this).hasClass('btn-click')) {
+		for (var i = 0; i < $('.searchIcon').length; i++) {
+			$($('.searchIcon')[i]).removeClass('btn-click');
+		}
+		$(this).addClass('btn-click')
+		category=$(this).attr('data-cate');
+			
+	} else {
+		$(this).removeClass('btn-click')
+		category='';
+	}
 	$('#draggable').empty();
 	page = 1;
 	searchAjax();
@@ -490,6 +507,7 @@ $('#sortable').on('click', 'a.removeBtn', function(event){
 		 confirmButtonText: "Yes, delete it!",   
 		 closeOnConfirm: false}, 
 		 function(){
+			 console.log(routeNo);
 			 removeRouteAjax(routeNo)
 			 listAjax(scheduleNo, day);
 		 });
@@ -616,10 +634,10 @@ function pointMap(mapX, mapY,maps) {
 }
 
 $('#btnRoute').on('click', function(){
-	routeMap('map');
+	baseMap();
 });
 
-function routeMap(){
+function baseMap(){
 
 	var $list = $('#sortable li');
 	var spots = [];

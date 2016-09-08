@@ -1,5 +1,4 @@
 function listPage(result){
-	console.log(result);
 	var getMonth = currentDate.getMonth()+1;
 	var getDate = currentDate.getDate();
 	var getDay = currentDate.getDay();

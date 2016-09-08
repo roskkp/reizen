@@ -132,7 +132,9 @@ public class SchedulerController {
   /*      scheduler 페이지에서 -> route 삭제      */
   @RequestMapping(path="removeRoute")
   @ResponseBody
-  public String removeRoute(@RequestParam int routeNo){try{
+  public String removeRoute(@RequestParam int routeNo){
+    try{
+    routeService.removeRoute(routeNo);
     result.put("status", "success");
   } catch (Exception e) {
     e.printStackTrace();

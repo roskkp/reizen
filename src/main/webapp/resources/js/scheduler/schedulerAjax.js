@@ -114,7 +114,7 @@ function addAjax(contentId, date, day, time, scheduleNo){
 				dataType: 'json',
 				success : function(result){
 					if( result.status != 'success'){
-						//todo 
+						console.log('error addAjax');
 					}
 					listAjax(scheduleNo, day);
 				}
@@ -233,7 +233,7 @@ function listAjax(scheduleNo, day){
 					}
 				}
 			}; // for
-			routeMap();
+			baseMap();
 		}// success
 	});
 	$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){

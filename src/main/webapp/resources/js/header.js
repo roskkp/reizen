@@ -361,6 +361,7 @@ function sessionCheck(){
 		
 		if(activeList.length>0){
 			$('#btnProceeding').removeClass('empty').html('진행중인 일정 <span class="badge">'+activeList.length+'</span>');
+			$('#proceedingList').empty();
 			for(var index in activeList){
 				var tag = '<a href='+reizenUrl+'scheduler/proceeding.html?scheduleNo='+activeList[index].scheduleNo+'>'+activeList[index].title+'</a>';
 				$('#proceedingList').append(tag);

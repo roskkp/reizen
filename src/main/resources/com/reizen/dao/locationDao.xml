@@ -66,6 +66,12 @@
 			<if test="localCode != null and localCode != ''">
 				and lccd = #{localCode}
 			</if>
+      <if test="!cateLSize eq 0">
+        <if test="cateSSize eq 0">
+          and c.cate01 in 
+          <foreach collection="cateL" item="cateLarge" open="(" close=")" separator=",">${cateLarge}</foreach>
+        </if>
+      </if>
 			<if test="!cateSSize eq 0">
 			and s.cate03 in 
       <foreach collection="cateS" item="cateSmall" open="(" close=")" separator=",">${cateSmall}</foreach>
