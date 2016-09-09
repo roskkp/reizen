@@ -492,7 +492,7 @@ $(function() {
 			searchAjax();
 		}
 	});
-	$(document).on('click','.resultContent',function(){
+	$(document).on('click','.resultContent',function(event){
 		event.preventDefault();
 		var mapx = $(this).data('mapx');
 		var mapy = $(this).data('mapy');
@@ -683,7 +683,6 @@ function pointMap(mapX, mapY,maps) { // 주변 검색
 				$dragList.eq(this.dataIndex).removeClass('marker-hover');
 			});
 			aroundMarker.addListener('click',function(){ // 마커 클릭
-				console.log($dragList.eq(this.dataIndex).clone().wrapAll("<div/>").parent().html());
 				$('#draggable').animate({scrollTop:$('#draggable').scrollTop()+$dragList.eq(this.dataIndex).position().top-131},400);
 				$dragList.not(this).removeClass('marker-click');
 				$dragList.eq(this.dataIndex).addClass('marker-click');
@@ -749,6 +748,7 @@ function pointMap(mapX, mapY,maps) { // 주변 검색
 			target.setIcon(beforeIcon);
 			target.setLabel(beforeLabel);
 		})
+		$dragList.eq(0).addClass('marker-click');
 	} // if(maps)
 	for(var i=0; i<$list.length; i++){ // 좌측 리스트로부터 루트 구하기
 		var map1 = parseFloat($list.eq(i).data('mapy'));
