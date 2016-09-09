@@ -1,5 +1,6 @@
 package com.reizen.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -309,8 +310,11 @@ public class LocationController {
   @ResponseBody
   public String aroundList(String mapX, String mapY, String tid, int size, int page) {
     Map<String, Object> result = new HashMap<String, Object>();
+    List<Location> list = new ArrayList<>();
     try {
-      result.put("data", locationService.selectAroundList(mapY, mapX, tid, size, page));
+      list.add(locationService.getLocationByMap(mapY,mapX));
+      list.addAll(locationService.selectAroundList(mapY, mapX, tid, size, page));
+      result.put("data", list);
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();

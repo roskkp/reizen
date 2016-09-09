@@ -67,6 +67,7 @@ function searchAjax(){
 			}
 		}
 	});	// ajax
+	baseMap();
 }	// searchAjax
 
 function deleteDayAjax(scheduleNo, day){
@@ -371,6 +372,8 @@ function dataTheorem(){
 }
 
 function aroundSearch(mapX,mapY){
+	$('#draggable').empty();
+	console.log(mapX+'ddd'+mapY);
 	$.ajax({
 		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1',
 		method: 'GET',
@@ -389,7 +392,6 @@ function aroundSearch(mapX,mapY){
 					var resultset = template(result);
 
 					var draggable = $('#draggable'); 
-					draggable.empty();
 					draggable.append(resultset);
 					doDrag();
 
@@ -398,13 +400,12 @@ function aroundSearch(mapX,mapY){
 						var lng = parseFloat(result.data[i].mapX);
 						maps.push({lat:lat, lng:lng});
 					}
-					
 					pointMap(mapX, mapY, maps);
 					infinityScroll = false;
+				}else{
 					
-
-				}else {
-					return; 
+					swal("데이터가 없어요 :(", "", "error"); 
+					return ;
 				}
 			}
 		}

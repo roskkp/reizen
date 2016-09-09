@@ -19,6 +19,9 @@ var infinityScroll = true;
 var emptySchedule = true;
 var typeId='';
 var aroundMarkerList= [];
+var beforeLabel;
+var beforeIcon;
+var prev_infowindow;
 $(function() {
 	$(window).unload(function () { // 윈도우 벗어날때 스케줄 넘버 삭제
 			if(emptySchedule){ // 스케줄이 없다면 
@@ -44,9 +47,7 @@ $(function() {
 				}//if
 			}//else
 	});//unload
-	$(document).on('mouseenter', 'li.dayEvents', function(){
-//		$(this).append('<i class="fa fa-cutlery"></i>');
-	});
+	
 	for(var i=0; i<24; i++){ // 00시 ~ 23시30분 까지 지원 *db가 24시를 거부합니다.
 		if(i<10){
 			$('.updateHour').append('<option value='+'0'+i+'>'+'0'+i+'</option>');
@@ -232,7 +233,6 @@ $(function() {
 					if ( hour >= 0 && hour <= 24){
 						var min = $('#s-updateMin option:selected').val();
 						var time = hour+":"+min;
-//							ui.helper.find('span.time').text(time);
 						contentId = ui.item.attr('data-contentid');
 						date = $('#daysInfo').attr('data-date');
 						day = $('#daysInfo').attr('data-day');
@@ -314,119 +314,283 @@ $(function() {
 	$(document).on('click','#btnRotueSubmit',function(){
 		bestRouteUpdate();
 	})
-});	 // jquery 
+	
 
 
-$('#searchBar').on('keydown', function(event){
-	if( event.keyCode == 13 ){
+	$('#searchBar').on('keydown', function(event){
+		if( event.keyCode == 13 ){
+			for (var i = 0; i < $('.searchIcon').length; i++) {
+				$($('.searchIcon')[i]).removeClass('btn-click');
+			}
+			category = '';
+			$('#draggable').empty();
+			searchAjax();
+		}
+	});	// searchBar
+
+	$('#btnSearch').off('click').on('click', function(){
 		for (var i = 0; i < $('.searchIcon').length; i++) {
 			$($('.searchIcon')[i]).removeClass('btn-click');
 		}
 		category = '';
 		$('#draggable').empty();
 		searchAjax();
-	}
-});	// searchBar
+	});	// btnSearch
 
-$('#btnSearch').off('click').on('click', function(){
-	for (var i = 0; i < $('.searchIcon').length; i++) {
-		$($('.searchIcon')[i]).removeClass('btn-click');
-	}
-	category = '';
-	$('#draggable').empty();
-	searchAjax();
-});	// btnSearch
+	$('#btnAdd').off('click').on('click', function(){
+		date = $('#daysInfo').attr('data-date');
 
-$('#btnAdd').off('click').on('click', function(){
-	date = $('#daysInfo').attr('data-date');
+		var addDay = new Date(date);
 
-	var addDay = new Date(date);
+		addDay.setDate(addDay.getDate()+1);	
+		date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
+		$('#daysInfo').attr('data-date', date);
+		day++;
+		$('#daysInfo').attr('data-day', day);
+		$('#daysInfo').text('DAY'+day);
 
-	addDay.setDate(addDay.getDate()+1);	
-	date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
-	$('#daysInfo').attr('data-date', date);
-	day++;
-	$('#daysInfo').attr('data-day', day);
-	$('#daysInfo').text('DAY'+day);
+		console.log('추가 할 : '+scheduleNo+', '+day);
+		updateDayList('add', scheduleNo, day);
 
-	console.log('추가 할 : '+scheduleNo+', '+day);
-	updateDayList('add', scheduleNo, day);
+		console.log('리스트보여줄  : '+scheduleNo+', '+day);
+		listAjax(scheduleNo, day);
+		total++;
+		console.log('total : '+total);
+	});	// btnAdd
 
-	console.log('리스트보여줄  : '+scheduleNo+', '+day);
-	listAjax(scheduleNo, day);
-	total++;
-	console.log('total : '+total);
-});	// btnAdd
+	$('#btnDelete').off('click').on('click', function(){
+		if( day == 1 ){
+			sweetAlert("INFO","삭제할 데이터가 없어요 :( ","info");
+			return;
+		}
+		console.log('삭제 할 : '+scheduleNo+', '+day);
+		deleteDayAjax(scheduleNo, day);
+		updateDayList('min', scheduleNo, day);
+		date = $('#daysInfo').attr('data-date');
 
-$('#btnDelete').off('click').on('click', function(){
-	if( day == 1 ){
-		sweetAlert("INFO","삭제할 데이터가 없어요 :( ","info");
-		return;
-	}
-	console.log('삭제 할 : '+scheduleNo+', '+day);
-	deleteDayAjax(scheduleNo, day);
-	updateDayList('min', scheduleNo, day);
-	date = $('#daysInfo').attr('data-date');
+		var addDay = new Date(date);
 
-	var addDay = new Date(date);
+		addDay.setDate(addDay.getDate()-1);	
+		date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
+		$('#daysInfo').attr('data-date', date);
+		day--;
+		$('#daysInfo').attr('data-day', day);
+		$('#daysInfo').text('DAY'+day);
 
-	addDay.setDate(addDay.getDate()-1);	
-	date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
-	$('#daysInfo').attr('data-date', date);
-	day--;
-	$('#daysInfo').attr('data-day', day);
-	$('#daysInfo').text('DAY'+day);
+		console.log('리스트보여줄  : '+scheduleNo+', '+day);
+		listAjax(scheduleNo, day);
+		total--;
+		console.log('total : '+total);
+	});	// btnDelete
 
-	console.log('리스트보여줄  : '+scheduleNo+', '+day);
-	listAjax(scheduleNo, day);
-	total--;
-	console.log('total : '+total);
-});	// btnDelete
+	$('#btnPrev').off('click').on('click', function(){
+		if( day == 1 ){
+			return;
+		}
+		date = $('#daysInfo').attr('data-date');
+		var addDay = new Date(date);
+		addDay.setDate(addDay.getDate()-1);	
+		date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
+		$('#daysInfo').attr('data-date', date);
+		day--;
+		$('#daysInfo').attr('data-day', day);
+		$('#daysInfo').text('DAY'+day);
+		listAjax(scheduleNo, day);
+	});	// btnPrev
 
-$('#btnPrev').off('click').on('click', function(){
-	if( day == 1 ){
-		return;
-	}
-	date = $('#daysInfo').attr('data-date');
-	var addDay = new Date(date);
-	addDay.setDate(addDay.getDate()-1);	
-	date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
-	$('#daysInfo').attr('data-date', date);
-	day--;
-	$('#daysInfo').attr('data-day', day);
-	$('#daysInfo').text('DAY'+day);
-	listAjax(scheduleNo, day);
-});	// btnPrev
+	$('#btnNext').off('click').on('click', function(){
+		if( day == total ){
+			sweetAlert("INFO","day 추가 버튼을 눌러 일정을 추가해주세요!","info");
+			return;
+		}
+		
+		date = $('#daysInfo').attr('data-date');
+		var addDay = new Date(date);
+		addDay.setDate(addDay.getDate()+1);	
+		date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
+		$('#daysInfo').attr('data-date', date);
+		day++;
+		$('#daysInfo').attr('data-day', day);
+		$('#daysInfo').text('DAY'+day);
+		listAjax(scheduleNo, day);
+	});	// btnNext
 
-$('#btnNext').off('click').on('click', function(){
-	if( day == total ){
-		sweetAlert("INFO","day 추가 버튼을 눌러 일정을 추가해주세요!","info");
-		return;
-	}
+	$('#btnDaySubmit').on('click', function(){
+		date = $('#datepicker').val();
+
+		eventDate = date;
+
+		var $day = $('#daysInfo');
+		$day.attr('data-date', date);
+		$day.attr('data-day', 1);
+		$day.text('DAY'+day);
+
+		addScheduleAjax(eventDate);
+	});
 	
-	date = $('#daysInfo').attr('data-date');
-	var addDay = new Date(date);
-	addDay.setDate(addDay.getDate()+1);	
-	date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
-	$('#daysInfo').attr('data-date', date);
-	day++;
-	$('#daysInfo').attr('data-day', day);
-	$('#daysInfo').text('DAY'+day);
-	listAjax(scheduleNo, day);
-});	// btnNext
+	$(document).on('click','.infoAdd',function(){ // 맵 인포 박스 버튼 이벤트 리스너 
+		contentId = $(this).prevAll('li').data('contentid');
+		$('#selectTime').modal('show');
+		$('#s-btnTimeSubmit').off('click').on('click', function(){
+			var hour = $('#s-updateHour option:selected').val()
 
-$('#btnDaySubmit').on('click', function(){
-	date = $('#datepicker').val();
+			if ( hour >= 0 && hour <= 24){
+				var min = $('#s-updateMin option:selected').val();
+				var time = hour+":"+min;
+				date = $('#daysInfo').attr('data-date');
+				day = $('#daysInfo').attr('data-day');
 
-	eventDate = date;
+				addAjax(contentId, date, day, time, scheduleNo);
+				$('div#scheduleWrap').removeClass('wrapUp').addClass('wrapDown');
+				$('article#progress').removeClass('progressUp').addClass('progressDown');
+				return;
+			}else{
+				swal({
+					 title: "잘못된 시간입니다.",   
+					 text: "시간을 다시 입력해주세요.",   
+					 type: "error",   
+					 showCancelButton: false,   
+					 confirmButtonColor: "#DD6B55",   
+					 confirmButtonText: "확인",   
+					 closeOnConfirm: true, 
+					 function(){
+						 $('#selectTime').modal('show')
+					 }
+				});
+			}
+		});
+	})
+	$(document).on('click','.infoDetail',function(evnet){	
+		window.open("http://reizen.com:8080/scheduler/spot.html?cid="+$(this).prev().data('contentid')+"&tid="+$(this).prev().data('typeid'),"_blank");
+	})
+	
+	$('.searchIcon').not('#btnLocation').off('click').on('click', function(){
+		if (!$(this).hasClass('btn-click')) {
+			for (var i = 0; i < $('.searchIcon').length; i++) {
+				$($('.searchIcon')[i]).removeClass('btn-click');
+			}
+			$(this).addClass('btn-click')
+			category=$(this).attr('data-cate');
+				
+		} else {
+			$(this).removeClass('btn-click')
+			category='';
+		}
+		$('#draggable').empty();
+		page = 1;
+		searchAjax();
+	});
 
-	var $day = $('#daysInfo');
-	$day.attr('data-date', date);
-	$day.attr('data-day', 1);
-	$day.text('DAY'+day);
+	$('#draggable').scroll(function(){
+		if(!infinityScroll){
+			return;
+		}
+		var scrolltop = parseInt($('#draggable').scrollTop());
+		var scrollWhere =$('#draggable')[0].scrollHeight-parseInt($('#draggable').css('height').replace('px',''));
+		if( $(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight ){
+			page ++;
+			searchAjax();
+		}
+	});
+	$(document).on('click','.resultContent',function(){
+		event.preventDefault();
+		var mapx = $(this).data('mapx');
+		var mapy = $(this).data('mapy');
+		aroundSearch(mapx,mapy);
+	})
+	$('#sortable').on('click', 'a.removeBtn', function(event){
+		event.preventDefault();
+		var routeNo = $(this).parent().parent('li').data('routeno');
+		swal({
+			 title: "Are you sure?",   
+			 text: "You will not be able to recover this imaginary file!",   
+			 type: "warning",   
+			 showCancelButton: true,   
+			 confirmButtonColor: "#DD6B55",   
+			 confirmButtonText: "Yes, delete it!",   
+			 closeOnConfirm: false}, 
+			 function(){
+				 console.log(routeNo);
+				 removeRouteAjax(routeNo)
+				 listAjax(scheduleNo, day);
+			 });
+	});
+	$('#sortable').on('click', 'a.editBtn', function(event){ // 수정 버튼 이벤트 리스너
+		event.preventDefault();
+		var routeNo= $(this).parents('li').data('routeno');
+		$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
+			if(result.length>0){ // day가 있다면 ....? day가 없는 일정이 있을 수 있나 ?
+				var daySource = $('#dayList').html();
+				var dayTemplate = Handlebars.compile(daySource);
+				$('.adm-formMargin option').not('option.default').remove(); // day select 지움
+				$('.adm-form-group').hide();
+				$('.adm-formMargin').append(dayTemplate(result));
+				$('#dayMove').modal('show');
+				$('#btnMoveDayConfirm').attr('data-routeNo',routeNo);
+			}else { //day가 없다면 .... 인데 ... day가 없는 일정이 있을 수 없으니까 .. 에러...
+				swal("Failed!", "일정 조회 실패. 관리자에게 문의하세요. ", "error"); 
+			}
+		});
+	});
+	$(document).on('change','.adm-formMargin', function(){ // day가 변경되면 발생하는 이벤트
+		if($(this).data('day')==null){ // 날짜를 선택해주세요 선택시  
+			$('.adm-form-group').fadeOut();
+		}
+		$('.adm-form-group').fadeIn();
+	});
+	$(document).on('change','.m-updateHour,.m-updateMin',function(){
+		$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
+			if(result.status=='exist'){
+				$('.control-label').remove();
+				$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
+				$('div.form-group').addClass('has-error');
+			} else {
+				$('.control-label').remove();
+				$('div.form-group').removeClass('has-error');
+			} //else
+		});
+	})
 
-	addScheduleAjax(eventDate);
-});
+	$('#btnMoveDayConfirm').on('click',function(){ // 일정 변경 확인버튼
+		event.preventDefault();
+		var time = $('#m-updateHour option:selected').val()+':'+$('#m-updateMin option:selected').val();
+		var date = $('.adm-formMargin option:selected').val();
+		var day = $('.adm-formMargin option:selected').data('day');
+		var routeNo=$(this).data('routeno');
+		console.log(time,date,day,contentId,routeNo);
+		if(time==null || date ==null || day==null){ // 입력값 검증 
+			swal("Failed!", "모든 정보를 기입해 주세요", "error"); 
+			return;
+		}
+		if(!$('div.form-group').hasClass('has-error')){
+			updateAjax(routeNo,date,day,time,scheduleNo);
+		}
+	})
+	/********   스크랩 장소 보기   ********/
+	$('#btnLocation').off('click').on('click', function(){
+		$.getJSON(reizenUrl+'location/scrapSpotList.do', function(response){
+			if(response.status=='success'){
+				console.log(response.data);
+				if( response.data[0] != null ){
+					var source = $('#searchResult').text();
+					var template = Handlebars.compile(source);
+					var resultset = template(response);
+
+					var draggable = $('#draggable'); 
+
+					draggable.empty();
+					draggable.append(resultset);
+					doDrag();
+					
+				}else {
+					return;
+				}
+			}
+		});
+	});
+
+});	 // document.ready
+
 
 /**	오른쪽 검색창 드래그 처리 	**/
 function doDrag(){
@@ -469,129 +633,6 @@ function updateTime(){
 	indexAjax(data);
 }
 
-
-$('.searchIcon').not('#btnLocation').off('click').on('click', function(){
-	if (!$(this).hasClass('btn-click')) {
-		for (var i = 0; i < $('.searchIcon').length; i++) {
-			$($('.searchIcon')[i]).removeClass('btn-click');
-		}
-		$(this).addClass('btn-click')
-		category=$(this).attr('data-cate');
-			
-	} else {
-		$(this).removeClass('btn-click')
-		category='';
-	}
-	$('#draggable').empty();
-	page = 1;
-	searchAjax();
-});
-
-$('#draggable').scroll(function(){
-	if(!infinityScroll){
-		return;
-	}
-	var scrolltop = parseInt($('#draggable').scrollTop());
-	var scrollWhere =$('#draggable')[0].scrollHeight-parseInt($('#draggable').css('height').replace('px',''));
-	if( $(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight ){
-		page ++;
-		searchAjax();
-	}
-});
-
-$('#sortable').on('click', 'a.removeBtn', function(event){
-	event.preventDefault();
-	var routeNo = $(this).parent().parent('li').data('routeno');
-	swal({
-		 title: "Are you sure?",   
-		 text: "You will not be able to recover this imaginary file!",   
-		 type: "warning",   
-		 showCancelButton: true,   
-		 confirmButtonColor: "#DD6B55",   
-		 confirmButtonText: "Yes, delete it!",   
-		 closeOnConfirm: false}, 
-		 function(){
-			 console.log(routeNo);
-			 removeRouteAjax(routeNo)
-			 listAjax(scheduleNo, day);
-		 });
-});
-$('#sortable').on('click', 'a.editBtn', function(event){ // 수정 버튼 이벤트 리스너
-	event.preventDefault();
-	var routeNo= $(this).parents('li').data('routeno');
-	$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
-		if(result.length>0){ // day가 있다면 ....? day가 없는 일정이 있을 수 있나 ?
-			var daySource = $('#dayList').html();
-			var dayTemplate = Handlebars.compile(daySource);
-			$('.adm-formMargin option').not('option.default').remove(); // day select 지움
-			$('.adm-form-group').hide();
-			$('.adm-formMargin').append(dayTemplate(result));
-			$('#dayMove').modal('show');
-			$('#btnMoveDayConfirm').attr('data-routeNo',routeNo);
-		}else { //day가 없다면 .... 인데 ... day가 없는 일정이 있을 수 없으니까 .. 에러...
-			swal("Failed!", "일정 조회 실패. 관리자에게 문의하세요. ", "error"); 
-		}
-	});
-});
-$(document).on('change','.adm-formMargin', function(){ // day가 변경되면 발생하는 이벤트
-	if($(this).data('day')==null){ // 날짜를 선택해주세요 선택시  
-		$('.adm-form-group').fadeOut();
-	}
-	$('.adm-form-group').fadeIn();
-});
-$(document).on('change','.m-updateHour,.m-updateMin',function(){
-	$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
-		if(result.status=='exist'){
-			$('.control-label').remove();
-			$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
-			$('div.form-group').addClass('has-error');
-		} else {
-			$('.control-label').remove();
-			$('div.form-group').removeClass('has-error');
-		} //else
-	});
-})
-
-$('#btnMoveDayConfirm').on('click',function(){ // 일정 변경 확인버튼
-	event.preventDefault();
-	var time = $('#m-updateHour option:selected').val()+':'+$('#m-updateMin option:selected').val();
-	var date = $('.adm-formMargin option:selected').val();
-	var day = $('.adm-formMargin option:selected').data('day');
-	var routeNo=$(this).data('routeno');
-	console.log(time,date,day,contentId,routeNo);
-	if(time==null || date ==null || day==null){ // 입력값 검증 
-		swal("Failed!", "모든 정보를 기입해 주세요", "error"); 
-		return;
-	}
-	if(!$('div.form-group').hasClass('has-error')){
-		updateAjax(routeNo,date,day,time,scheduleNo);
-	}
-})
-/********   스크랩 장소 보기   ********/
-$('#btnLocation').off('click').on('click', function(){
-	$.getJSON(reizenUrl+'location/scrapSpotList.do', function(response){
-		if(response.status=='success'){
-			console.log(response.data);
-			if( response.data[0] != null ){
-				var source = $('#searchResult').text();
-				var template = Handlebars.compile(source);
-				var resultset = template(response);
-
-				var draggable = $('#draggable'); 
-
-				draggable.empty();
-				draggable.append(resultset);
-				doDrag();
-				
-			}else {
-				return;
-			}
-		}
-	});
-});
-
-
-
 /**		map 		**/
 
 function initMap(){
@@ -604,19 +645,21 @@ function initMap(){
 
 $(document).on('click', '.mapBtn', function(event){
 	var $li = $(this).parents('li');
-	var 	mapX = parseFloat($li.data('mapx')),
-			mapY = parseFloat($li.data('mapy'));
+	var 	mapX = $li.data('mapx'),
+			mapY = $li.data('mapy');
 	aroundSearch(mapX,mapY);
 });
 
 function pointMap(mapX, mapY,maps) { // 주변 검색 
+	$('.btn-click').removeClass('btn-click');
 	var $list = $('#sortable li');
+	var $dragList = $('#draggable li');
 	var spots = [];
 	var myLatLng = {
-			lat : mapY,
-			lng : mapX
+			lat : parseFloat(mapY),
+			lng : parseFloat(mapX)
 	};
-
+	
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom : 15,
 		center : myLatLng,
@@ -625,29 +668,89 @@ function pointMap(mapX, mapY,maps) { // 주변 검색
 
 	if(maps.length>0){ // 주변 결과 찍음 MAX 100개 
 		aroundMarkerList = [];
-		var i = 0;
-		maps.forEach(function(value,key){
+		for(var i = 0 ; i<maps.length;i++){
 			var aroundMarker = new google.maps.Marker({
-				position: {lat: value.lat, lng: value.lng},
+				position: {lat: maps[i].lat, lng: maps[i].lng},
 				map: map,
-				label:'t',
+				optimized: false,
+				zIndex:1,
 				dataIndex: i // 사용자 정의 속성
 			});
 			aroundMarker.addListener('mouseover',function(){ // 마커 오버
-				$('#draggable li').eq(this.dataIndex).addClass('marker-hover');
-			})
+				$dragList.eq(this.dataIndex).addClass('marker-hover');
+			});
 			aroundMarker.addListener('mouseout',function(){ // 마커 아웃
-				$('#draggable li').eq(this.dataIndex).removeClass('marker-hover');
-			})
-			i++;
+				$dragList.eq(this.dataIndex).removeClass('marker-hover');
+			});
+			aroundMarker.addListener('click',function(){ // 마커 클릭
+				console.log($dragList.eq(this.dataIndex).clone().wrapAll("<div/>").parent().html());
+				$('#draggable').animate({scrollTop:$('#draggable').scrollTop()+$dragList.eq(this.dataIndex).position().top-131},400);
+				$dragList.not(this).removeClass('marker-click');
+				$dragList.eq(this.dataIndex).addClass('marker-click');
+				if( prev_infowindow ) {
+			           prev_infowindow.close();
+			    }
+
+				var $clone = $dragList.eq(this.dataIndex).clone();
+				$clone.addClass('infoWindow').wrapAll("<div class='infoWindow' />").find('.resultTextBox').css('margin-left','10px').next().remove();
+				$clone.parent().append('<div class="infoBtn infoDetail">자세히</div>'+
+						'<div class="infoBtn infoAdd">+ 일정에 추가</div>');
+				var infowindow = new google.maps.InfoWindow({
+					    content: $clone.parents('.infoWindow').html()
+		        });
+				prev_infowindow = infowindow;
+				infowindow.open(map, this);
+			});
+			if(i==0){
+				aroundMarker.setIcon('/resources/images/marker/point.png');
+				aroundMarker.setZIndex(5);
+				aroundMarkerList.push(aroundMarker);
+				continue;
+			}
+			switch ($dragList.eq(i).data('typeid')) {
+			case 12: // 관광
+				aroundMarker.setIcon('/resources/images/marker/camera.png');
+				break; 
+			case 14: // 문화
+				aroundMarker.setIcon('/resources/images/marker/camera.png');
+				break;
+			case 15: // 축제
+				aroundMarker.setIcon('/resources/images/marker/star.png');
+				break;
+			case 28: // 레포츠
+				aroundMarker.setIcon('/resources/images/marker/bicycle.png');
+				break;
+			case 32: // 숙박
+				aroundMarker.setIcon('/resources/images/marker/bed.png');
+				break;
+			case 38: // 쇼핑
+				aroundMarker.setIcon('/resources/images/marker/bag.png');
+				break;
+			case 39: // 음식
+				aroundMarker.setIcon('/resources/images/marker/cutlery.png');
+				break;
+			}
+
 			aroundMarkerList.push(aroundMarker); // 리스트로 저장 리스트 = 전역변수
-		})
-		$('.resultContent').off().hover(function(){ // 좌측 주변 검색 결과 리스트 이벤트 걸기
-			aroundMarkerList[$(this).index()].setVisible(false);
+		} // for
+		$('.resultContent').hover(function(){ // 좌측 주변 검색 결과 리스트 이벤트 걸기
+			var target = aroundMarkerList[$(this).index()];
+			beforeLabel = target.getLabel();
+			beforeIcon = target.getIcon();
+			target.setIcon('/resources/images/marker/highlight.png');
+			target.setLabel({
+					text:'♥',
+					color: '#ffffff',
+				    fontWeight: 'bold',
+					fontSize: '16px'
+			});
 		},function(){
+			var target = aroundMarkerList[$(this).index()];
+			target.setIcon(beforeIcon);
+			target.setLabel(beforeLabel);
 		})
-	}
-	for(var i=0; i<$list.length; i++){
+	} // if(maps)
+	for(var i=0; i<$list.length; i++){ // 좌측 리스트로부터 루트 구하기
 		var map1 = parseFloat($list.eq(i).data('mapy'));
 		var map2 = parseFloat($list.eq(i).data('mapx'));
 		spots[i]={
@@ -655,7 +758,7 @@ function pointMap(mapX, mapY,maps) { // 주변 검색
 				lng: map2
 		}
 	}
-	var spotPath = new google.maps.Polyline({
+	var spotPath = new google.maps.Polyline({ // 선그리기
 		path: spots,
 		geodesic: true,
 		strokeColor: '#FF0000',
@@ -665,12 +768,35 @@ function pointMap(mapX, mapY,maps) { // 주변 검색
 
 	var labels = '123456789';
 
-	for(var i=0; i<spots.length; i++){
+	for(var i=0; i<spots.length; i++){ // 루트 찍기
 		var marker=[];
 		marker[i] = new google.maps.Marker({
 			position: spots[i],
 			map: map,
-			label: labels[i]
+			icon: '/resources/images/marker/empty.png',
+			label:{
+				text: 	(i+1)+'',
+				color: '#ffffff',
+			    fontWeight: 'bold',
+				fontSize: '16px'
+			},
+			optimized: false,
+			zIndex:3
+		});
+		marker[i].addListener('mouseover',function(){ // 마커 오버
+			$dragList.eq(this.dataIndex).addClass('marker-hover');
+		});
+		marker[i].addListener('mouseout',function(){ // 마커 아웃
+			$dragList.eq(this.dataIndex).removeClass('marker-hover');
+		});
+		marker[i].addListener('click',function(){ // 마커 클릭
+			$('#draggable').animate({scrollTop:$('#draggable').scrollTop()+$dragList.eq(this.dataIndex).position().top-131},400);
+			$dragList.not(this).removeClass('marker-click');
+			$dragList.eq(this.dataIndex).addClass('marker-click');
+			var infowindow = new google.maps.InfoWindow({
+				    content: $dragList.eq(this.dataIndex).html()
+	        });
+			infowindow.open(map, this);
 		});
 	}
 
@@ -710,7 +836,17 @@ function baseMap(){
 		var marker = new google.maps.Marker({
 			position : myLatLng,
 			map : map,
-			label: '1'
+			icon: {	url: '/resources/images/marker/empty.png',
+				size: new google.maps.Size(100, 100),
+				scaledSize: new google.maps.Size(24, 40),
+				anchor: new google.maps.Point(14,40),
+				labelOrigin: new google.maps.Point(12,15)},
+			label:{
+				text:'1',
+				color: '#ffffff',
+			    fontWeight: 'bold',
+				fontSize: '16px'
+			}
 		});
 		return;
 	}
@@ -757,7 +893,17 @@ function baseMap(){
 		marker[i] = new google.maps.Marker({
 			position: spots[i],
 			map: map,
-			label: labels[i]
+			icon: {	url: '/resources/images/marker/empty.png',
+				size: new google.maps.Size(100, 100),
+				scaledSize: new google.maps.Size(24, 40),
+				anchor: new google.maps.Point(14,40),
+				labelOrigin: new google.maps.Point(12,15)},
+			label:{
+				text: 	(i+1)+'',
+				color: '#ffffff',
+			    fontWeight: 'bold',
+				fontSize: '16px'
+			}
 		});
 	}
 

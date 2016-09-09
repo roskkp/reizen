@@ -320,7 +320,7 @@ ul#draggable {
 	overflow-x: hidden;
 }
 
-ul#draggable>li.resultContent {
+.resultContent {
 	width: 100%;
 	height: 100px;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
@@ -329,10 +329,11 @@ ul#draggable>li.resultContent {
 	padding: 0px 10px;
 	color: #fff;
   line-height: 1.5em;
+  cursor: pointer;
 }
 
 ul#draggable>li:hover {
-	background-color: rgba(70, 130, 180, 0.4);
+	background-color: rgba(70, 130, 180, 0.5);
 }
 
 img.resultImg {
@@ -558,8 +559,8 @@ g {
 	width: 150px;
 }
 
-.marker-hover{
-	background-color: rgba(70, 130, 180, 0.4);
+.marker-hover, .marker-click{
+	background-color: rgba(70, 130, 180, 0.8);
 }
 nav.searchNav a.btn-click {
 	background-color: #666;
@@ -568,4 +569,31 @@ nav.searchNav a.btn-click {
 
 nav.searchNav a.btn-click:hover {
   background-color: gray;
+}
+
+.infoWindow{
+	background-color:#fff;
+	color: #444;
+	border-bottom: 1px solid #d6d6d6;
+	margin-bottom: 10px;
+}
+.infoBtn{
+	cursor:pointer;
+	width: 48%;
+	text-align: center;
+	color: #fff;
+	height: 35px;
+	padding: 5px;
+	line-height: 25px;
+}
+.infoDetail{
+	float: left;
+	background-color: #555;
+}
+.infoAdd{
+	float: right;
+	background-color: #ff9320;
+}
+.gm-style-iw{
+	left :25px !important;
 }

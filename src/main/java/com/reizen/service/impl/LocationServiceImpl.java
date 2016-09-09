@@ -188,5 +188,13 @@ public class LocationServiceImpl implements LocationService {
     params.put("tid", tid);
     return locationDao.countAroundList(params);
   }
+
+@Override
+public Location getLocationByMap(String mapY, String mapX) {
+	 Map<String, Object> params = new HashMap<>();
+	 params.put("mapX", mapX);
+	 params.put("mapY", mapY);
+	return locationDao.selectLocationByMap(params);
+}
 	
 }
