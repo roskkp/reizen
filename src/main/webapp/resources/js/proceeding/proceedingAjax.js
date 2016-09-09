@@ -1,5 +1,4 @@
 function listPage(result){
-	console.log(result);
 	var getMonth = currentDate.getMonth()+1;
 	var getDate = currentDate.getDate();
 	var getDay = currentDate.getDay();
@@ -109,7 +108,6 @@ function indexAjax(data){
 	$.ajax({
 		url: reizenUrl+'scheduler/arrayUpdate.do',
 		method:'post',
-		data: JSON.stringify(data),
 		contentType:"application/json; charset=utf-8",
 		data: JSON.stringify({data:data, currentDate:currentDate, scheduleNo:scheduleNo, day:currentDay}),
 		dataType:'json',
