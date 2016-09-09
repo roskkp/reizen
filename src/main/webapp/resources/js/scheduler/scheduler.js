@@ -958,7 +958,7 @@ function bestRouteMap(mapId){
 	});
 
 	var labels = '123456789';
-
+	marker = [];
 	for(var i=0; i<spots.length; i++){
 		marker[i] = new google.maps.Marker({
 			position: spots[i],
