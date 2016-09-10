@@ -163,11 +163,13 @@ function load() {
 						}
 						$('#updateHour').append('<option value='+i+'>'+i+'</option>');
 					}
+					$('#btnTimeSubmit').text('수정');
 					$('#timeModal').modal('show').on('hidden.bs.modal',function(e){
 						updateTime();
 					}); // 모달 비활성화시 발생하는 이벤트, 아래의 캔슬버튼 처리 이걸로 통일함 
 					$('#btnTimeSubmit').off('click').on('click', function(){
-						var contentId = $target.data('contentid');
+						var $target = ui.item;
+						var contentId = $target.find('div.panel-heading').data('contentid');
 						var time = $('#updateHour option:selected').val()+':'+$('#updateMin option:selected').val();
 						$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+currentDay+'&time='+time, function(result){
 							if(result.status=='exist'){
@@ -175,12 +177,14 @@ function load() {
 								$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
 								$('div.form-group').addClass('has-error');
 							} else {
-								addRouteAjax(contentId,time);
+								$target.find('span.time').text(time);
+								updateTime();
 								$('#timeModal, #insertRoute').modal('hide');
+								$('#btnTimeSubmit').text('추가');
 							} //else
 						});
 					});
-					$('#btnSubmit, #btnCancel').off('click').on('click', function(){
+					/*$('#btnSubmit, #btnCancel').off('click').on('click', function(){
 						var hour = $('#updateTime input:first').val();
 						if ( hour >= 1 && hour <= 24){
 
@@ -195,7 +199,7 @@ function load() {
 								return;
 							}
 						} swal("Time Error", "올바른 시간을 입력하세요", "warning");
-					});
+					});*/
 				}
 			});
 		})(jQuery);
