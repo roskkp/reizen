@@ -247,7 +247,7 @@ function load() {
 				} else {
 					currentDate.setDate(currentDate.getDate()+1);
 				}
-				moveDayAjax($(this));
+				listAjax($(this));
 			} else {
 				if($(this).attr('id')=='btn_next'){
 					swal("End of plan", "더 이상 계획된 일정이 없습니다. ", "warning");

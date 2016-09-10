@@ -1,94 +1,3 @@
-function listPage(result){
-	var getMonth = currentDate.getMonth()+1;
-	var getDate = currentDate.getDate();
-	var getDay = currentDate.getDay();
-	for (var i = 0; i < result.list.length; i++) {
-		routes.push(result.list[i].routeNo);
-	}
-	if(getMonth < 10){
-		getMonth = '0' + getMonth;
-	}
-	if(getDate < 10){
-		getDate = '0' + getDate;
-	}
-	switch (getDay) {
-	case 0:
-		getDay = '일';
-		break;
-	case 1:
-		getDay = '월';
-		break;
-	case 2:
-		getDay = '화';
-		break;
-	case 3:
-		getDay = '수';
-		break;
-	case 4:
-		getDay = '목';
-		break;
-	case 5:
-		getDay = '금';
-		break;
-	case 6:
-		getDay = '토';
-		break;
-	default:
-		break;
-	}
-	$('.date').html(currentDate.getFullYear()+'.'+getMonth+'.'+getDate);
-	$('.day').html(' '+getDay);
-	if (result.list[0].day > 1) {
-		$('#btn_prev').css('opacity','').attr('data-day',result.list[0].day-1);
-	} else {
-		$('#btn_prev').css('opacity','0.7').attr('data-day',-1);
-	}
-	if (result.list[0].day == totalPage) { 
-		$('#btn_next').css('opacity','0.7'); 
-		$('#btn_next').removeAttr('data-day');
-	} else {
-		$('#btn_next').attr('data-day',result.list[0].day+1).css('opacity','');
-	}
-	currentDay = result.list[0].day;
-	$('.location').html('DAY'+result.list[0].day).css('opacity','').attr('data-day',result.list[0].day);
-	$('.events > ol').children().remove();
-	$('.events > ol').append(timeTemplate(result));
-	$('.events > ol > li:first > a').addClass('selected');
-	$("#sortable").children().remove();
-	$("#sortable").append(cardTemplate(result));
-	
-	$('body').append('<script src="../resources/js/proceeding/timeline.js"></script>');
-	$i = $('i');
-	for (var i = 0; i < $i.size(); i++) {
-		if ($($i[i]).attr('data-type') != null) {
-			switch ($($i[i]).attr('data-type')) {
-			case '12': // 관광
-				$($i[i]).addClass('fa-camera');
-				break; 
-			case '14': // 문화
-				$($i[i]).addClass('fa-university');
-				break;
-			case '15': // 축제
-				$($i[i]).addClass('fa-star');
-				break;
-			case '28': // 레포츠
-				$($i[i]).addClass('fa-motorcycle');
-				break;
-			case '32': // 숙박
-				$($i[i]).addClass('fa-hotel');
-				break;
-			case '38': // 쇼핑
-				$($i[i]).addClass('fa-shopping-bag');
-				break;
-			case '39': // 음식
-				$($i[i]).addClass('fa-cutlery');
-				break;
-			}
-		}
-	};
-	makeList(result);
-}
-
 function makeList(result){
 	var mapList = new Array();
 	var lat = result.list[0].location.mapY-0;
@@ -120,7 +29,7 @@ function indexAjax(data){
 				console.log('일정 변경 에러');
 			}
 			console.log('일정 변경 성공');
-			moveDayAjax($('.location'));
+			listAjax($('.location'));
 		}
 	});
 }
@@ -163,7 +72,7 @@ function removeAjax($panel){
 				text: "일정이 변경 됩니다.",
 				confirmButtonText: "확인"
 			});
-			moveDayAjax($('.location'));
+			listAjax($('.location'));
 		}
 	})
 }
@@ -269,31 +178,113 @@ function addRouteAjax(contentId,time){
 				console.log('일정 추가 에러');
 			}
 			console.log('일정 추가 성공');
-			moveDayAjax($('.location'));
+			listAjax($('.location'));
 		}
 	})
 }
 
-function moveDayAjax($value){
+function listAjax($value){
+	var dayInfo = '';
+	if ($value != null) {
+		dayInfo = '&day='+$value.attr('data-day');
+	};
 	$.ajax({
-		url: reizenUrl+'scheduler/proceeding.do?scheduleNo='+scheduleNo+'&day='+$value.attr('data-day'),
+		url: reizenUrl+'scheduler/proceeding.do?scheduleNo='+scheduleNo+dayInfo,
 		dataType: 'json',
 		method: 'get',
 		success: function(result){
-			listPage(result);
-		}
-	})
-}
-
-function listAjax(){
-	$.ajax({
-		url: reizenUrl+'scheduler/proceeding.do?scheduleNo='+scheduleNo,
-		dataType: 'json',
-		method: 'get',
-		success: function(result){
-			totalPage = result.total;
-			currentDate = new Date();
-			listPage(result);
+			if (result.total != null) {
+				totalPage = result.total;
+				currentDate = new Date();
+			}
+			var getMonth = currentDate.getMonth()+1;
+			var getDate = currentDate.getDate();
+			var getDay = currentDate.getDay();
+			for (var i = 0; i < result.list.length; i++) {
+				routes.push(result.list[i].routeNo);
+			}
+			if(getMonth < 10){
+				getMonth = '0' + getMonth;
+			}
+			if(getDate < 10){
+				getDate = '0' + getDate;
+			}
+			switch (getDay) {
+			case 0:
+				getDay = '일';
+				break;
+			case 1:
+				getDay = '월';
+				break;
+			case 2:
+				getDay = '화';
+				break;
+			case 3:
+				getDay = '수';
+				break;
+			case 4:
+				getDay = '목';
+				break;
+			case 5:
+				getDay = '금';
+				break;
+			case 6:
+				getDay = '토';
+				break;
+			default:
+				break;
+			}
+			$('.date').html(currentDate.getFullYear()+'.'+getMonth+'.'+getDate);
+			$('.day').html(' '+getDay);
+			if (result.list[0].day > 1) {
+				$('#btn_prev').css('opacity','').attr('data-day',result.list[0].day-1);
+			} else {
+				$('#btn_prev').css('opacity','0.7').attr('data-day',-1);
+			}
+			if (result.list[0].day == totalPage) { 
+				$('#btn_next').css('opacity','0.7'); 
+				$('#btn_next').removeAttr('data-day');
+			} else {
+				$('#btn_next').attr('data-day',result.list[0].day+1).css('opacity','');
+			}
+			currentDay = result.list[0].day;
+			$('.location').html('DAY'+result.list[0].day).css('opacity','').attr('data-day',result.list[0].day);
+			$('.events > ol').children().remove();
+			$('.events > ol').append(timeTemplate(result));
+			$('.events > ol > li:first > a').addClass('selected');
+			$("#sortable").children().remove();
+			$("#sortable").append(cardTemplate(result));
+			
+			$('body').append('<script src="../resources/js/proceeding/timeline.js"></script>');
+			$i = $('i');
+			for (var i = 0; i < $i.size(); i++) {
+				if ($($i[i]).attr('data-type') != null) {
+					switch ($($i[i]).attr('data-type')) {
+					case '12': // 관광
+						$($i[i]).addClass('fa-camera');
+						break; 
+					case '14': // 문화
+						$($i[i]).addClass('fa-university');
+						break;
+					case '15': // 축제
+						$($i[i]).addClass('fa-star');
+						break;
+					case '28': // 레포츠
+						$($i[i]).addClass('fa-motorcycle');
+						break;
+					case '32': // 숙박
+						$($i[i]).addClass('fa-hotel');
+						break;
+					case '38': // 쇼핑
+						$($i[i]).addClass('fa-shopping-bag');
+						break;
+					case '39': // 음식
+						$($i[i]).addClass('fa-cutlery');
+						break;
+					}
+				}
+			};
+			makeList(result);
 		}
 	})
 }
