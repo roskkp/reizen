@@ -46,5 +46,7 @@ public interface LocationService {
 	public List<Location> selectSpotScraps(int userNo);
 
   public List<String> autoKeyword(String keyword, String areaCode, String localCode, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS);
+  
+  public Location getLocationByMap(String mapY,String mapX);
 
 }

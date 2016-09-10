@@ -57,7 +57,7 @@ function searchAjax(){
 					var resultset = template(result);
 
 					var draggable = $('#draggable'); 
-
+					infinityScroll = true;
 					draggable.append(resultset);
 					doDrag();
 
@@ -67,6 +67,7 @@ function searchAjax(){
 			}
 		}
 	});	// ajax
+	baseMap();
 }	// searchAjax
 
 function deleteDayAjax(scheduleNo, day){
@@ -371,6 +372,8 @@ function dataTheorem(){
 }
 
 function aroundSearch(mapX,mapY){
+	$('#draggable').empty();
+	console.log(mapX+'ddd'+mapY);
 	$.ajax({
 		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1',
 		method: 'GET',
@@ -380,8 +383,8 @@ function aroundSearch(mapX,mapY){
 				console.log('search error');
 				return;
 			}else{
+				$('#tip').remove();
 				var data = result.data;
-				alert(data.length);
 				var maps = []; 
 				if(data.length>0){
 					var source = $('#searchResult').text();
@@ -389,7 +392,6 @@ function aroundSearch(mapX,mapY){
 					var resultset = template(result);
 
 					var draggable = $('#draggable'); 
-					draggable.empty();
 					draggable.append(resultset);
 					doDrag();
 
@@ -399,8 +401,11 @@ function aroundSearch(mapX,mapY){
 						maps.push({lat:lat, lng:lng});
 					}
 					pointMap(mapX, mapY, maps);
-				}else {
-					return; 
+					infinityScroll = false;
+				}else{
+					
+					swal("데이터가 없어요 :(", "", "error"); 
+					return ;
 				}
 			}
 		}

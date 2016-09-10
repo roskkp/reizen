@@ -48,4 +48,6 @@ public interface LocationDao {
 	public List<Location> selectScrapList(int userNo);
 	
 	public List<String> autoKeyword(Map<String, Object> params);
+	
+	public Location selectLocationByMap(Map<String, Object> params);
 }
