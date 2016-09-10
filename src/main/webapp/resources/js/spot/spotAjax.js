@@ -275,12 +275,21 @@ function memoCheck(){
 				$('.comments').append(memoTemplate(result));
 				$('.comment-wrap').each(function(){ // 메모 수정 권한 체크
 					console.log($(this).find('.nick').text());
-					if($(this).find('.nick').text()  == sessionStorage.getItem('nick')){
+					if($(this).find('.nick').text()  == result.nick){
 						$(this).find('.comment-actions').css('visibility','visible');
 					}
 				});
 			}
-
+			if(result.nick!=null){ // 로그인 되어있다면 입력가능 
+				$('#writerThmb').css({
+					'background' : 'url(\''
+						+'/resources/images/thumbnail/' + sessionStorage.getItem('thumbnail')
+						+'\') no-repeat center center',
+						'background-size' : 'cover' });
+				$('#writerNick').text( sessionStorage.getItem('nick'));
+			}else{ // 비회원일 경우 입력 불가능 
+				$('.write-wrap').remove();
+			}
 		}
 	})
 }

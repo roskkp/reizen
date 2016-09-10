@@ -29,8 +29,17 @@ $(function(){
 						window.location.href='main.html';
 					},2000);
 				}
-			}, error  : function(){
-				alert('ajax error');
+			}, error  : function(request,status,error){
+				if(request.status == 800){ // 서버에 세션이 없다면
+					sessionStorage.clear();
+					sessionCheck();
+					swal("세션 만료", "세션이 만료되었습니다. 다시 로그인 해 주세요.", "warning"); 
+					setTimeout(function(){ // 2초뒤 자동 이동
+						window.location.href='main.html';
+					},2000);
+				}else{
+					swal("요청 오류", "잠시후 다시 시도 해 보세요", "warning"); 
+				}
 			}
 		});
 	}else {
@@ -585,7 +594,7 @@ function modalMap(lat, lng, maps){
 	    var marker = new google.maps.Marker({
 	      map: map,
 	      position: point,
-	      icon: '/resources/images/marker.png'
+	      icon: '/resources/images/marker/point.png'
 	    });
 	    
 	    var infowindow = new google.maps.InfoWindow({
@@ -611,9 +620,6 @@ function modalMap(lat, lng, maps){
 			var lat = mapses.lat;
 			var lng = mapses.lng;
 			var index = (i+1).toString();
-			if(i==maps.length-1){
-				index=' ';
-			}
 			var marker = new google.maps.Marker({
 				position: {lat: lat, lng: lng},
 				map: map,
@@ -625,6 +631,10 @@ function modalMap(lat, lng, maps){
 					fontSize: '16px'
 				}
 			});
+			if(i==maps.length-1){
+				marker.setLabel='';
+				marker.setIcon('/resources/images/marker/point.png');
+			}
 		}
 	    
 	    var radius = new google.maps.Circle({

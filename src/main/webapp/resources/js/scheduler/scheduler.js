@@ -23,6 +23,13 @@ var beforeLabel;
 var beforeIcon;
 var prev_infowindow;
 $(function() {
+	if(sessionStorage.length<=0){
+		swal("로그인이 필요한 페이지 입니다.", "로그인 해 주세요.", "info"); 
+		setTimeout(function(){ // 3초뒤 자동 이동
+			window.location.href='main.html';
+		},2000);
+		return;
+	}
 	$(window).unload(function () { // 윈도우 벗어날때 스케줄 넘버 삭제
 			if(emptySchedule){ // 스케줄이 없다면 
 				deleteScheduleAjax(scheduleNo);
@@ -47,7 +54,6 @@ $(function() {
 				}//if
 			}//else
 	});//unload
-	
 	for(var i=0; i<24; i++){ // 00시 ~ 23시30분 까지 지원 *db가 24시를 거부합니다.
 		if(i<10){
 			$('.updateHour').append('<option value='+'0'+i+'>'+'0'+i+'</option>');
@@ -107,8 +113,17 @@ $(function() {
 							window.location.href='main.html';
 						},3000);
 					}
-				}, error  : function(){
-					alert('ajax error');
+				}, error  : function(request,status,error){
+					if(request.status == 800){ // 서버에 세션이 없다면
+						sessionStorage.clear();
+						sessionCheck();
+						swal("세션 만료", "세션이 만료되었습니다. 다시 로그인 해 주세요.", "warning"); 
+						setTimeout(function(){ // 2초뒤 자동 이동
+							window.location.href='main.html';
+						},2000);
+					}else{
+						swal("요청 오류", "잠시후 다시 시도 해 보세요", "warning"); 
+					}
 				}
 			});
 		}else { // 비로그인 상태 
@@ -588,7 +603,6 @@ $(function() {
 			}
 		});
 	});
-
 });	 // document.ready
 
 

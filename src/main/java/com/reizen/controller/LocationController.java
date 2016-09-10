@@ -216,7 +216,7 @@ public class LocationController {
 	
 	@RequestMapping(path = "getMemo", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String getMemo(int cid) {
+	public String getMemo(int cid,HttpSession httpSession) {
     Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<Memo> list = memoService.getMemoList(cid);
@@ -225,6 +225,11 @@ public class LocationController {
 				memo.setDateAgo(CalculateTime.calc(memo.getRegDate()));
 				list.set(i, memo);
 				i++;
+			}
+			if(httpSession.getAttribute("user")!=null){
+				result.put("nick", ((User)(httpSession.getAttribute("user"))).getNickName());
+			}else{
+				result.put("nick",null);
 			}
 			result.put("data",list);
 			result.put("status", "success");

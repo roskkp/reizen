@@ -379,7 +379,7 @@ function aroundCountAjax(){
 	$.getJSON(reizenUrl+'location/countAround.do?mapX='+centerLng+'&mapY='+centerLat+'&tid='+typeId,
 			function(result){
 				if(result.status == 'success'){
-					aroundCount = result.count;
+					aroundCount = result.count+1;
 					$('span.resultCount').text(aroundCount);
 				}
 	});
