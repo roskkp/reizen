@@ -316,6 +316,15 @@ public class LocationController {
   public String aroundList(String mapX, String mapY, String tid, int size, int page) {
     Map<String, Object> result = new HashMap<String, Object>();
     List<Location> list = new ArrayList<>();
+    System.out.println(mapX.length());
+    System.out.println(mapY.length());
+    if(mapX.length()!=14){
+    	mapX=mapX.concat("0");
+    }
+    if(mapY.length() != 13){
+    	mapY=mapY.concat("0");
+    }
+    System.out.println(mapX+'t'+ mapY);
     try {
       list.add(locationService.getLocationByMap(mapY,mapX));
       list.addAll(locationService.selectAroundList(mapY, mapX, tid, size, page));

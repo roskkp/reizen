@@ -91,7 +91,7 @@ var typeId='';
 var aroundCount;
 
 var title=null;
-
+var beforeFilter;
 $(window).resize(function() {
 
 	var size = $('#carousel-example-generic').css('width').replace('px','');
@@ -306,10 +306,13 @@ function load() {
 			$('#insertRoute').modal('show');
 			$('#insertRoute').on('shown.bs.modal', function(){
 				$('.resultList').empty();
-				radius = false;
 				h = $('.leftWrap').height();
 				$('#modalMap').height(h);
-				modalMap(centerLat, centerLng);
+				radius = true;
+				category='';
+				aroundSearch();
+				aroundCountAjax();
+				$('ul.resultList').addClass('resultListUp');
 			});
 		});
 
@@ -382,9 +385,22 @@ function load() {
 	});
 
 	$('.searchIcon').not('#btnLocation').off('click').on('click', function(){
+		var $this = $(this);
+		var id = $this.attr('id');
 		$('.resultList').empty();
 		page = 1;
-		var id = $(this).attr('id');
+		$('.searchIcon').not($this).removeClass('clicked');
+		if(beforeFilter == id){
+			$this.removeClass('clicked');
+			typeId = '';
+			beforFilter='';
+			aroundCountAjax();
+			aroundSearch();
+			return ;
+		}
+		$this.addClass('clicked');
+		beforeFilter = id;
+
 		if(radius){
 			switch(id){
 			case 'btnHotel' :	typeId = 32;
@@ -404,7 +420,7 @@ function load() {
 			aroundCountAjax();
 			aroundSearch();
 		}else{
-			category=$(this).attr('data-cate');
+			category=$this.attr('data-cate');
 			$('.resultList').empty();
 			searchAjax();
 		}
@@ -453,10 +469,19 @@ function load() {
 		});
 	}).on('click', 'a.mapBtn', function(){                // map버튼
 		var $li = $(this).parent().parent('li');
-		lat = parseFloat($li.data('mapy'));
-		lng = parseFloat($li.data('mapx'));
+		centerLat = parseFloat($li.data('mapy'));
+		centerLng = parseFloat($li.data('mapx'));
+		routeNo = $li.data('routeno');
 		title = $(this).parent().prev('.resultTextBox').children('h3').text();
-		modalMap(lat, lng);
+		page = 1;
+		$('.resultList').empty();
+		h = $('.leftWrap').height();
+		$('#modalMap').height(h);
+		radius = true;
+		category='';
+		aroundSearch();
+		aroundCountAjax();
+		$('ul.resultList').addClass('resultListUp');
 	});
 	
 	// 메모 알람!
@@ -582,7 +607,6 @@ function initMapTransit(mapX1, mapY1, mapX2, mapY2){
 
 function modalMap(lat, lng, maps){
 	if(arguments.length==2){
-		console.log('2');
 		var point = {lat:lat, lng:lng};
 		
 		map = new google.maps.Map(document.getElementById('modalMap'), {
@@ -606,20 +630,17 @@ function modalMap(lat, lng, maps){
 	} else if(arguments.length==3){
 		
 		var point = {lat:lat, lng:lng};
-		
 		map = new google.maps.Map(document.getElementById('modalMap'), {
 			zoom: 12,
 			center: point,
 		    disableDefaultUI: true
 		});
-
-		maps.push(point);
 		
 		for (var i = 0; i < maps.length; i++) {
 			var mapses = maps[i];
 			var lat = mapses.lat;
 			var lng = mapses.lng;
-			var index = (i+1).toString();
+			var index = (i).toString();
 			var marker = new google.maps.Marker({
 				position: {lat: lat, lng: lng},
 				map: map,
@@ -628,12 +649,18 @@ function modalMap(lat, lng, maps){
 					text: 	index,
 					color: '#ffffff',
 			        fontWeight: 'bold',
-					fontSize: '16px'
+					fontSize: '16px',
+					zIndex:1
 				}
 			});
-			if(i==maps.length-1){
-				marker.setLabel='';
+			if(i==0){
+				marker.setLabel('');
 				marker.setIcon('/resources/images/marker/point.png');
+				marker.setZIndex(1000);
+			    var infowindow = new google.maps.InfoWindow({
+			    	  content:title
+			    });
+			    infowindow.open(map,marker);
 			}
 		}
 	    
@@ -649,15 +676,7 @@ function modalMap(lat, lng, maps){
 	    
 	    radius.setMap(map);
 	    
-	    var infowindow = new google.maps.InfoWindow({
-	    	  content:title
-	    });
 
-	    infowindow.open(map,marker);
 	}
-}
-
-function markers(map, maps){
-	
 }
 
