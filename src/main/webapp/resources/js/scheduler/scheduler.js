@@ -73,12 +73,6 @@ $(function() {
 	/* 스케줄  추가했을 때 */
 	else if(location.href.indexOf('scheduleNo')!=-1){
 		scheduleNo=(location.href.substr(location.href.lastIndexOf('=') + 1)).replace("#","");
-		$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
-			console.log(result);
-			$('#daysInfo').attr('data-date', result[0].time);
-		});
-
-		listAjax(scheduleNo, 1);
 		var user = sessionStorage.getItem('userNo');
 		if( user ){ // 로그인 체크
 			$.ajax({
@@ -103,6 +97,7 @@ $(function() {
 								$day.attr('data-date', result[0].time);
 								date=result[0].time;
 								title=result[0].title;
+								total = result.length;
 								console.log(date,title);
 							});
 							listAjax(scheduleNo, 1);

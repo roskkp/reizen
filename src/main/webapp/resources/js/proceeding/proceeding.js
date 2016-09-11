@@ -116,6 +116,13 @@ function init(){ // 변수 초기화
 	infoSource = $('#infoBox').text();
 	infoTemplate = Handlebars.compile(infoSource);
 	scheduleNo = (location.href.substr(location.href.lastIndexOf('=') + 1)).replace("#","");
+	var activeList = JSON.parse(sessionStorage.getItem("activeScheduleNo"));
+	for(var i =0;i<activeList.length;i++){
+		if(activeList[i].scheduleNo == scheduleNo){
+			$('title').text(activeList[i].title);
+			break;
+		}
+	}
 }
 
 //시간 업데이터 function 
