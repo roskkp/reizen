@@ -313,7 +313,7 @@ public class SchedulerController {
         double lat2 = Double.parseDouble(((JSONObject)data.get(j)).getString("mapY"));
         double lon2 = Double.parseDouble(((JSONObject)data.get(j)).getString("mapX"));
         if (i == 0) {
-          start.put("t"+(i+1), DistanceCalc.distance(lat1,lon1,lat2,lon2)); 
+          start.put("t"+j, DistanceCalc.distance(lat1,lon1,lat2,lon2)); 
         } else {
           if (i != j) {
             root.put("t"+j, DistanceCalc.distance(lat1,lon1,lat2,lon2));
@@ -323,19 +323,11 @@ public class SchedulerController {
       if( i != 0) list.add(root);
     }
     
-    System.out.println("start : "+start);
-    int i = 0;
-    for (Map<String, Double> map : list) {
-      System.out.println(dataSet.get(i));
-      System.out.println(map);
-      i++;
-    }
-    
     String targets = "";
     for (String tn : dataSet) {
       targets += tn;
     }
-    
+
     String path = BestRoute.routeOptimum(list, start, targets).get("path").toString();
     String[] paths = path.split("t");
     
@@ -346,6 +338,8 @@ public class SchedulerController {
         resultList.add(((JSONObject)data.get(Integer.parseInt(string))));
       }
     }
+    System.out.println("path : "+path);
+    System.out.println("result : "+resultList);
     try {
       result.put("data", resultList);
       result.put("seq",path);

@@ -341,7 +341,7 @@ function dataTheorem(){
 			routeInfo.cid = routeData[i].cid;
 			routeInfo.mapX = routeData[i].mapX;
 			routeInfo.mapY = routeData[i].mapY;
-			routeInfo.index = 1;
+			routeInfo.index = i+1;
 			routeInfo.sdno = scheduleNo;
 			routeInfo.day = day;
 			if (routeData[i].name > 10) {
@@ -357,7 +357,7 @@ function dataTheorem(){
 	routeInfo.cid = routeData[$('.btnEnd').attr('data-end')].cid;
 	routeInfo.mapX = routeData[$('.btnEnd').attr('data-end')].mapX;
 	routeInfo.mapY = routeData[$('.btnEnd').attr('data-end')].mapY;
-	routeInfo.index = 1;
+	routeInfo.index = routeData2.length+1;
 	routeInfo.sdno = scheduleNo;
 	routeInfo.day = day;
 	if (routeData[$('.btnEnd').attr('data-end')].name > 10) {
