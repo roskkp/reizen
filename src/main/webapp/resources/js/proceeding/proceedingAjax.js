@@ -341,6 +341,7 @@ function getWeather(lat, lon){
 }
 	
 function aroundSearch(){
+	console.log(centerLng,centerLat,typeId,size,page);
 	$.ajax({
 		url : reizenUrl+'location/aroundList.do?mapX='+centerLng+'&mapY='+centerLat+'&tid='+typeId+'&size='+size+'&page='+page,
 		method: 'GET',
@@ -352,13 +353,15 @@ function aroundSearch(){
 			}else{
 				var data = result.data;
 				var maps = []; 
-				if( data[0] != null && data.length<=size ){
+				if( data[0] != null){
 					var source = $('#resultList').text();
 					var template = Handlebars.compile(source);
 					var resultset = template(result);
 					$('ul.resultList').append(resultset);
 					$('li.resultContent').each(function(index){
-						$(this).append('<span class="index">'+(index+1)+'</span>');
+						if(index!=0){
+							$(this).append('<span class="index">'+(index)+'</span>');
+						}
 					});
 					for(var i=0; i<result.data.length; i++){
 						var lat = parseFloat(result.data[i].mapY);

@@ -61,7 +61,7 @@ $(function(){
 		}
 	});
 
-	$(document).on('change', 'select.scheduleSelectList', function(){ // 일정이 변경되면 발생하는 이벤트 
+	$(document).on('change', 'select.scheduleSelectList', function(event){ // 일정이 변경되면 발생하는 이벤트 
 		$('select.dayList option').not('option.default').remove(); // day select 지움
 		if($(this).data('no')==null){ // 일정을 선택해주세요 선택시
 			$('.dayList').fadeOut();
@@ -74,12 +74,14 @@ $(function(){
 				var daySource = $('#dayList').html();
 				var dayTemplate = Handlebars.compile(daySource);
 				$('select.dayList').append(dayTemplate(result));
+				event.stopPropagation();
 			}else { //day가 없다면 .... 인데 ... day가 없는 일정이 있을 수 없으니까 .. 에러...
 				swal("Failed!", "일정 조회 실패. 관리자에게 문의하세요. ", "error"); 
+				event.stopPropagation();
 			}
 		});
 	});
-	$(document).on('change','.adm-formMargin', function(){ // day가 변경되면 발생하는 이벤트
+	$(document).on('change','.dayList', function(){ // day가 변경되면 발생하는 이벤트
 		if($(this).data('day')==null){ // 날짜를 선택해주세요 선택시  
 			$('.adm-form-group').fadeOut();
 		}
