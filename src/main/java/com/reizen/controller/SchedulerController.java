@@ -323,6 +323,14 @@ public class SchedulerController {
       if( i != 0) list.add(root);
     }
     
+    System.out.println("start : "+start);
+    int i = 0;
+    for (Map<String, Double> map : list) {
+      System.out.println(dataSet.get(i));
+      System.out.println(map);
+      i++;
+    }
+    
     String targets = "";
     for (String tn : dataSet) {
       targets += tn;
