@@ -18,7 +18,6 @@ public class BestRoute {
     int size = list.size();
     List<Map<String, Double>> data = new ArrayList<>();
     String end = "t"+(list.size()+1);
-
     // 시작 데이터를 기본으로 data에 기본 방향 설정 n! 에서 n 부분 수행
     for (String key : start.keySet()) {
       Map<String, Double> value = new HashMap<>();
@@ -27,7 +26,7 @@ public class BestRoute {
     }
 
     if (size != 0) {
-      toFor(data,list, size,end,targets);
+      data = toFor(data,list, size,end,targets);
     } else {
       data.get(0).put("t1t2", list.get(0).get("t2")+data.get(0).get("t1"));
       data.get(0).remove("t1");
@@ -36,27 +35,24 @@ public class BestRoute {
     // 계산된 데이터 중 최소거리 찾기
     for (int i = 0; i < data.size(); i++) {
       for (String key : data.get(i).keySet()) {
-        if (key.length() == (size+1)*2 && resultDistance > data.get(i).get(key)) {
+        if (resultDistance > data.get(i).get(key)) {
           resultDistance = data.get(i).get(key);
           resultPath = key;
         }
       }
     }
-
     // 결과 값 셋팅 후 반환
     result.put("path", resultPath);
     result.put("distance", resultDistance);
     return result;
   }
 
-  public static void toFor(List<Map<String, Double>> data , List<Map<String, Double>> list, int size,String end,String targets){
+  public static List<Map<String, Double>> toFor(List<Map<String, Double>> data , List<Map<String, Double>> list, int size,String end,String targets){
 
     // 현재 키의 길이를 판단 data에 기존 데이터 제거를 하지 않아, 최신의 데이터를 찾으려는 용도로 사용
-    int keyLength = 0;
-    for (String key : data.get(data.size()-1).keySet()) {
-      keyLength = key.length();
-    }
-
+    List<Map<String, Double>> result = new ArrayList<>();
+    String resultPath = null;
+    double resultDistance = 999999999; 
     // 작업 수행
     // data를 기본으로 n * (n-1) 수행
     // 밖의 for문 2개는 현재 경로 / 그 다음 for문 2개는 추가될 경로
@@ -68,30 +64,40 @@ public class BestRoute {
     int depth = size-1;
     for (int i = 0; i < data.size(); i++) {
       for (String key : data.get(i).keySet()) {
-        if (keyLength == key.length()) {
-          for (int j = 0; j < list.size(); j++) {
-            for (String key2 : list.get(j).keySet()) {
-              if (!key.contains(key2)) {
-                String target = targets;
-                for (String ks : list.get(j).keySet()){
-                  target = target.replace(ks, "");
-                }
-                if (checkIf(depth,key,target,key2)) {
+        for (int j = 0; j < list.size(); j++) {
+          for (String key2 : list.get(j).keySet()) {
+            if (!key.contains(key2)) {
+              String target = targets;
+              for (String ks : list.get(j).keySet()){
+                target = target.replace(ks, "");
+              }
+              if (checkIf(depth,key,target,key2)) {
+                if (depth != 0) {
                   Map<String, Double> value = new HashMap<>();
                   value.put(key+key2, data.get(i).get(key)+list.get(j).get(key2));
-                  data.add(value);
+                  result.add(value); 
+                } else {
+                  if (resultDistance > data.get(i).get(key)+list.get(j).get(key2)) {
+                    resultDistance = data.get(i).get(key)+list.get(j).get(key2);
+                    resultPath = key+key2;
+                  }
                 }
               }
-            } 
-          }
+            }
+          } 
         }
       }
     }
 
     // 경로가 끝이 아니므로, 재귀
     if (depth != 0) {
-      toFor(data,list, depth,end,targets);  
+     result = toFor(result,list, depth,end,targets);  
+    } else {
+      Map<String, Double> value = new HashMap<>();
+      value.put(resultPath,resultDistance);
+      result.add(value);
     }
+    return result;
   }
 
   // 중복된 for 문을 줄이려고 동적으로 if 문 변경
