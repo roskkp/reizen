@@ -9,7 +9,7 @@ function getDashAjax(dashNo) {
 		}
 	})
 }
-function listAjax(path,$target, $tab, template) {
+function listAjax(path, $target, $tab, template) {
 	$.ajax({
 		dataType : 'json',
 		url : reizenUrl+'dashboard/' + path,

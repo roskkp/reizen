@@ -216,5 +216,21 @@ public class UserController {
     }
     return new Gson().toJson(result);
   }
+  
+  @RequestMapping(path="checkUser") // mobile 로그인 확인 interceptor 적용
+  @ResponseBody
+  public String checkUser(HttpSession session){
+    Map<String, Object> result = new HashMap<String, Object>();
+    try{
+      User user = (User)session.getAttribute("user");
+      result.put("nickName",  user.getNickName());
+      result.put("dashNo", user.getDashNo());
+      result.put("status", "success");
+    }catch (Exception e) {
+      e.printStackTrace();
+      result.put("status", "failure");
+    }
+    return new Gson().toJson(result);
+  }
 
 }
