@@ -1,56 +1,45 @@
 package com.reizen.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BestRoute {
 
-  public static Map<String, Object> routeOptimum(List<Map<String, Double>> list, Map<String, Double> start,String targets){
+  public static Map<String, Object> routeOptimum(Map<String,Map<String, Double>> list, Map<String, Double> start,String targets){
 
     // return 해줄 데이터 선언 및 초기화;
     Map<String, Object> result = new HashMap<String, Object>();
-    String resultPath = null;
-    double resultDistance = 999999999;
 
     // 들어온 경로의 수 파악 및 데이터 준비
     int size = list.size();
-    List<Map<String, Double>> data = new ArrayList<>();
+    Map<String,Map<String, Double>> data = new HashMap<>();
     String end = "t"+(list.size()+1);
     // 시작 데이터를 기본으로 data에 기본 방향 설정 n! 에서 n 부분 수행
+    int index = 0;
     for (String key : start.keySet()) {
       Map<String, Double> value = new HashMap<>();
       value.put(key, start.get(key));
-      data.add(value);
+      data.put(""+index,value);
+      index++;
     }
-
+    System.out.println(data);
+    System.out.println(list);
     if (size != 0) {
       data = toFor(data,list, size,end,targets);
     } else {
-      data.get(0).put("t1t2", list.get(0).get("t2")+data.get(0).get("t1"));
-      data.get(0).remove("t1");
+      result.put("path", "t1t2");
+      result.put("distance",list.get("0").get("t2")+data.get("0").get("t1"));
     }
 
     // 계산된 데이터 중 최소거리 찾기
-    for (int i = 0; i < data.size(); i++) {
-      for (String key : data.get(i).keySet()) {
-        if (resultDistance > data.get(i).get(key)) {
-          resultDistance = data.get(i).get(key);
-          resultPath = key;
-        }
-      }
-    }
     // 결과 값 셋팅 후 반환
-    result.put("path", resultPath);
-    result.put("distance", resultDistance);
+    result.put("path", data.get("end").keySet().toString().replace("[", "").replace("]", ""));
     return result;
   }
 
-  public static List<Map<String, Double>> toFor(List<Map<String, Double>> data , List<Map<String, Double>> list, int size,String end,String targets){
-
-    // 현재 키의 길이를 판단 data에 기존 데이터 제거를 하지 않아, 최신의 데이터를 찾으려는 용도로 사용
-    List<Map<String, Double>> result = new ArrayList<>();
+  public static Map<String,Map<String, Double>> toFor(Map<String,Map<String, Double>> data , Map<String,Map<String, Double>> list, int size,String end,String targets){
+    System.out.println("dataSize : "+data.size());
+    Map<String,Map<String, Double>> result = new HashMap<>();
     String resultPath = null;
     double resultDistance = 999999999; 
     // 작업 수행
@@ -62,23 +51,25 @@ public class BestRoute {
     // key.endswith(target) 은 현재 위치를 찾는 것으로 수행된 key의 마지막이 일치하는지 비교하여 일치하면 수행시킨다.
     // !key.contains(key2) 는 한번 지나간 곳으로 돌아가지 못하게 걸어주는 조건이다.
     int depth = size-1;
+    int index = 0;
     for (int i = 0; i < data.size(); i++) {
-      for (String key : data.get(i).keySet()) {
-        for (int j = 0; j < list.size(); j++) {
-          for (String key2 : list.get(j).keySet()) {
+      for (String key : data.get(""+i).keySet()) {
+        for (int j = 1; j < list.size()+1; j++) {
+          for (String key2 : list.get("t"+j).keySet()) {
             if (!key.contains(key2)) {
               String target = targets;
-              for (String ks : list.get(j).keySet()){
+              for (String ks : list.get("t"+j).keySet()){
                 target = target.replace(ks, "");
               }
               if (checkIf(depth,key,target,key2)) {
                 if (depth != 0) {
                   Map<String, Double> value = new HashMap<>();
-                  value.put(key+key2, data.get(i).get(key)+list.get(j).get(key2));
-                  result.add(value); 
+                  value.put(key+key2, data.get(""+i).get(key)+list.get("t"+j).get(key2));
+                  result.put(""+index,value); 
+                  index++;
                 } else {
-                  if (resultDistance > data.get(i).get(key)+list.get(j).get(key2)) {
-                    resultDistance = data.get(i).get(key)+list.get(j).get(key2);
+                  if (resultDistance > data.get(""+i).get(key)+list.get("t"+j).get(key2)) {
+                    resultDistance = data.get(""+i).get(key)+list.get("t"+j).get(key2);
                     resultPath = key+key2;
                   }
                 }
@@ -89,13 +80,15 @@ public class BestRoute {
       }
     }
 
+
     // 경로가 끝이 아니므로, 재귀
     if (depth != 0) {
-     result = toFor(result,list, depth,end,targets);  
+      result = toFor(result,list, depth,end,targets);  
     } else {
       Map<String, Double> value = new HashMap<>();
       value.put(resultPath,resultDistance);
-      result.add(value);
+      System.out.println(value);
+      result.put("end",value);
     }
     return result;
   }

@@ -15,6 +15,7 @@ public class SessionCheckInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+	  System.out.println("user : "+request.getSession().getAttribute("user"));
 		if(request.getSession().getAttribute("user")==null){
 			response.sendError(800);
 			return false;
