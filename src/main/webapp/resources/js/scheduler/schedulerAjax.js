@@ -403,7 +403,6 @@ function aroundSearch(mapX,mapY){
 					pointMap(mapX, mapY, maps);
 					infinityScroll = false;
 				}else{
-					
 					swal("데이터가 없어요 :(", "", "error"); 
 					return ;
 				}
