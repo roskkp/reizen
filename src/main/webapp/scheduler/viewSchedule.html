@@ -15,37 +15,42 @@
 </head>
 <body>
   <header> </header>
-  <div class="viewContainer dashboard-cont">
-    <!-- 탑바 아래 대시보드 썸네일 포함 이미지 -->
-    <div class="dashboard-main">
-      <div class="user-wrapper">
-        <div class="user-profile">
-          <img class="avatar" alt="Ash" />
-          <div class="username"></div>
-          <div class="bio"></div>
-          <div class="description"></div>
-        </div>
-        <div class="info">
-          <ul class="data">
-            <li><span class="fa fa-heart heart"></span></li>
-            <li><span class="fa fa-calendar-minus-o"></span></li>
-          </ul>
-          <div class="dule">
-            <button class="scheduleButton">스크랩</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
   
     <!-- progress bar  -->
     <div id="container">
       <div class="scroll">
-        <ol class="timeline">
+      
+			<ol class="timeline">
+			
         </ol>
+      </div>
+      <div class="bar">
+          <div class="viewContainer dashboard-cont">
+        <!-- 탑바 아래 대시보드 썸네일 포함 이미지 -->
+        <div class="dashboard-main">
+          <div class="user-wrapper">
+            <div class="user-profile">
+              <img class="avatar" alt="Ash" />
+              <div class="username"></div>
+              <div class="bio"></div>
+              <div class="description"></div>
+            </div>
+            <div class="info">
+              <ul class="data">
+                <li><span class="fa fa-heart heart"></span></li>
+                <li><span class="fa fa-calendar-minus-o"></span></li>
+              </ul>
+              <div class="dule">
+                <button class="scheduleButton">스크랩</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <article id="map"></article>
       <div class="map-sub">
+      </div>
       </div>
     </div>
     
@@ -128,34 +133,54 @@
   
   
   <script id="schedule" type="text/x-handlebars-template">
-    {{#each list}}
+  {{#each list}}
     {{#day route.day}}
       <li class="Days"><button class="fill">Day {{route.day}}</button></li>
     {{/day}}
 
-    <li class="fa fa-camera-retro" data-no="{{@key}}" >
+    <li class="front" data-no="{{@key}}" data-locate="{{route.location.category01}}" >
       <time class="times"><strong>{{splitTime route.time}}</strong> <small>{{stime route.time}}</small></time>
-      <article>
-<a class="locate" href="spot.html?cid={{route.location.contentId}}&tid={{route.location.typeId}}">
-        <h3 class="locate">{{route.location.locateName}}</h3>
+      
+<article>
+    <div class="imagePo">
         <img class="poImage" src="{{route.location.firstImage}}">
-        <p class="tel">tel: {{route.location.tel}}</p>
-</a>
-   </li>
-  <div class="accordion" data-routeNo="{{route.routeNo}}">
-    <h3 class="po">후기보기</h3>
-    <div class="postBox">
-    <ul class="posts">
-      <input type="hidden" class="pictsNo" data-pictsNo="{{pictureNo}}">
-      <li><img class="scriptImage" src="/resources/images/viewSchedule/{{picturePath}}"></li>
- 
-      <p id="memo">{{content}}  {{post.regDate}}<br/> </p>
-      <a class='price-btn'>가격 : {{price}}원</a>
-      <p class="port"><a class='tran' data-trans="{{transportation}}"></a></p>
-    </ul>
-   </div>
+    </div>
+      <div class="scrap">
+        <h3 class="locate">{{route.location.locateName}}</h3>
+        <a class="locate" href="spot.html?cid={{route.location.contentId}}&tid={{route.location.typeId}}">
+          <div class="lcate">more</div>
+        </a>
+      </div>
+      
+      <div class="adress">
+        <p class="tel">address: {{route.location.address1}}</p>
+        <p class="tel">tel:{{route.location.tel}}</p>
+  <div class="showcenter">
+    <p class="sho">
+      <a class='showBtn' data-no="{{@key}}">review</a>
+    </p>
   </div>
-{{/each}}
+  </div>
+  </article>
+  <div class="accordion" data-routeNo="{{route.routeNo}}">
+
+    <div class="postLength">
+      <p class="reg">{{post.regDate}}</p>
+       <div class="priceTrans">
+          <a class='price-btn'>가격 : {{price}}원</a>
+          <a class='tran' data-trans="{{transportation}}"></a>
+        </div>
+      <div class="posts">
+        <img class="scriptImage"
+          src="/resources/images/viewSchedule/{{picturePath}}">
+      </div>
+      <div class="conPosts"> <p class="con">{{content}}</p></div>  
+    </div>
+  </div>
+  
+   </li>
+
+  {{/each}}
   </script>
   
   
@@ -167,42 +192,67 @@
       <li class="Days"><button class="fill">Day {{route.day}}</button></li>
     {{/day}}
 
-    <li class="fa fa-camera-retro" data-no="{{@key}}" >
+    <li class="front" data-no="{{@key}}" data-locate="{{route.location.category01}}" >
       <time class="times"><strong>{{splitTime route.time}}</strong> <small>{{stime route.time}}</small></time>
-      <article>
-<a class="locate" href="spot.html?cid={{route.location.contentId}}&tid={{route.location.typeId}}">
-        <h3 class="locate">{{route.location.locateName}}</h3>
+      
+<article>
+    <div class="imagePo">
         <img class="poImage" src="{{route.location.firstImage}}">
-        <p class="tel">tel: {{route.location.tel}}</p>
-</a>
-   </li>
-  <div class="accordion" data-routeNo="{{route.routeNo}}">
+    </div>
+      <div class="scrap">
+        <h3 class="locate">{{route.location.locateName}}</h3>
+        <a class="locate" href="spot.html?cid={{route.location.contentId}}&tid={{route.location.typeId}}">
+          <div class="lcate">more</div>
+        </a>
+      </div>
+      
+      <div class="adress">
+        <p class="tel">address: {{route.location.address1}}</p>
+        <p class="tel">tel:{{route.location.tel}}</p>
 {{#if check}}
-    <h3 class="po">후기수정</h3>
-    <div class="postBox">
-    <a class='deletePicts' >×</a>
-    <ul class="posts">
-      <input type="hidden" class="pictsNo" value="{{pictureNo}}">
-      <li><img class="scriptImage" src="/resources/images/viewSchedule/{{picturePath}}"></li>
-      <p class ="con"> <h3>{{content}}</h3>    {{post.regDate}} </p>  
-      <a class='price-btn'>가격 : {{price}}원</a>
-      <p class="port"><a class='tran' data-trans="{{transportation}}"></a></p>
-    </ul>
-<button class="btn btn-default update" data-toggle="modal" data-target="#updatePost">후기수정</button>
+  <div class="showcenter">
+    <p class="sho">
+      <a class='showBtn' data-no="{{@key}}">review</a>
+    </p>
   </div>
+  </div>
+  </article>
+  <div class="accordion" data-routeNo="{{route.routeNo}}">
+
+    <div class="postLength">
+      <p class="reg">{{post.regDate}}</p>
+       <div class="priceTrans">
+          <a class='price-btn'>가격 : {{price}}원</a>
+          <a class='tran' data-trans="{{transportation}}"></a>
+        </div>
+      <div class="posts">
+        <img class="scriptImage"
+          src="/resources/images/viewSchedule/{{picturePath}}">
+      </div>
+      <div class="conPosts"> <p class="con">{{content}}</p></div>  
+        <button class="btn btn-default update" data-toggle="modal"
+          data-target="#updatePost">후기수정</button>
+    </div>
+  </div>
+  
+   </li>
+
+
+ 
 {{else}}
-  
-  
- <button class="btn btn-default addPost" data-toggle="modal" data-target="#addPost">후기작성</button>
 
+ <button class="btn btn-default addPost" data-routeNo="{{route.routeNo}}"  data-toggle="modal" data-target="#addPost">write</button>
+  </div>
+ </article>
+ </li>
 
+ 
 {{/if}}
-</div>
   {{/each}}
   </script>
   
 <script id="mapData" type="text/x-handlebars-template">
-  <span class="mapName" data-no="{{index}}"><a  class='mapnum'>{{index}}</a><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></span>
+  <span class="mapName" data-no="{{index}}"><a  class='mapnum'>{{index}}</a><i class="fa fa-arrow-circle-o-right right" aria-hidden="true"></i></span>
 </script>
 <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
 <script src="../resources/js/viewSchedule/viewScheduleAjax.js"></script>

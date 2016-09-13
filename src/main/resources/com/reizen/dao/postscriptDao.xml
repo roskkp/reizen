@@ -20,8 +20,10 @@
 			<result column="time" property="time" />
 			<association property="location" javaType="location">
 				<result column="cid" property="contentId" jdbcType="INTEGER" />
+				<result column="cate01" property="category01" jdbcType="VARCHAR"/>
 				<result column="tid" property="typeId" jdbcType="INTEGER" />
 				<result column="ltel" property="tel" jdbcType="VARCHAR" />
+				<result column="addr1" property="address1" jdbcType="VARCHAR" />
 				<result column="map_x" property="mapX" jdbcType="VARCHAR" />
 				<result column="map_y" property="mapY" jdbcType="VARCHAR" />
 				<result column="lname" property="locateName" jdbcType="VARCHAR" />
@@ -68,12 +70,15 @@
     <result column="sdno" property="scheduleNo" />
     <result column="regd" property="regDate"/>
   </resultMap>
-  
+  <resultMap type="scheduleScrap" id="scrapMap">
+  <id column="uno" property="userNo" jdbcType="INTEGER"/>
+    <result column="sdno" property="scheduleNo" jdbcType="INTEGER"/>
+  </resultMap>
 	
 	
 	<select id="postscript" resultMap="pictureMap" parameterType="int">
   SELECT
-    r.day,r.rno,r.tseq,r.time,ps.trans,ps.pino,ps.price,ps.po_pic,ps.po_cont,p.regd,l.map_x,l.map_y,l.ltel, l.cid, l.lname,l.tid, l.cate03, cs.c03name, cm.c02name, l.img1, u.nick
+    r.day,r.rno,r.tseq,r.time,ps.trans,ps.pino,ps.price,ps.po_pic,ps.po_cont,p.regd,l.map_x,l.map_y,l.ltel,l.addr1, l.cid, l.lname,l.tid, l.cate03,cl.cate01 cate01,cl.C01NAME cateName, l.img1, u.nick
   from scdls s
   left join routes r on s.sdno=r.sdno
   left join picts ps on ps.rno=r.rno
@@ -81,25 +86,72 @@
   left join lcts l on l.cid=r.cid
   left join cate_s cs on cs.cate03=l.cate03
   left join cate_m cm on cs.cate02=cm.cate02
+  left join cate_l cl on cm.CATE01=cl.CATE01
   left join users u on u.uno = s.uno
   where s.sdno=#{scheduleNo}
-  order by r.day
+  order by r.day,r.time
+
 
 	</select>
 	
-	<insert id="sscrs" parameterType="int">
-	INSERT INTO s_scrs (UNO, SDNO)
-	 VALUES (#{userNo}, #{scheduleNo});
 
+	
+	 <update id="updateCount" parameterType="map">
+   update scdls
+   set 
+   <if test="type == 'addRecm' ">
+    S_RECM  = S_RECM + 1
+   </if>
+   <if test="type == 'delRecm' ">
+     S_RECM = S_RECM - 1
+   </if>
+   <if test="type == 'addScrap' ">
+     S_SRC = S_SRC + 1
+   </if>
+   <if test="type == 'delScrap' ">
+     S_SRC = S_SRC - 1
+   </if>
+   where SDNO = #{scheduleNo}
+  </update>
+  
+	 <delete id="deleteRecm" parameterType="map">
+  DELETE FROM  s_recm
+   WHERE  sdno=#{scheduleNo}
+  </delete>
+     <delete id="deleteScrap" parameterType="map">
+  DELETE FROM  s_scrs
+   WHERE  sdno=#{scheduleNo}
+  </delete>
+  
+  <select id="checkRecm" parameterType="map" resultType="int">
+    select count(*)
+    from s_recm sr, users u
+    where u.uno = sr.uno 
+    and sr.sdno = #{scheduleNo}
+    and u.uno = #{userNo} 
+  </select>
+  <select id="checkScrap" parameterType="map" resultType="int">
+    select count(*)
+    from s_scrs sr, users u
+    where u.uno = sr.uno 
+    and sr.sdno = #{scheduleNo}
+    and u.uno = #{userNo} 
+  </select>
+  
+	<insert id="srecm" parameterType="map">
+INSERT INTO s_recm (SDNO, UNO) 
+VALUES (#{scheduleNo}, #{userNo});
 	</insert>
-	
-	
-	
+	 <insert id="sscrs" parameterType="map">
+  INSERT INTO s_scrs (UNO, SDNO)
+   VALUES (#{userNo}, #{scheduleNo});
+
+  </insert>
 	<select id="postSelect" resultMap="postMap" parameterType="int">
 	 Select
 	 pono
 	 from posts
-	 where sdno=#{scheduleNo}
+	 where sdno=#{scheduleNo} 
 	
 	</select>
 	<update id="updatePicture"  parameterType="map">
@@ -150,8 +202,8 @@ values(#{postNo},#{scheduleNo},#{picturePath},#{content},#{routeNo},#{transporta
 	
 	
 	<delete id="deletePicts" parameterType="int">
-	DELETE FROM picts 
-	 WHERE  PINO=#{pictureNo} 
+  DELETE FROM picts 
+   WHERE  PINO=#{pictureNo}
 	
 	
 	</delete>
