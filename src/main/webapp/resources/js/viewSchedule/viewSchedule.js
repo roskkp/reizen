@@ -46,17 +46,21 @@ $(function() {
 		userScheduleAjax();
 	}
 	
-
-	$('#photoFile').fileupload({
-		autoUpload : false
-	}).on('fileuploadadd', function(e, data) {
+	$('#photoFile').on('change',function(){
+		
+	})
+	$('#photoFile')
+	.fileupload({
+	    replaceFileInput:false,autoUpload : false})
+	.on('fileuploadadd', function(e, data) {
 		filesList.pop(); 
 		console.log('여기들어왓나');
 		console.log(data.files[0]);
 		filesList.push(data.files[0]);
 		console.log(filesList);
 		
-	}).on('fileuploaddone', function (e, data) {
+	})
+	.on('fileuploaddone', function (e, data) {
 		  swal({
 			    title: "후기",
 			    text: "작성되었습니다.",
@@ -94,7 +98,7 @@ $(function() {
 
 	/******updatePost*********/
 	$('#updatefile').fileupload({
-		autoUpload : false
+		 replaceFileInput:false,autoUpload : false
 	}).on('fileuploadadd', function(e, data) {
 		filesList.pop(); 
 		console.log('여기들어왓나');
@@ -314,6 +318,9 @@ Handlebars.registerHelper('stime', function(time){
 	var times = time.split(' ');
 	var out = times[1].substring(0,5);
 	return out;
+});
+Handlebars.registerHelper("inc", function(value, options){
+		    return parseInt(value) + 1;
 });
 
 /**************	맵	**************/

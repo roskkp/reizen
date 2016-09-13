@@ -58,6 +58,7 @@
     <div class="modal modal-center fade" id="updatePost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-center" role="document">
       <div class="modal-content">
+      <div>
         <div class="modal-header">
           <button type='button' class='close' data-dismiss='modal'
             aria-hidden='true'>×</button>
@@ -83,6 +84,7 @@
           </form>
         </div>
       </div>
+      </div>
     </div>
   </div>
     
@@ -97,6 +99,7 @@
 		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-center" role="document">
 			<div class="modal-content">
+			<div>
 				<div class="modal-header">
 					<button type='button' class='close' data-dismiss='modal'
 						aria-hidden='true'>×</button>
@@ -106,8 +109,8 @@
 					<form id='ajaxform' enctype='multipart/form-data' action='/postscript/addPost.do'>
 						<input type="hidden" name="routeNo" id='routeNo'/>
 						<input type="hidden" name="scheduleNo " id='scheduleNo'/>
-						<input id='photoFile' type='file' class='file' name='files' /> <input
-							type='text' class='price' placeholder='가격' name='price'>
+						<input id='photoFile' type='file' class='file' name='files' />
+						<input type='text' class='price' placeholder='가격' name='price'>
 						<select class='select' name='transportation'>
 							<option value='5'>-- 이동수단 --</option>
 							<option value='1' rel='icon-temperature'>자동차</option>
@@ -122,6 +125,7 @@
 					 <a href='' data-dismiss='modal' class='btn'>Close</a>
 					</form>
 				</div>
+			</div>
 			</div>
 		</div>
 	</div>
@@ -207,8 +211,8 @@
       </div>
       
       <div class="adress">
-        <p class="tel">address: {{route.location.address1}}</p>
-        <p class="tel">tel:{{route.location.tel}}</p>
+        <p class="tel">address<br/> {{route.location.address1}}</p>
+        <p class="tel">tel<br/>{{route.location.tel}}</p>
 {{#if check}}
   <div class="showcenter">
     <p class="sho">
@@ -231,7 +235,7 @@
       </div>
       <div class="conPosts"> <p class="con">{{content}}</p></div>  
 <div class="updated">
-       <a href='#' class='del'  data-pictsNo="{{pictureNo}}">삭제</a>
+       <a class='del'  data-pictsNo="{{pictureNo}}">삭제</a>
         <button class="btn btn-default update" data-toggle="modal"
           data-target="#updatePost">후기수정</button>
 </div>
@@ -255,7 +259,7 @@
   </script>
   
 <script id="mapData" type="text/x-handlebars-template">
-  <span class="mapName" data-no="{{index}}"><a  class='mapnum'>{{index}}</a><i class="fa fa-arrow-circle-o-right right" aria-hidden="true"></i></span>
+  <span class="mapName" data-no="{{index}}"><a  class='mapnum'>{{inc index}}</a><i class="fa fa-arrow-circle-o-right right" aria-hidden="true"></i></span>
 </script>
 <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
 <script src="../resources/js/viewSchedule/viewScheduleAjax.js"></script>

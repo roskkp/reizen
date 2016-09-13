@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reizen.dao.RouteDao">
+
+	<resultMap type="route" id="routeMap">
+		<id column="rno" property="routeNo" jdbcType="INTEGER"/>
+		<result column="sdno" property="scheduleNo" jdbcType="INTEGER"/>
+		<result column="day" property="day" jdbcType="INTEGER"/>
+		<result column="tseq" property="travelSequence" jdbcType="INTEGER"/>
+		<result column="time" property="time"/>
+		<result column="flag" property="flag" jdbcType="VARCHAR"/>
+		<association property="location" javaType="location">
+			<result column="cid" property="contentId" jdbcType="INTEGER"/>
+			<result column="lname" property="locateName" jdbcType="VARCHAR"/>
+			 <result column="img1" property="firstImage"/>
+			<result column="addr1" property="address1" jdbcType="VARCHAR"/>
+			<result column="ltel" property="tel" jdbcType="VARCHAR"/>
+			<result column="map_x" property="mapX" jdbcType="VARCHAR"/>
+			<result column="map_y" property="mapY" jdbcType="VARCHAR"/>
+			<result column="tid" property="typeId" jdbcType="INTEGER"/>
+		</association>
+		<collection property="memo" javaType="memo">
+		  <result column="cont" property="content" jdbcType="VARCHAR"/>
+		  <result column="regd" property="regDate" jdbcType="DATE"/>
+		  <association property="user" javaType="user">
+		    <id column="uno" property="userNo" jdbcType="INTEGER"/>
+		    <result column="nick" property="nickName" jdbcType="VARCHAR"/>
+		  </association>
+		</collection>
+	</resultMap>
+	
+	<insert id="insertRoute" parameterType="route">
+  insert 
+  into routes(sdno,day,tseq,time,cid) 
+  values(#{scheduleNo}, #{day}, #{travelSequence}, #{time}, #{location.contentId});	
+	</insert>
+
+  <update id="updateRoute" parameterType="route">
+    update routes
+    set day=#{day},time=#{time}
+    where rno=#{routeNo}
+  </update>
+
+	<select id="selectCurrentList" resultMap="routeMap" parameterType="int">
+		select m.rno flag, ltel, r.rno rno, sdno , day , tseq , date_format(r.time, '%H:%i') as time , r.cid , lname, addr1, map_x, map_y, tid
+    from routes r left outer join malm m on r.RNO = m.rno  , lcts l
+    where r.cid=l.cid
+    and
+    r.sdno=#{value}
+    and date_format(r.time, '%M-%D')=date_format(now(), '%M-%D')
+    order by r.tseq
+	</select>
+
+	<select id="selectList" resultMap="routeMap" parameterType="map">
+		select m.rno flag, ltel, r.rno rno, sdno , day , tseq , date_format(r.time, '%H:%i') as time , r.cid , lname, addr1, map_x, map_y, tid
+    from routes r left outer join malm m on r.RNO = m.rno  , lcts l
+		where r.cid=l.cid
+		and r.sdno=#{scheduleNo}
+		and r.day=#{day}
+		order by r.tseq
+	</select>
+
+	<select id="totalCount" parameterType="int" resultType="int">
+		select count(distinct day) from routes
+    where sdno=#{scheduleNo}
+	</select>
+
+  <delete id="deleteRoute" parameterType="int">
+    delete from routes where rno=#{value}
+  </delete>
+  
+  <update id="updateIndex" parameterType="route">
+    update routes
+    set tseq=#{travelSequence}, time=#{time}
+    where rno=#{routeNo}
+  </update>
+  
+  <delete id="deleteDay" parameterType="route">
+    delete from routes
+    where sdno=#{scheduleNo} and day=#{day}
+  </delete>
+
+  
+  <update id="updateDay" parameterType="map">
+   update routes
+   <if test="condition.equals('add')">
+    set time=date_add(time, interval +1 day), day = day+1
+   </if>
+   <if test="condition.equals('min')">
+    set time=date_add(time, interval -1 day), day = day-1
+   </if>
+   where sdno=#{route.scheduleNo} and day>=#{route.day}
+  </update>
+  
+  <insert id="copySchedule" parameterType="map">
+    insert into routes (sdno, day, tseq, time, cid) 
+    select #{scheduleNo} as sdno, day, tseq, time, cid 
+    from scdls s, routes r where s.sdno=r.sdno and s.sdno=#{copyScheduleNo}
+  </insert>
+  
+  <update id="bestRoute" parameterType="map">
+   update routes
+    set cid = #{cid}
+   where sdno=#{sdno} and day = #{day} and tseq = (${index}+1)
+  </update>
+  
+</mapper>

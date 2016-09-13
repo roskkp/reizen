@@ -322,7 +322,7 @@ function scheduleAjax() {
 						confirmButtonText: "Yes, delete it!",   
 						closeOnConfirm: false }, 
 						function(){
-							
+							alert('dsad');
 							$.ajax({
 								url : reizenUrl + 'postscript/deletePicts.do',
 								dataType : 'json',

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reizen.dao.LocationDao">
+
+	<resultMap type="location" id="locationMap">
+		<id column="cid" property="contentId" jdbcType="INTEGER" />
+		<result column="tid" property="typeId" jdbcType="INTEGER" />
+		<result column="lname" property="locateName" jdbcType="VARCHAR" />
+		<result column="addr1" property="address1" jdbcType="VARCHAR" />
+		<result column="addr2" property="address2" jdbcType="VARCHAR" />
+		<result column="map_x" property="mapX" jdbcType="VARCHAR" />
+		<result column="map_y" property="mapY" jdbcType="VARCHAR" />
+		<result column="arcd" property="areaCode" jdbcType="INTEGER" />
+		<result column="lccd" property="localCode" jdbcType="INTEGER" />
+		<result column="cate01" property="category01" jdbcType="VARCHAR" />
+		<result column="C02NAME" property="category02" jdbcType="VARCHAR" />
+		<result column="C03NAME" property="category03" jdbcType="VARCHAR" />
+		<result column="ltel" property="tel" jdbcType="VARCHAR" />
+		<result column="img1" property="firstImage" jdbcType="VARCHAR" />
+		<result column="img2" property="firstImage2" jdbcType="VARCHAR" />
+		<result column="estart" property="eventStartDate" jdbcType="VARCHAR" />
+		<result column="eend" property="eventEndDate" jdbcType="VARCHAR" />
+		<result column="l_recm" property="recommandCount" jdbcType="INTEGER" />
+		<result column="l_src" property="scrapCount" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap type="map" id="areaMap">
+		<result column="areas" property="areas" />
+		<result column="arcd" property="arcd" />
+		<result column="lccd" property="lccd" />
+	</resultMap>
+	
+
+	<insert id="insertLocation" parameterType="location">
+		insert
+		into lcts ( cid,
+		tid, lname, addr1, addr2, map_x, map_y, arcd, lccd,
+		cate03, ltel, img1,
+		img2, estart, eend, l_recm, l_src )
+		values(#{contentId}, #{typeId},
+		#{locateName}, #{address1},
+		#{address2}, #{mapX}, #{mapY}, #{areaCode},
+		#{localCode},
+		#{category03}, #{tel}, #{firstImage}, #{firstImage2},
+		#{eventStartDate}, #{eventEndDate}, #{recommandCount}, #{scrapCount})
+	</insert>
+
+	<select id="selectLocations" parameterType="map" resultMap="locationMap">
+		select
+		l.*, s.C03NAME, m.C02NAME, c.C01NAME
+		from
+		(select * from (select * from lcts where not ( tid = 15 and not now() between estart and eend)) a) l left outer join
+		cate_s s on l.CATE03 = s.CATE03 left outer join
+		cate_m m on s.CATE02 =
+		m.CATE02 left outer join cate_l c 
+		on  m.CATE01 = c.CATE01
+		<where>
+			<if test="keyword != null and keyword != ''">
+				lname like '%${keyword}%'
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				and arcd = #{areaCode}
+			</if>
+			<if test="localCode != null and localCode != ''">
+				and lccd = #{localCode}
+			</if>
+      <if test="!cateLSize eq 0">
+        <if test="cateSSize eq 0">
+          and c.cate01 in 
+          <foreach collection="cateL" item="cateLarge" open="(" close=")" separator=",">${cateLarge}</foreach>
+        </if>
+      </if>
+			<if test="!cateSSize eq 0">
+			and s.cate03 in 
+      <foreach collection="cateS" item="cateSmall" open="(" close=")" separator=",">${cateSmall}</foreach>
+			</if>
+			<if test="category != null and category != ''">
+				<choose>
+					<when test="category.equals('A0207')">
+						and m.cate02 in ('A0207', 'A0208')
+						and date_format(l.estart, '%y-%m-%d') &lt;= date(#{date})
+            and date_format(l.eend, '%y-%m-%d') &gt;= date(#{date})
+					</when>
+					<when test="category.equals('A01')">
+						and c.cate01 in ('A01', 'A02') and m.cate02 not in ('A0207', 'A0208')
+					</when>
+					<otherwise>
+						and c.cate01 = #{category}
+					</otherwise>
+				</choose>
+			</if>
+			and lccd != 0
+		</where>
+		order by l_recm desc, lname
+		limit #{startNo}, #{size}
+	</select>
+
+	<select id="detailSelect" parameterType="location" resultMap="locationMap">
+		select * from lcts where cid = #{contentId} and lccd != 0
+	</select>
+
+	<update id="updateLocation" parameterType="location">
+		update lcts
+		set estart
+		= #{eventStartDate}, eend = #{eventEndDate}
+		where cid =#{contentId}
+	</update>
+	
+	<update id="updateCount" parameterType="map">
+	 update lcts
+	 set 
+	 <if test="type == 'addRecm' ">
+	   l_recm = l_recm + 1
+	 </if>
+	 <if test="type == 'delRecm' ">
+     l_recm = l_recm - 1
+   </if>
+   <if test="type == 'addScrap' ">
+     l_src = l_src + 1
+   </if>
+   <if test="type == 'delScrap' ">
+     l_src = l_src - 1
+   </if>
+	 where cid = #{cid}
+	</update>
+
+	<insert id="insertCateL" parameterType="map">
+		insert
+		into cate_s (
+		cate03, c03name,cate02 )
+		values(#{code}, #{name}, #{c02})
+	</insert>
+
+	<!-- <update id="insertCateL" parameterType="map"> update cate_s set c03name 
+		= #{name} where cate03 = #{code} </update> -->
+
+	<select id="selectCateL" resultType="String">
+		select distinct cate03 from
+		lcts
+	</select>
+
+	<select id="selectArea" parameterType="map" resultType="string">
+		select
+		concat(ardn,'/',lcdn,'/',arcd,'/',lccd) areas
+		from (select l.arcd arcd,
+		ardn, lccd, lcdn from lccds l, arcds a where
+		l.ARCD = a.ARCD and ( lcdn
+		like '%${value}%' or ardn like
+		'%${value}%')) ac
+		order by arcd, lccd,
+		areas;
+	</select>
+	
+	<select id="autoKeyword" parameterType="map" resultType="string">
+    select
+    l.lname
+    from
+    (select * from (select * from lcts where not ( tid = 15 and not now() between estart and eend)) a) l left outer join
+    cate_s s on l.CATE03 = s.CATE03 left outer join
+    cate_m m on s.CATE02 =
+    m.CATE02 left outer join cate_l c 
+    on  m.CATE01 = c.CATE01
+    <where>
+      <if test="keyword != null and keyword != ''">
+        lname like '%${keyword}%'
+      </if>
+      <if test="areaCode != null and areaCode != ''">
+        and arcd = #{areaCode}
+      </if>
+      <if test="localCode != null and localCode != ''">
+        and lccd = #{localCode}
+      </if>
+      <if test="!cateSSize eq 0">
+      and s.cate03 in 
+      <foreach collection="cateS" item="cateSmall" open="(" close=")" separator=",">${cateSmall}</foreach>
+      </if>
+      and lccd != 0
+    </where>
+    order by l_recm desc, lname
+    limit 0, 10
+  </select>
+
+	<select id="selectAround" parameterType="map" resultMap="locationMap">
+		SELECT *
+		FROM (select * from (select * from lcts where not ( tid = 15 and not now() between estart and eend)) a) l
+		WHERE SQRT(POW(l.MAP_x - #{lon}, 2) + POW(l.MAP_y - #{lat}, 2)) &lt; (5 /
+		111.2 ) and l.map_x != #{lon} and l.MAP_Y != #{lat} and lccd != 0 and tid = #{tid}
+	</select>
+
+	<select id="selectCity" parameterType="map" resultType="string">
+		select
+		concat(ardn,'/',arcd) areas
+		from arcds
+		where ardn like '%${value}%'
+		order by arcd, areas;
+	</select>
+
+	<insert id="insertLcdd" parameterType="map">
+		insert
+		into lccds
+		values(#{lccd}, #{arcd}, #{lcdn})
+	</insert>
+
+  <select id="scrapCheck" parameterType="map" resultType="int">
+    select count(*)
+    from l_scrs ls, users u
+    where ls.cid = #{cid}
+    and u.uno = ls.uno
+    and u.nick = #{nick}
+  </select>
+  
+  <select id="recmCheck" parameterType="map" resultType="int">
+    select count(*)
+    from l_recm lr, users u
+    where lr.cid = #{cid}
+    and u.uno = lr.uno
+    and u.nick = #{nick}
+  </select>
+  
+  <insert id="insertRecm" parameterType="map">
+    insert 
+    into l_recm
+    values(#{cid},(select uno from users where nick = #{nick}))
+  </insert>
+  
+  <insert id="insertScrap" parameterType="map">
+    insert 
+    into l_scrs
+    values((select uno from users where nick = #{nick}),#{cid})
+  </insert>
+  
+  <delete id="deleteRecm" parameterType="map">
+    delete
+    from l_recm
+    where cid = #{cid} 
+  </delete>
+  
+  <delete id="deleteScrap" parameterType="map">
+    delete
+    from l_scrs
+    where cid = #{cid} 
+  </delete>
+  
+  <select id="selectScrapList" parameterType="int" resultMap="locationMap">
+    select s.c03name, m.c02name, l.*
+    from l_scrs lsrc, lcts l left outer join
+    cate_s s on l.CATE03 = s.CATE03 left outer join
+    cate_m m on s.CATE02 =
+    m.CATE02 left outer join cate_l c 
+    on  m.CATE01 = c.CATE01
+    where l.cid = lsrc.cid
+    and lsrc.uno=#{userNo}
+  </select>
+
+  <select id="selectAroundList" parameterType="map" resultMap="locationMap">
+    SELECT *
+    FROM (select * from (select * from lcts where not ( tid = 15 and not now() between estart and eend)) a) l
+    WHERE SQRT(POW(l.MAP_x - #{mapX}, 2) + POW(l.MAP_y - #{mapY}, 2)) &lt; (5 /
+    111.2 ) and l.map_x != #{mapX} and l.MAP_Y != #{mapY} and lccd != 0 
+    <if test="tid!=null and tid!=''">
+      and tid = #{tid} 
+    </if>
+    limit #{page}, #{size}
+  </select>
+
+  <select id="countAroundList" parameterType="map" resultType="int">
+    SELECT COUNT(*)
+    FROM (select * from (select * from lcts where not ( tid = 15 and not now() between estart and eend)) a) l
+    WHERE SQRT(POW(l.MAP_x - #{mapX}, 2) + POW(l.MAP_y - #{mapY}, 2)) &lt; (5 /
+    111.2 ) and l.map_x != #{mapX} and l.MAP_Y != #{mapY} and lccd != 0
+    <if test="tid!=null and tid!=''">
+      and tid = #{tid} 
+    </if>
+  </select>
+  
+
+</mapper>

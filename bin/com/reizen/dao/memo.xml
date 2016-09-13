@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reizen.dao.MemoDao">
+
+  <resultMap type="memo" id="memoMap">
+    <id column="mno" property="memoNo" jdbcType="INTEGER" />
+    <result column="cid" property="contentId" />
+    <result column="regd" property="regDate" />
+    <result column="cont" property="content" />
+    <association property="user" javaType="user">
+      <id column="uno" property="userNo" jdbcType="INTEGER" />
+      <result column="nick" property="nickName" jdbcType="VARCHAR" />
+      <result column="thumb" property="thumbNail" jdbcType="VARCHAR" />
+      <result column="dsno" property="dashNo" jdbcType="INTEGER"/>
+    </association>
+  </resultMap>
+  
+  <select id="selectListFour" resultMap="memoMap" parameterType="int">
+    select m.cont, m.regd, u.nick
+    from memos m , users u
+    where m.uno = u.uno
+    and m.cid=#{value}
+    order by m.regd
+    limit 0,4;
+  </select>
+  
+    <select id="selectMemo" resultMap="memoMap" parameterType="int">
+     select m.*, u.nick, u.thumb, d.dsno
+     from memos m, users u, lcts l, dsbd d
+     where m.uno = u.uno
+     and l.cid = m.cid
+     and d.uno = u.uno
+     and l.cid = #{value}
+  </select>
+  
+  <insert id="insertMemo" parameterType="map">
+    insert 
+    into memos (uno,cid,cont,regd)
+    values((select uno from dsbd where dsno = #{dsno}),#{cid},#{content},now())
+  </insert>
+  
+  <delete id="deleteMemo" parameterType="int">
+    delete
+    from memos
+    where mno = #{value}
+  </delete>
+  
+  <update id="updateMemo" parameterType="map">
+    update memos
+    set cont = #{content}, regd = now()
+    where mno = #{mno}
+  </update>
+  
+  <select id="memoUserCheck" parameterType="int" resultType="map">
+    select distinct s.uno, r.rno 
+    from routes r , scdls s, memos m where r.cid = #{cid} and r.SDNO = s.SDNO and m.UNO != s.UNO and m.CID and r.CID and
+    date_format(regd, '%Y-%M-%D') between date_format(now() - interval 1 day, '%Y-%M-%D') and date_format(now(), '%Y-%M-%D') and m.UNO != s.UNO
+  </select>
+  
+  <select id="checkAlarm" parameterType="string" resultType="map">
+    select * from malm where rno in (${value})
+  </select>
+  
+  <insert id="insertMemoAlarm" parameterType="map">
+    insert
+    into malm 
+    values (#{uno}, #{rno})
+  </insert>
+  
+  <delete id="deleteMemoAlarm" parameterType="map">
+    delete
+    from malm
+    where uno = #{uno} and rno = #{rno}
+  </delete>
+  
+</mapper>

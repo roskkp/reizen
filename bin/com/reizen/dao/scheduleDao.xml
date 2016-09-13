@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.reizen.dao.ScheduleDao">
+
+	<resultMap type="schedule" id="scheduleMap">
+		<id column="sdno" property="scheduleNo" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="act" property="active" jdbcType="BOOLEAN" />
+		<result column="s_recm" property="recommandCount" jdbcType="INTEGER" />
+		<result column="s_src" property="scrapCount" jdbcType="INTEGER" />
+		<result column="nop" property="peopleCount" jdbcType="INTEGER" />
+		<result column="month" property="month" jdbcType="INTEGER" />
+		<result column="days" property="totalDays" jdbcType="INTEGER" />
+		<association property="user" javaType="user">
+			<id column="uno" property="userNo" jdbcType="INTEGER" />
+			<result column="nick" property="nickName" jdbcType="VARCHAR" />
+			<result column="thumb" property="thumbNail" jdbcType="VARCHAR" />
+			<result column="dsno" property="dashNo" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+
+	<insert id="insertSchedule" parameterType="schedule"
+		useGeneratedKeys="true" keyProperty="scheduleNo">
+		insert into scdls ( title, uno )
+		values( #{title}, #{user.userNo} )
+	</insert>
+
+	<select id="listSchedule" parameterType="map" resultMap="scheduleMap">
+		select distinct s.* ,u.nick, d.dsno,
+		(select max(day) days from routes r where r.sdno=s.sdno) days
+		from routes r, scdls s, lcts l , users u, dsbd d
+    where r.sdno = s.sdno and l.cid = r.cid
+			<if test="contentId != null">
+				and r.cid = #{contentId}
+			</if>
+				and d.uno = u.uno 
+        and u.uno = s.uno
+			<if test="keyword">
+				and l.lname like '%${keyword}%'
+			</if>
+			<if test="nop != null">
+			<choose>
+			 <when test="nop eq 3">and s.nop in (3,4)</when>
+			 <when test="nop eq 5">and s.nop in (5,6)</when>
+			 <when test="nop eq 7">and s.nop &gt;= 7</when>
+       <otherwise>and s.nop in (${nop})</otherwise>
+			</choose>
+			</if>
+			<if test="month != null">
+        <choose>
+          <when test="month eq 3">and s.month between 3 and 5</when>
+          <when test="month eq 6">and s.month between 6 and 8</when>
+          <when test="month eq 9">and s.month between 9 and 11</when>
+          <when test="month eq 12">and s.month in (12,1,2)</when>
+        </choose>
+      </if>
+			<if test="term != null">
+			<choose>
+       <when test="term eq 1">and (select max(day) days from routes r where r.sdno=s.sdno) between 1 and 3</when>
+       <when test="term eq 4">and (select max(day) days from routes r where r.sdno=s.sdno) between 4 and 6</when>
+       <when test="term eq 7">and (select max(day) days from routes r where r.sdno=s.sdno) between 7 and 10</when>
+       <when test="term eq 11">and (select max(day) days from routes r where r.sdno=s.sdno) between 11 and 15</when>
+       <when test="term eq 15">and (select max(day) days from routes r where r.sdno=s.sdno) &gt;= ${term}</when>
+      </choose>
+      </if>
+		order by s.s_recm desc
+		<if test="startNo != null">
+			limit #{startNo}, #{size}
+		</if>
+	</select>
+
+	<select id="getLocationNames" parameterType="map" resultType="java.util.HashMap">
+		select distinct
+		(select distinct img1 from routes r, lcts l where sdno = #{sdno1} and r.CID =
+		l.CID and img1 is not null order by rand() limit 1) img1
+		<if test="sdno2 != null">
+			, (select distinct img1 from routes r, lcts l where sdno = #{sdno2}
+			and r.CID = l.CID and img1 is not null order by rand() limit 1) img2
+		</if>
+		<if test="sdno3 != null">
+			, (select distinct img1 from routes r, lcts l where sdno = #{sdno3}
+			and r.CID = l.CID and img1 is not null order by rand() limit 1) img3
+		</if>
+		<if test="sdno4 != null">
+			, (select distinct img1 from routes r, lcts l where sdno = #{sdno4}
+			and r.CID = l.CID and img1 is not null order by rand() limit 1) img4
+		</if>
+		<if test="sdno5 != null">
+			, (select distinct img1 from routes r, lcts l where sdno = #{sdno5}
+			and r.CID = l.CID and img1 is not null order by rand() limit 1) img5
+		</if>
+		<if test="sdno6 != null">
+			, (select distinct img1 from routes r, lcts l where sdno = #{sdno6}
+			and r.CID = l.CID and img1 is not null order by rand() limit 1) img6
+		</if>
+		from dual;
+	</select>
+
+	<select id="activeSelect" parameterType="int" resultMap="scheduleMap">
+		select s.sdno, s.title
+		from scdls s, routes r
+		where s.sdno=r.sdno
+		and date_format(r.time, '%M-%D')=date_format(now(), '%M-%D')
+		and
+		s.uno=#{userNo}
+		group by s.sdno
+	</select>
+
+	<select id="totalCount" resultMap="scheduleMap" parameterType="int">
+		select s_recm, s_src
+		from scdls
+		where uno=#{value}
+	</select>
+
+	<select id="checkProceeding" resultType="int" parameterType="int">
+		select ifnull(
+		(select uno
+		from scdls
+		where sdno=#{value}), 0)
+	</select>
+
+</mapper>
