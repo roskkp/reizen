@@ -98,6 +98,7 @@ public class UserController {
         totalRecommand += sd.getRecommandCount();
         totalScrap += sd.getScrapCount();
       }
+      result.put("jsid", httpSession.getId());
       result.put("totalRecommand", totalRecommand);
       result.put("totalScrap", totalScrap);
       result.put("status", "success");
@@ -222,17 +223,29 @@ public class UserController {
   public String checkUser(HttpSession session){
     Map<String, Object> result = new HashMap<String, Object>();
     try{
+<<<<<<< HEAD
       User user = (User)session.getAttribute("user");
       if(user!=null){
         result.put("nickName",  user.getNickName());
         result.put("dashNo", user.getDashNo());
       }
       result.put("status", "success");
+=======
+      if (session.getAttribute("user") != null) {
+        User user = (User)session.getAttribute("user");
+        result.put("nickName",  user.getNickName());
+        result.put("dashNo", user.getDashNo());
+        result.put("status", "success");
+      } else {
+        result.put("staus", "no session");
+      }
+>>>>>>> ab790f4c9b1ed45fd179485582ae2edb5603ef9e
     }catch (Exception e) {
       e.printStackTrace();
       result.put("status", "failure");
     }
     return new Gson().toJson(result);
+<<<<<<< HEAD
   }*/
 
 }
