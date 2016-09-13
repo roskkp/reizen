@@ -53,7 +53,6 @@ $(function() {
 		console.log(data.files[0]);
 		filesList.push(data.files[0]);
 		console.log(filesList);
-		
 	}).on('fileuploaddone', function (e, data) {
 		alert('성공');
 		location.reload();
@@ -62,7 +61,6 @@ $(function() {
 	$(document).on('click','.addPost',function() {
 		$('#routeNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());
 	});
-	
 	
 	$('#ajaxform').submit(function(event){
 		alert(filesList.length);
@@ -74,9 +72,8 @@ $(function() {
 		}else{
 			event.preventDefault();
 			$('#photoFile').fileupload('send', {
-				files :""
+				files : ""
 			});
-				
 		}
 	});
 
@@ -96,7 +93,6 @@ $(function() {
 	$(document).on('click','.update',function() {
 		$('#updateRouteNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());
 		getPictures();
-		
 	});
 	
 	/****************updatePost*********************/
@@ -107,35 +103,24 @@ $(function() {
 		if(filesList.length>0){
 			event.preventDefault();
 			$('#updatefile').fileupload('send', {
-				
 				files : filesList
-				
 			});
 			
 		}else{
 	     	event.preventDefault();
 			$('#updatefile').fileupload('send', {
-		
 				files :""
 			});
-				
 		}
-		
-		
-	})
-	
-	
+	});
 
 	/*routeNo = $('#routeNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());*/
 	$('#scheduleNo').attr('value',scheduleNo);
 	
-
-
-
 	mapNameSource = $('#mapData').html();
 	mapNameTemplate = Handlebars.compile(mapNameSource);
 
-	$(document).on('click','.scheduleButton',function(e){
+	$(document).on('click', '.scheduleButton', function(e){
 		alert('일정보기');
 		userScheduleAjax();
 		location.href= 'http://reizen.com:8080/scheduler/scheduler.html?scheduleNo='+scheduleNo
@@ -173,16 +158,16 @@ $(function() {
 			}
         }
         lastScroll = st;
-	})
+	});
 	
 	// map 하단 텍스트 클릭시 좌측 스클롤 이동
-	$(document).on('click','.mapName',function(){
+	$(document).on('click', '.mapName', function(){
 		$('.scroll').animate({scrollTop : $('.scroll').scrollTop()+$('.fa-camera-retro[data-no='+$(this).attr('data-no')+']').position().top-baseHeight}, 400);
-	})
+	});
 	
-	$(document).on('click','.gmnoprint > img',function(){
+	$(document).on('click', '.gmnoprint > img', function(){
 		$(this).next().children('area').click();
-	})
+	});
 	
 	$(document).on('click','area',function(){
 		for (var i = 0; i < $('area').length; i++) {
@@ -287,7 +272,9 @@ Handlebars.registerHelper('stime', function(time){
 	return out;
 });
 
+
 /**************	맵	**************/
+
 function initMap() {
 	var spots = [];
 	var dayLength;
