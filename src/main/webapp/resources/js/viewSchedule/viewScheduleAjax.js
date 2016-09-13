@@ -124,7 +124,7 @@ function userScheduleAjax(){
 				mapDay = 1;
 				initMap();
 				
-				$(document).on('click','.deletePicts',function(){
+				$(document).on('click','.del',function(){
 					$.ajax({
 						url : reizenUrl + 'postscript/deletePicts.do',
 						dataType : 'json',
@@ -310,7 +310,8 @@ function scheduleAjax() {
 						$(this).parents('article').next().toggle(500);
 					});
 				
-				$(document).on('click', '.deletePicts', function(e) { // 삭제버튼 이벤트 
+				$(document).on('click', '.del', function(e) {
+					alert('dsada');// 삭제버튼 이벤트 
 					var $this= $(this);
 					swal({   
 						title: "Are you sure?",   
