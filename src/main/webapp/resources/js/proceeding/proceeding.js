@@ -29,8 +29,17 @@ $(function(){
 						window.location.href='main.html';
 					},2000);
 				}
-			}, error  : function(){
-				alert('ajax error');
+			}, error  : function(request,status,error){
+				if(request.status == 800){ // 서버에 세션이 없다면
+					sessionStorage.clear();
+					sessionCheck();
+					swal("세션 만료", "세션이 만료되었습니다. 다시 로그인 해 주세요.", "warning"); 
+					setTimeout(function(){ // 2초뒤 자동 이동
+						window.location.href='main.html';
+					},2000);
+				}else{
+					swal("요청 오류", "잠시후 다시 시도 해 보세요", "warning"); 
+				}
 			}
 		});
 	}else {
@@ -82,7 +91,7 @@ var typeId='';
 var aroundCount;
 
 var title=null;
-
+var beforeFilter;
 $(window).resize(function() {
 
 	var size = $('#carousel-example-generic').css('width').replace('px','');
@@ -107,6 +116,13 @@ function init(){ // 변수 초기화
 	infoSource = $('#infoBox').text();
 	infoTemplate = Handlebars.compile(infoSource);
 	scheduleNo = (location.href.substr(location.href.lastIndexOf('=') + 1)).replace("#","");
+	var activeList = JSON.parse(sessionStorage.getItem("activeScheduleNo"));
+	for(var i =0;i<activeList.length;i++){
+		if(activeList[i].scheduleNo == scheduleNo){
+			$('title').text(activeList[i].title);
+			break;
+		}
+	}
 }
 
 //시간 업데이터 function 
@@ -163,11 +179,13 @@ function load() {
 						}
 						$('#updateHour').append('<option value='+i+'>'+i+'</option>');
 					}
+					$('#btnTimeSubmit').text('수정');
 					$('#timeModal').modal('show').on('hidden.bs.modal',function(e){
 						updateTime();
 					}); // 모달 비활성화시 발생하는 이벤트, 아래의 캔슬버튼 처리 이걸로 통일함 
 					$('#btnTimeSubmit').off('click').on('click', function(){
-						var contentId = $target.data('contentid');
+						var $target = ui.item;
+						var contentId = $target.find('div.panel-heading').data('contentid');
 						var time = $('#updateHour option:selected').val()+':'+$('#updateMin option:selected').val();
 						$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+currentDay+'&time='+time, function(result){
 							if(result.status=='exist'){
@@ -175,12 +193,14 @@ function load() {
 								$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
 								$('div.form-group').addClass('has-error');
 							} else {
-								addRouteAjax(contentId,time);
+								$target.find('span.time').text(time);
+								updateTime();
 								$('#timeModal, #insertRoute').modal('hide');
+								$('#btnTimeSubmit').text('추가');
 							} //else
 						});
 					});
-					$('#btnSubmit, #btnCancel').off('click').on('click', function(){
+					/*$('#btnSubmit, #btnCancel').off('click').on('click', function(){
 						var hour = $('#updateTime input:first').val();
 						if ( hour >= 1 && hour <= 24){
 
@@ -195,7 +215,7 @@ function load() {
 								return;
 							}
 						} swal("Time Error", "올바른 시간을 입력하세요", "warning");
-					});
+					});*/
 				}
 			});
 		})(jQuery);
@@ -247,7 +267,7 @@ function load() {
 				} else {
 					currentDate.setDate(currentDate.getDate()+1);
 				}
-				moveDayAjax($(this));
+				listAjax($(this));
 			} else {
 				if($(this).attr('id')=='btn_next'){
 					swal("End of plan", "더 이상 계획된 일정이 없습니다. ", "warning");
@@ -293,10 +313,13 @@ function load() {
 			$('#insertRoute').modal('show');
 			$('#insertRoute').on('shown.bs.modal', function(){
 				$('.resultList').empty();
-				radius = false;
 				h = $('.leftWrap').height();
 				$('#modalMap').height(h);
-				modalMap(centerLat, centerLng);
+				radius = true;
+				category='';
+				aroundSearch();
+				aroundCountAjax();
+				$('ul.resultList').addClass('resultListUp');
 			});
 		});
 
@@ -369,9 +392,22 @@ function load() {
 	});
 
 	$('.searchIcon').not('#btnLocation').off('click').on('click', function(){
+		var $this = $(this);
+		var id = $this.attr('id');
 		$('.resultList').empty();
 		page = 1;
-		var id = $(this).attr('id');
+		$('.searchIcon').not($this).removeClass('clicked');
+		if(beforeFilter == id){
+			$this.removeClass('clicked');
+			typeId = '';
+			beforFilter='';
+			aroundCountAjax();
+			aroundSearch();
+			return ;
+		}
+		$this.addClass('clicked');
+		beforeFilter = id;
+
 		if(radius){
 			switch(id){
 			case 'btnHotel' :	typeId = 32;
@@ -391,7 +427,7 @@ function load() {
 			aroundCountAjax();
 			aroundSearch();
 		}else{
-			category=$(this).attr('data-cate');
+			category=$this.attr('data-cate');
 			$('.resultList').empty();
 			searchAjax();
 		}
@@ -440,10 +476,19 @@ function load() {
 		});
 	}).on('click', 'a.mapBtn', function(){                // map버튼
 		var $li = $(this).parent().parent('li');
-		lat = parseFloat($li.data('mapy'));
-		lng = parseFloat($li.data('mapx'));
+		centerLat = parseFloat($li.data('mapy'));
+		centerLng = parseFloat($li.data('mapx'));
+		routeNo = $li.data('routeno');
 		title = $(this).parent().prev('.resultTextBox').children('h3').text();
-		modalMap(lat, lng);
+		page = 1;
+		$('.resultList').empty();
+		h = $('.leftWrap').height();
+		$('#modalMap').height(h);
+		radius = true;
+		category='';
+		aroundSearch();
+		aroundCountAjax();
+		$('ul.resultList').addClass('resultListUp');
 	});
 	
 	// 메모 알람!
@@ -569,7 +614,6 @@ function initMapTransit(mapX1, mapY1, mapX2, mapY2){
 
 function modalMap(lat, lng, maps){
 	if(arguments.length==2){
-		console.log('2');
 		var point = {lat:lat, lng:lng};
 		
 		map = new google.maps.Map(document.getElementById('modalMap'), {
@@ -581,7 +625,7 @@ function modalMap(lat, lng, maps){
 	    var marker = new google.maps.Marker({
 	      map: map,
 	      position: point,
-	      icon: '/resources/images/marker.png'
+	      icon: '/resources/images/marker/point.png'
 	    });
 	    
 	    var infowindow = new google.maps.InfoWindow({
@@ -593,23 +637,17 @@ function modalMap(lat, lng, maps){
 	} else if(arguments.length==3){
 		
 		var point = {lat:lat, lng:lng};
-		
 		map = new google.maps.Map(document.getElementById('modalMap'), {
 			zoom: 12,
 			center: point,
 		    disableDefaultUI: true
 		});
-
-		maps.push(point);
 		
 		for (var i = 0; i < maps.length; i++) {
 			var mapses = maps[i];
 			var lat = mapses.lat;
 			var lng = mapses.lng;
-			var index = (i+1).toString();
-			if(i==maps.length-1){
-				index=' ';
-			}
+			var index = (i).toString();
 			var marker = new google.maps.Marker({
 				position: {lat: lat, lng: lng},
 				map: map,
@@ -618,9 +656,19 @@ function modalMap(lat, lng, maps){
 					text: 	index,
 					color: '#ffffff',
 			        fontWeight: 'bold',
-					fontSize: '16px'
+					fontSize: '16px',
+					zIndex:1
 				}
 			});
+			if(i==0){
+				marker.setLabel('');
+				marker.setIcon('/resources/images/marker/point.png');
+				marker.setZIndex(1000);
+			    var infowindow = new google.maps.InfoWindow({
+			    	  content:title
+			    });
+			    infowindow.open(map,marker);
+			}
 		}
 	    
 	    var radius = new google.maps.Circle({
@@ -635,15 +683,7 @@ function modalMap(lat, lng, maps){
 	    
 	    radius.setMap(map);
 	    
-	    var infowindow = new google.maps.InfoWindow({
-	    	  content:title
-	    });
 
-	    infowindow.open(map,marker);
 	}
-}
-
-function markers(map, maps){
-	
 }
 

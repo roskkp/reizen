@@ -1,22 +1,28 @@
 package com.reizen.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.HttpRequest;
-import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -262,7 +268,7 @@ public class PostscriptController {
   
   
   
-@RequestMapping(path = "addPost", method = RequestMethod.POST)
+  @RequestMapping(path = "addPost", method = RequestMethod.POST)
   @ResponseBody
   public String addPost(Post post, int scheduleNo, int routeNo, String content, int transportation, String price,
       @RequestParam(value = "files") List<MultipartFile> images, HttpServletRequest request) {
@@ -276,11 +282,9 @@ public class PostscriptController {
 
     try {
 
-      System.out.println(images);
-      if (postscriptService.postSelect(scheduleNo) == null) {
+      if (postscriptService.postSelect(scheduleNo)==null) {
 
         System.out.println(postscriptService.postSelect(scheduleNo));
-        System.out.println("여기들어왔나여><");
         data.put("data", postscriptService.addPost(post));
         postscriptService.postSelect(scheduleNo);
         parmas.put("postNo", postscriptService.postSelect(scheduleNo).getPostNo());
@@ -293,7 +297,7 @@ public class PostscriptController {
           if (originalFileName.contains(".")) {
             originalFileName = CommonUtils.getRandomString()
                 + originalFileName.substring(originalFileName.lastIndexOf("."));
-            System.out.println("사진경로"+request.getSession().getServletContext().getRealPath("/"));
+            System.out.println("사진경로 : "+request.getSession().getServletContext().getRealPath("/"));
             FileCopyUtils.copy(file.getBytes(),
                 new FileOutputStream(request.getSession().getServletContext().getRealPath("/")
                     + "/resources/images/viewSchedule/" + originalFileName));
@@ -351,4 +355,125 @@ public class PostscriptController {
     System.out.println("addPost"+new Gson().toJson(data));
     return new Gson().toJson(data);
   }
-}
+
+  @RequestMapping(path="addFile")
+  @ResponseBody
+  public String addFile(@RequestPart(required=false) MultipartFile file, HttpServletRequest request, @RequestParam("type") String type,
+      @RequestParam("scheduleNo") int scheduleNo, @RequestParam("routeNo") int routeNo,
+      @RequestParam("content") String content, @RequestParam("transportation") int transportation, 
+      @RequestParam("price") int price, Post post) throws Exception{      
+      
+      System.out.println(
+          "스케줄 넘버 " + scheduleNo + "라우트 넘버" + routeNo + "콘텐츠 " + content + "이동 수단 " + transportation + "가격 " + price);
+
+      Map<String, Object> data = new HashMap<String, Object>();
+      Map<String, Object> parmas = new HashMap<String, Object>();
+
+      try {
+        
+        if (postscriptService.postSelect(scheduleNo) == null) {
+
+          System.out.println(postscriptService.postSelect(scheduleNo));
+          data.put("data", postscriptService.addPost(post));
+          postscriptService.postSelect(scheduleNo);
+          parmas.put("postNo", postscriptService.postSelect(scheduleNo).getPostNo());
+          parmas.put("scheduleNo", scheduleNo);
+          if (!file.isEmpty()) {
+            String originalFileName = file.getOriginalFilename();
+            originalFileName = CommonUtils.getRandomString()
+                +"."+ request.getParameter("type");
+            FileCopyUtils.copy(file.getBytes(),
+                new FileOutputStream(request.getSession().getServletContext().getRealPath("/")
+                    + "/resources/images/viewSchedule/" + originalFileName));
+          
+            System.out.println("파일 이름 : "+originalFileName);
+            parmas.put("picturePath", originalFileName);
+          } else {
+            parmas.put("picturePath", "");
+          }
+          parmas.put("content", content);
+          parmas.put("routeNo", routeNo);
+          parmas.put("transportation", transportation);
+          parmas.put("price", price);
+
+          data.put("parms", postscriptService.addPicture(parmas));
+          data.put("status", "success");
+          
+        } else {
+
+          postscriptService.postSelect(scheduleNo);
+          parmas.put("postNo", postscriptService.postSelect(scheduleNo).getPostNo());
+          parmas.put("scheduleNo", scheduleNo);
+          if (!file.isEmpty()) {
+            String originalFileName = file.getOriginalFilename();
+            originalFileName = CommonUtils.getRandomString()
+                +"."+ request.getParameter("type");
+            FileCopyUtils.copy(file.getBytes(),
+                new FileOutputStream(request.getSession().getServletContext().getRealPath("/")
+                    + "/resources/images/viewSchedule/" + originalFileName));
+          
+            System.out.println("파일 이름 : "+originalFileName);
+            parmas.put("picturePath", originalFileName);
+          } else {
+            parmas.put("picturePath", "");
+          }
+          parmas.put("content", content);
+          parmas.put("routeNo", routeNo);
+          parmas.put("transportation", transportation);
+          parmas.put("price", price);
+
+          data.put("parms", postscriptService.addPicture(parmas));
+          data.put("status", "success");
+        }
+
+      } catch (Exception e) {
+        e.printStackTrace();
+        data.put("status", "failure");
+      }
+      System.out.println("addPost"+new Gson().toJson(data));
+      return new Gson().toJson(data);
+  }
+
+  @RequestMapping(path = "updateFile", method = RequestMethod.POST)
+  @ResponseBody
+  public String updateFile(@RequestPart(required=false) MultipartFile file, HttpServletRequest request, @RequestParam("type") String type,
+      @RequestParam("scheduleNo") int scheduleNo, @RequestParam("routeNo") int routeNo,
+      @RequestParam("content") String content, @RequestParam("transportation") int transportation, 
+      @RequestParam("price") int price) throws Exception{    
+    
+    System.out.println( "라우트 넘버" + routeNo + "콘텐츠 " + content + "이동 수단 " + transportation + "가격 " + price);
+
+    Map<String, Object> data = new HashMap<String, Object>();
+    Map<String, Object> parms = new HashMap<String, Object>();
+
+    try {
+      parms.put("routeNo", routeNo);
+      parms.put("content", content);
+      parms.put("transportation", transportation);
+      parms.put("price", price);
+      if (!file.isEmpty()) {
+        String originalFileName = file.getOriginalFilename();
+        originalFileName = CommonUtils.getRandomString()
+            +"."+ request.getParameter("type");
+        FileCopyUtils.copy(file.getBytes(),
+            new FileOutputStream(request.getSession().getServletContext().getRealPath("/")
+                + "/resources/images/viewSchedule/" + originalFileName));
+      
+        System.out.println("파일 이름 : "+originalFileName);
+        parms.put("picturePath", originalFileName);
+      } else {
+        parms.put("picturePath", "");
+      }
+        data.put("parms", postscriptService.updatePicture(parms));
+        data.put("status", "success");
+        System.out.println(parms);
+    } catch (Exception e) {
+      e.printStackTrace();
+      data.put("status", "failure");
+    }
+    System.out.println(new Gson().toJson(data));
+    return new Gson().toJson(data);
+  }
+
+
+} // controller

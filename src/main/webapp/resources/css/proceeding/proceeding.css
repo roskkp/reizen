@@ -160,7 +160,9 @@ div#weather {
 .card-title {
   font-size: 35px;
 }
-
+a.list-group-item{
+	word-break : break-all;
+}
 .card-content {
   font-size: 14px;
   margin-top: 4px;
@@ -293,9 +295,6 @@ a.closeBtn {
 
 a.closeBtn i.fa {
 	display: block;
-}
-
-.alarm {
 }
 
 .alarmOn {
@@ -509,7 +508,9 @@ nav.searchNav a.searchIcon {
 nav.searchNav a.searchIcon:hover {
 	color: steelblue;
 }
-
+.clicked{
+	color: steelblue;
+}
 div.radiusWrap {
 	text-align: center;
 }

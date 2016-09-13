@@ -372,8 +372,10 @@ function sessionCheck(){
 
 		$('#btnDashBoard').attr('href','/scheduler/dashboard.html?no='+sessionStorage.getItem('dashNo'));
 		$('#btnLogout').off('click').on('click', function() {
-			if( auth2.currentUser.get().isSignedIn() ) {
-				auth2.signOut();
+			if(auth2 != null){
+				if( auth2.currentUser.get().isSignedIn() ) {
+					auth2.signOut();
+				}
 			}
 			$.getJSON(reizenUrl+'/user/logout.do', function(result){
 				if(result.status=='success'){

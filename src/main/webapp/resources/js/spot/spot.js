@@ -25,17 +25,6 @@ $(function() {
 		memoSubmit();
 	})
 	
-	if(sessionStorage.length>=1){ // 로그인 되어있다면 입력가능 
-		$('#writerThmb').css({
-			'background' : 'url(\''
-				+'/resources/images/thumbnail/' + sessionStorage.getItem('thumbnail')
-				+'\') no-repeat center center',
-				'background-size' : 'cover' });
-		$('#writerNick').text( sessionStorage.getItem('nick'));
-	}else{ // 비회원일 경우 입력 불가능 
-		$('.write-wrap').remove();
-	}
-	
 	$(document).on('click','.tabs',function(){
 		if ($(this).attr('load') != 'on') {
 			searchAround($(this).attr('data-tid'));
@@ -159,16 +148,12 @@ function initMap() {
 	var marker = new google.maps.Marker({
 		position: spot,
 		map: map,
-		title: label,
-		label: ' '
+		icon:'/resources/images/marker/point.png'
 	});
 	
 	var content = label;
 	var infowindow = new google.maps.InfoWindow({ content: content});
-	 
-    google.maps.event.addListener(marker, "click", function() {
-        infowindow.open(map,marker);
-    });
+	infowindow.open(map,marker);
     google.maps.event.addDomListener(window, 'load', initialize);
     
     $('.carousel-inner').position();

@@ -253,10 +253,24 @@
     where l.cid = lsrc.cid
     and lsrc.uno=#{userNo}
   </select>
-
-  <select id="selectAroundList" parameterType="map" resultMap="locationMap">
-    SELECT *
+  <select id="selectLocationByMap" parameterType="map" resultMap="locationMap">
+    SELECT l.*, s.C03NAME, m.C02NAME, c.C01NAME
     FROM (select * from (select * from lcts where not ( tid = 15 and not now() between estart and eend)) a) l
+    left outer join
+    cate_s s on l.CATE03 = s.CATE03 left outer join
+    cate_m m on s.CATE02 =
+    m.CATE02 left outer join cate_l c 
+    on  m.CATE01 = c.CATE01
+    WHERE l.map_x = #{mapX} and l.map_y=#{mapY}
+  </select>
+  <select id="selectAroundList" parameterType="map" resultMap="locationMap">
+    SELECT l.*, s.C03NAME, m.C02NAME, c.C01NAME
+    FROM (select * from (select * from lcts where not ( tid = 15 and not now() between estart and eend)) a) l
+    left outer join
+    cate_s s on l.CATE03 = s.CATE03 left outer join
+    cate_m m on s.CATE02 =
+    m.CATE02 left outer join cate_l c 
+    on  m.CATE01 = c.CATE01
     WHERE SQRT(POW(l.MAP_x - #{mapX}, 2) + POW(l.MAP_y - #{mapY}, 2)) &lt; (5 /
     111.2 ) and l.map_x != #{mapX} and l.MAP_Y != #{mapY} and lccd != 0 
     <if test="tid!=null and tid!=''">

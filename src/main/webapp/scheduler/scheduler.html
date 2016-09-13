@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>reizen</title>
-<link rel="stylesheet"
-	href="../node_modules/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
 <link rel="stylesheet" href="../resources/css/jquery-ui.css">
 <link rel="stylesheet" href="../resources/css/common.css">
 <link rel="stylesheet" href="../resources/css/scheduler/scheduler.css">
@@ -306,7 +305,7 @@
 </script>
 	<script id="searchResult" type="text/x-handlebars-template">
   {{#data}}
-    <li class="resultContent" data-contentId="{{contentId}}" data-typeId="{{typeId}}">
+    <li class="resultContent" data-contentId="{{contentId}}" data-typeId="{{typeId}}"  data-mapx="{{mapX}}" data-mapy="{{mapY}}">
       <div><img class="resultImg" alt="여행지 이미지" src="{{firstImage}}" /></div>
       <div class="resultTextBox">
         <h3>{{locateName}}</h3>

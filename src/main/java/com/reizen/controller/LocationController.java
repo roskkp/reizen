@@ -1,5 +1,6 @@
 package com.reizen.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -215,7 +216,7 @@ public class LocationController {
 	
 	@RequestMapping(path = "getMemo", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String getMemo(int cid) {
+	public String getMemo(int cid,HttpSession httpSession) {
     Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<Memo> list = memoService.getMemoList(cid);
@@ -224,6 +225,11 @@ public class LocationController {
 				memo.setDateAgo(CalculateTime.calc(memo.getRegDate()));
 				list.set(i, memo);
 				i++;
+			}
+			if(httpSession.getAttribute("user")!=null){
+				result.put("nick", ((User)(httpSession.getAttribute("user"))).getNickName());
+			}else{
+				result.put("nick",null);
 			}
 			result.put("data",list);
 			result.put("status", "success");
@@ -309,8 +315,20 @@ public class LocationController {
   @ResponseBody
   public String aroundList(String mapX, String mapY, String tid, int size, int page) {
     Map<String, Object> result = new HashMap<String, Object>();
+    List<Location> list = new ArrayList<>();
+    System.out.println(mapX.length());
+    System.out.println(mapY.length());
+    if(mapX.length()!=14){
+    	mapX=mapX.concat("0");
+    }
+    if(mapY.length() != 13){
+    	mapY=mapY.concat("0");
+    }
+    System.out.println(mapX+'t'+ mapY);
     try {
-      result.put("data", locationService.selectAroundList(mapY, mapX, tid, size, page));
+      list.add(locationService.getLocationByMap(mapY,mapX));
+      list.addAll(locationService.selectAroundList(mapY, mapX, tid, size, page));
+      result.put("data", list);
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();

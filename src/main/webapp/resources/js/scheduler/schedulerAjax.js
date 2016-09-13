@@ -57,7 +57,7 @@ function searchAjax(){
 					var resultset = template(result);
 
 					var draggable = $('#draggable'); 
-
+					infinityScroll = true;
 					draggable.append(resultset);
 					doDrag();
 
@@ -67,6 +67,7 @@ function searchAjax(){
 			}
 		}
 	});	// ajax
+	baseMap();
 }	// searchAjax
 
 function deleteDayAjax(scheduleNo, day){
@@ -340,7 +341,7 @@ function dataTheorem(){
 			routeInfo.cid = routeData[i].cid;
 			routeInfo.mapX = routeData[i].mapX;
 			routeInfo.mapY = routeData[i].mapY;
-			routeInfo.index = 1;
+			routeInfo.index = i+1;
 			routeInfo.sdno = scheduleNo;
 			routeInfo.day = day;
 			if (routeData[i].name > 10) {
@@ -356,7 +357,7 @@ function dataTheorem(){
 	routeInfo.cid = routeData[$('.btnEnd').attr('data-end')].cid;
 	routeInfo.mapX = routeData[$('.btnEnd').attr('data-end')].mapX;
 	routeInfo.mapY = routeData[$('.btnEnd').attr('data-end')].mapY;
-	routeInfo.index = 1;
+	routeInfo.index = routeData2.length+1;
 	routeInfo.sdno = scheduleNo;
 	routeInfo.day = day;
 	if (routeData[$('.btnEnd').attr('data-end')].name > 10) {
@@ -371,6 +372,8 @@ function dataTheorem(){
 }
 
 function aroundSearch(mapX,mapY){
+	$('#draggable').empty();
+	console.log(mapX+'ddd'+mapY);
 	$.ajax({
 		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1',
 		method: 'GET',
@@ -380,8 +383,8 @@ function aroundSearch(mapX,mapY){
 				console.log('search error');
 				return;
 			}else{
+				$('#tip').remove();
 				var data = result.data;
-				alert(data.length);
 				var maps = []; 
 				if(data.length>0){
 					var source = $('#searchResult').text();
@@ -389,7 +392,6 @@ function aroundSearch(mapX,mapY){
 					var resultset = template(result);
 
 					var draggable = $('#draggable'); 
-					draggable.empty();
 					draggable.append(resultset);
 					doDrag();
 
@@ -399,8 +401,11 @@ function aroundSearch(mapX,mapY){
 						maps.push({lat:lat, lng:lng});
 					}
 					pointMap(mapX, mapY, maps);
-				}else {
-					return; 
+					infinityScroll = false;
+				}else{
+					
+					swal("데이터가 없어요 :(", "", "error"); 
+					return ;
 				}
 			}
 		}

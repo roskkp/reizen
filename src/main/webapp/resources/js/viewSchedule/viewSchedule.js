@@ -46,9 +46,7 @@ $(function() {
 		userScheduleAjax();
 	}
 	
-	$('#photoFile').on('change',function(){
-		
-	})
+
 	$('#photoFile')
 	.fileupload({
 	    replaceFileInput:false,autoUpload : false})
@@ -73,12 +71,10 @@ $(function() {
 			    window.location.reload();
 			  }, 3000);
 			
-	});
-
+	})
 	$(document).on('click','.addPost',function() {
 		$('#routeNo').attr('value',$(this).attr('data-routeNo').trim());
 	});
-	
 	
 	$('#ajaxform').submit(function(event){
 		if(filesList.length>0){
@@ -89,10 +85,10 @@ $(function() {
 		}else{
 			event.preventDefault();
 			$('#photoFile').fileupload('send', {
+
 				files :""
-				
+
 			});
-				
 		}
 	});
 
@@ -122,7 +118,6 @@ $(function() {
 	$(document).on('click','.update',function() {
 		$('#updateRouteNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());
 		getPictures();
-		
 	});
 	
 	/****************updatePost*********************/
@@ -133,35 +128,27 @@ $(function() {
 		if(filesList.length>0){
 			event.preventDefault();
 			$('#updatefile').fileupload('send', {
-				
 				files : filesList
-				
 			});
 			
 		}else{
 	     	event.preventDefault();
 			$('#updatefile').fileupload('send', {
-		
 				files :""
 			});
-				
 		}
-		
-		
-	})
-	
-	
+	});
 
 	/*routeNo = $('#routeNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());*/
 	$('#scheduleNo').attr('value',scheduleNo);
 	
-
-
-
 	mapNameSource = $('#mapData').html();
 	mapNameTemplate = Handlebars.compile(mapNameSource);
 
 /*	$(document).on('click','.scheduleButton',function(e){
+=======
+	$(document).on('click', '.scheduleButton', function(e){
+>>>>>>> 6b5b2658de58e9a5467defa49eb78a4da7e55550
 		alert('일정보기');
 		userScAjax();
 		location.href= 'http://reizen.com:8080//scheduler/dashboard.html?no='+sessionStorage.getItem('dashNo')
@@ -201,9 +188,10 @@ $(function() {
 			}
         }
         lastScroll = st;
-	})
+	});
 	
 	// map 하단 텍스트 클릭시 좌측 스클롤 이동
+
 	var maphover = true;
 	$(document).on('click','.mapName',function(){
 			$('.front[data-no='+$(this).attr('data-no')+']').css('color','rgb(220, 186, 220)');
@@ -212,10 +200,11 @@ $(function() {
 		$('.scroll').animate({scrollTop : $('.scroll').scrollTop()+$('.front[data-no='+$(this).attr('data-no')+']').position().top-baseHeight}, 400);
 		
 	})
+
 	
-	$(document).on('click','.gmnoprint > img',function(){
+	$(document).on('click', '.gmnoprint > img', function(){
 		$(this).next().children('area').click();
-	})
+	});
 	
 	$(document).on('click','area',function(){
 		for (var i = 0; i < $('area').length; i++) {
@@ -323,7 +312,9 @@ Handlebars.registerHelper("inc", function(value, options){
 		    return parseInt(value) + 1;
 });
 
+
 /**************	맵	**************/
+
 function initMap() {
 	var spots = [];
 	var dayLength;
