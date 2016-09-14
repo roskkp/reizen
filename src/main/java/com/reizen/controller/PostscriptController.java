@@ -1,21 +1,13 @@
 package com.reizen.controller;
 
-import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -46,6 +38,7 @@ public class PostscriptController {
     try {
       System.out.println("scheduleNo::"+scheduleNo);
       data.put("list", postscriptService.postscript(scheduleNo));
+      System.out.println("debug"+data);
       data.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();

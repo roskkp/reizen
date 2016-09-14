@@ -14,7 +14,7 @@
 
 body {
   overflow: hidden;
-  background: linear-gradient( 45deg, #e5cef4, #59b3f1 );
+  background: linear-gradient( 45deg, #d0a6a6, #59b3f1 );
 }
 .posts {
     width: 155px;
@@ -45,20 +45,17 @@ body {
     height: 20px;
     float: right;
     margin-top: 8px;
-    font-weight: 800;
     /* -webkit-border-radius: 6px; */
-    -moz-border-radius: 6px;
-    border-radius: 6px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     color: #ffffff;
     font-size: 13px;
     text-decoration: none;
     vertical-align: middle;
    }
 .del {
-    /* border: 1px solid #0a3c59; */
-    border-right: 1px solid white;
+
     background: rgba(255, 255, 255, 0);
-    padding: 8px 20px;
     /* -webkit-border-radius: 6px; */
     -moz-border-radius: 6px;
     /* border-radius: 6px; */
@@ -67,12 +64,15 @@ body {
     font-size: 14px;
     text-decoration: none;
     vertical-align: middle;
+    width: 75px;
+    text-align: center;
 }
 .updated{
 	    width: 160px;
     height: 40px;
     float: right;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-right: 5%;
 }
 
 
@@ -379,30 +379,19 @@ ol.timeline {
     font-weight: 600;
     font-size: 18px;
     margin-right: 35px;
-    text-shadow: #a48bb4 2px 2px 2px;
 }
 
 .tran{
-border: 1px solid #ffffff;
-    background: #c8c8dc;
     padding: 2px 0px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     vertical-align: middle;
 }
 .price-btn {
-    border: 1px solid #ffffff;
-    background: #cac9dc;
     padding: 2px 0px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     vertical-align: middle;
    }
@@ -438,18 +427,9 @@ border: 1px solid #ffffff;
 
    }
    .mapnum:HOVER{
-   color: #c194c0;
+   color: pink;
    }
 
-/* .mapnum:active {
-   text-shadow: #ffffff 0 1px 0;
-   border: 0px solid #ffffff;
-   background: #ffffff;
-   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#7db1d4));
-   background: -webkit-linear-gradient(top, #ffffff, #ffffff);
-   background-image: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%);
-   color: #ffffff;
-   } */
 
 /*후기삭제  */
 
@@ -511,22 +491,10 @@ border: 1px solid #ffffff;
   color: white;
 }
 
-.update:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgba(255, 255, 255, 0);
-    /* border-top: 1px solid #fffafa; */
-    border-color: rgba(255, 255, 255, 0);
-}
 
 .update {
     color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0);
-    /* border-top: 1px solid #fffafa; */
-    border-color: rgba(255, 255, 255, 0);
-    width: 25%;
- /*    float: right;
-    margin-top: 2%;
-    margin-left: 36%; */
 }
 .price {
     color: #8795bc;
@@ -871,29 +839,18 @@ input:checked ~ .modal__overlay {
    /*  border-bottom: 1pt dotted; */
 }
 .scriptImage {
-    /* margin-top: -10%; */
     width: 100%;
     height: 190px;
     border-radius: 1em;
-    /* margin-left: 14%; */
+    margin-bottom: 14%;
 }
 .accordion{
-/*     background-color: rgba(255, 255, 255, 0.09); */
     border-radius: 0.5em;
-/*     border: 1px solid white; */
     color: #ffffff;
     font-size: small;
-    /* font-weight: 400; */
-    /* width: 86%; */
     margin-top: -2px;
     width: 380px;
 }
-/* .postBox{
-  width:60%;
-} */
-/* 후기 보기버튼*/
-
-
 
 /*좋아요버튼  */
 .like-toggle{
@@ -963,28 +920,19 @@ h1 {
     height: 250px;
     border-radius: 1em;
     margin-left: 14%;
+    margin-bottom: 14%;
 }
 .price-btn {
-    border: 1px solid #ffffff;
-    background: #85b9ef;
     padding: 4px 3px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     vertical-align: middle;
    }
 .tran{
-  border: 1px solid #ffffff;
-    background: #85b9ef;
     padding: 4px 3px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     vertical-align: middle;
 }
@@ -1004,11 +952,8 @@ h1 {
 .update {
     color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0);
-    /* border-top: 1px solid #fffafa; */
-    border-color: rgba(255, 255, 255, 0);
-    width: 50%;
-    /* float: right; */
-    /* margin-top: 2%; */
+    width: 75px;
+    margin-left: 10px;
 }
 .priceTrans {
     color: white;
@@ -1034,7 +979,6 @@ h1 {
     color: #a0bde8;
     padding: 4px 6px;
     font-size: 14px;
-    /* font-family: helvetica, serif; */
     text-decoration: none;
     vertical-align: middle;
 }
@@ -1100,17 +1044,15 @@ h1 {
     margin-top: 20px;
     margin-left: 244px;
 }
-.addPost {
+.vw-btn {
     margin-top: 80px;
     border: 1px solid white;
-    /* margin-left: 547px; */
     background: #ffffff;
     border-radius: 5px;
     color: #8ca5eb;
     font-weight: 800;
     padding: 4px 14px;
     font-size: 14px;
-    /* font-family: helvetica, serif; */
     text-decoration: none;
     vertical-align: middle;
     float: right;
@@ -1266,9 +1208,7 @@ ol.timeline {
     font-size: 30px;
     float: right;
     margin-right: 53px;
-    font-family: -webkit-body;
-    text-shadow: #7989fd 1px 1px 2px;
-    /* margin-left: 77%; */
+    font-family: -webkit-body
 }
 }
 
@@ -1322,6 +1262,8 @@ ol.timeline {
     transform: translate(-50%, -80%);
   }
 }
-
+.icon{
+	font-size: 1.4em !important;
+}
 
 
