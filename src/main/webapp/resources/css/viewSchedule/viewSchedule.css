@@ -64,7 +64,7 @@ body {
     font-size: 14px;
     text-decoration: none;
     vertical-align: middle;
-    width: 75px;
+    width: 70px;
     text-align: center;
 }
 .updated{
@@ -952,7 +952,7 @@ h1 {
 .update {
     color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0);
-    width: 75px;
+    width: 70px;
     margin-left: 10px;
 }
 .priceTrans {
