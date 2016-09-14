@@ -110,7 +110,7 @@ function init() {
 		break;
 	}
 
-	serchInfo(path, contentId);
+	searchInfo(path, contentId);
 	
 	scheduleData(contentId);
 	
@@ -139,12 +139,11 @@ function initMap() {
 	var spot = {lat: parseFloat(mapY), lng: parseFloat(mapX)};
 
 	var map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 18,
+		zoom: 16,
 		center: spot 
 	});
 	
 	var label = $('.spot-name').text().trim();
-	console.log(label)
 	var marker = new google.maps.Marker({
 		position: spot,
 		map: map,

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.reizen.domain.Picture;
 import com.reizen.domain.Post;
+import com.reizen.domain.ScheduleScrap;
 
 public interface PostscriptDao {
 
@@ -20,11 +21,23 @@ public interface PostscriptDao {
   
   public  int checkPostscript(int scheduleNo);
   
-  public int sscrs(int userNo,int scheduleNo);
+  public void sscrs(Map<String, Object> parmas);
+  
+  public void srecm(Map<String, Object> parmas);
+  
+  public void deleteRecm(Map<String, Object> params);
+  
+  public void deleteScrap(Map<String, Object> params);
+  
+  public int updateCount(Map<String, Object> parmas);
   
   public int deletePicts(int pictureNo);
   
   public Post postSelect(int routeNo);
+  
+  public int checkRecm(Map<String, Object> map);
+  
+  public int checkScrap(Map<String, Object> map);
   
   public int addPicture(Map<String, Object> parms);
 

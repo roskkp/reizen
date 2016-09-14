@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reizen.dao.DashBoardDao">
+
+	<resultMap type="schedule" id="scdlsMap">
+		<id column="sdno" property="scheduleNo" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="s_recm" property="recommandCount" jdbcType="INTEGER" />
+		<result column="s_src" property="scrapCount" jdbcType="INTEGER" />
+		<result column="nop" property="peopleCount" jdbcType="INTEGER" />
+		<result column="month" property="month" jdbcType="INTEGER" />
+		<result column="days" property="totalDays" jdbcType="INTEGER" />
+		<result column="img1" property="thumbImg" jdbcType="INTEGER" />
+		<association property="user" javaType="user">
+			<result column="uno" property="userNo" jdbcType="INTEGER" />
+			<result column="nick" property="nickName" jdbcType="VARCHAR" />
+			<result column="thumb" property="thumbNail" jdbcType="VARCHAR" />
+			<result column="dsno" property="dashNo" jdbcType="INTEGER"/>
+		</association>
+	</resultMap>
+	
+  <resultMap type="location" id="locationMap">
+    <id column="cid" property="contentId" jdbcType="INTEGER" />
+    <result column="tid" property="typeId" jdbcType="INTEGER" />
+    <result column="lname" property="locateName" jdbcType="VARCHAR" />
+    <result column="addr1" property="address1" jdbcType="VARCHAR" />
+    <result column="addr2" property="address2" jdbcType="VARCHAR" />
+    <result column="map_x" property="mapX" jdbcType="VARCHAR" />
+    <result column="map_y" property="mapY" jdbcType="VARCHAR" />
+    <result column="arcd" property="areaCode" jdbcType="INTEGER" />
+    <result column="lccd" property="localCode" jdbcType="INTEGER" />
+    <result column="cate01" property="category01" jdbcType="VARCHAR" />
+    <result column="C02NAME" property="category02" jdbcType="VARCHAR" />
+    <result column="C03NAME" property="category03" jdbcType="VARCHAR" />
+    <result column="ltel" property="tel" jdbcType="VARCHAR" />
+    <result column="img1" property="firstImage" jdbcType="VARCHAR" /> 
+    <result column="img2" property="firstImage2" jdbcType="VARCHAR" />
+    <result column="estart" property="eventStartDate" jdbcType="VARCHAR" />
+    <result column="eend" property="eventEndDate" jdbcType="VARCHAR" />
+    <result column="l_recm" property="recommandCount" jdbcType="INTEGER" />
+    <result column="l_src" property="scrapCount" jdbcType="INTEGER" />
+  </resultMap>
+	
+	<insert id="insertDashBoard" parameterType="int">
+	  INSERT
+    INTO dsbd(uno)
+    VALUES(#{value})
+	</insert>
+	
+	<select id="selectDashBoard" resultType="int" parameterType="int">
+	 select uno
+	 from dsbd
+	 where dsno = #{value}
+	</select>
+	
+	<select id="selectPlanList" resultMap="scdlsMap" parameterType="int">
+	 select sdno, title, s_recm, s_src, nop, month ,u.*, d.dsno,
+	 (select max(day) days from routes r where r.sdno=sd.sdno) days,
+	 (select distinct img1 from routes r, lcts l where sdno = sd.sdno and r.CID = l.CID and img1 is not null order by rand() limit 1) img1
+	 from scdls sd, users u, dsbd d
+	 where u.uno = sd.uno
+	 and u.uno = d.uno
+	 and sd.uno = #{value}
+	</select>
+	
+	 <select id="selectScrapPlanList" resultMap="scdlsMap" parameterType="int">
+   select sd.sdno, title, s_recm, s_src, nop, month, u.*,d.dsno,  
+   (select max(day) days from routes r where r.sdno=sd.sdno) days,
+   (select distinct img1 from routes r, lcts l where sdno = sd.sdno and r.CID = l.CID and img1 is not null order by rand() limit 1) img1
+   from scdls sd, s_scrs sc, users u, dsbd d
+   where sd.sdno = sc.sdno 
+   and d.uno = u.uno
+   and sd.uno = u.uno
+   and sc.uno=#{value}
+  </select>
+  
+  <select id="selectScrapLocationList" resultMap="locationMap" parameterType="int">
+   select l.*,lsrc.uno
+   from lcts l, l_scrs lsrc
+   where l.cid = lsrc.cid
+   and lsrc.uno=#{value}
+  </select>
+  
+  <delete id="deleteRoute" parameterType="int">
+    delete 
+    from routes
+    where sdno=#{value}
+  </delete>
+  
+  <delete id="deletePlan" parameterType="int">
+    delete 
+    from scdls
+    where sdno=#{value}
+  </delete>
+  
+    <delete id="deleteScPlan" parameterType="int">
+    delete 
+    from s_scrs
+    where sdno=#{value}
+  </delete>
+  
+    <delete id="deleteScLocation" parameterType="int">
+    delete 
+    from l_scrs
+    where cid=#{value}
+  </delete>
+  
+</mapper>

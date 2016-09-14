@@ -9,6 +9,7 @@ var scheduleNo;
 var routeNo;
 var no
 var filesList = new Array();
+
 $(function() {
 	scheduleNo = location.href.substr(location.href.lastIndexOf('=') + 1);
 	var user = sessionStorage.getItem('userNo');
@@ -26,11 +27,12 @@ $(function() {
 					if(result.pass=='false'){
 						getUser();
 						userScheduleAjax();
-						
+						usersrAjax();
 					}else if(result.pass=='right'){
 						getUser();
 						scheduleAjax();
-						
+						usersrAjax();
+					
 					}
 				}else{
 					alert('check proceeding status fail');
@@ -45,25 +47,36 @@ $(function() {
 	}
 	
 
-	$('#photoFile').fileupload({
-		autoUpload : false
-	}).on('fileuploadadd', function(e, data) {
+	$('#photoFile')
+	.fileupload({
+	    replaceFileInput:false,autoUpload : false})
+	.on('fileuploadadd', function(e, data) {
 		filesList.pop(); 
 		console.log('여기들어왓나');
 		console.log(data.files[0]);
 		filesList.push(data.files[0]);
 		console.log(filesList);
-	}).on('fileuploaddone', function (e, data) {
-		alert('성공');
-		location.reload();
-	});
-
+		
+	})
+	.on('fileuploaddone', function (e, data) {
+		  swal({
+			    title: "후기",
+			    text: "작성되었습니다.",
+			    timer: 3000,
+			    confirmButtonText: "Ok!", 
+			  }, function(){
+			    window.location.reload();
+			  });
+			  setTimeout(function() {
+			    window.location.reload();
+			  }, 3000);
+			
+	})
 	$(document).on('click','.addPost',function() {
-		$('#routeNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());
+		$('#routeNo').attr('value',$(this).attr('data-routeNo').trim());
 	});
 	
 	$('#ajaxform').submit(function(event){
-		alert(filesList.length);
 		if(filesList.length>0){
 			event.preventDefault();
 			$('#photoFile').fileupload('send', {
@@ -72,14 +85,16 @@ $(function() {
 		}else{
 			event.preventDefault();
 			$('#photoFile').fileupload('send', {
-				files : ""
+
+				files :""
+
 			});
 		}
 	});
 
 	/******updatePost*********/
 	$('#updatefile').fileupload({
-		autoUpload : false
+		 replaceFileInput:false,autoUpload : false
 	}).on('fileuploadadd', function(e, data) {
 		filesList.pop(); 
 		console.log('여기들어왓나');
@@ -87,8 +102,18 @@ $(function() {
 		filesList.push(data.files[0]);
 		console.log(filesList);
 	}).on('fileuploaddone', function (e, data) {
-		alert('성공');
-		location.reload();
+		  swal({
+			    title: "후기",
+			    text: "수정되었습니다.",
+			    timer: 3000,
+			    confirmButtonText: "Ok!", 
+			  }, function(){
+			    window.location.reload();
+			  });
+			  setTimeout(function() {
+			    window.location.reload();
+			  }, 3000);
+			
 	});
 	$(document).on('click','.update',function() {
 		$('#updateRouteNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());
@@ -120,13 +145,18 @@ $(function() {
 	mapNameSource = $('#mapData').html();
 	mapNameTemplate = Handlebars.compile(mapNameSource);
 
+/*	$(document).on('click','.scheduleButton',function(e){
+=======
 	$(document).on('click', '.scheduleButton', function(e){
+>>>>>>> 6b5b2658de58e9a5467defa49eb78a4da7e55550
 		alert('일정보기');
-		userScheduleAjax();
-		location.href= 'http://reizen.com:8080/scheduler/scheduler.html?scheduleNo='+scheduleNo
+		userScAjax();
+		location.href= 'http://reizen.com:8080//scheduler/dashboard.html?no='+sessionStorage.getItem('dashNo')
 		e.preventDefault();
 	});
 
+	*/
+	
 	$('.integration-checklist__copy-button').click(function() {
 		$('.aaa').empty();
 	});
@@ -153,7 +183,7 @@ $(function() {
         		var offset = $($('.fill')[prev]).offset();
         		if (Math.ceil(offset.top) >= Math.ceil(window.innerHeight*0.3)+71) {
         			mapDay = prev;
-        			initMap();
+        			initMap();/*toggle*/
         		}
 			}
         }
@@ -161,9 +191,16 @@ $(function() {
 	});
 	
 	// map 하단 텍스트 클릭시 좌측 스클롤 이동
-	$(document).on('click', '.mapName', function(){
-		$('.scroll').animate({scrollTop : $('.scroll').scrollTop()+$('.fa-camera-retro[data-no='+$(this).attr('data-no')+']').position().top-baseHeight}, 400);
-	});
+
+	var maphover = true;
+	$(document).on('click','.mapName',function(){
+			$('.front[data-no='+$(this).attr('data-no')+']').css('color','rgb(220, 186, 220)');
+		
+	
+		$('.scroll').animate({scrollTop : $('.scroll').scrollTop()+$('.front[data-no='+$(this).attr('data-no')+']').position().top-baseHeight}, 400);
+		
+	})
+
 	
 	$(document).on('click', '.gmnoprint > img', function(){
 		$(this).next().children('area').click();
@@ -268,8 +305,11 @@ Handlebars.registerHelper('splitTime', function(time){
 });
 Handlebars.registerHelper('stime', function(time){
 	var times = time.split(' ');
-	var out = times[1];
+	var out = times[1].substring(0,5);
 	return out;
+});
+Handlebars.registerHelper("inc", function(value, options){
+		    return parseInt(value) + 1;
 });
 
 

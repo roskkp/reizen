@@ -98,7 +98,6 @@ public class UserController {
         totalRecommand += sd.getRecommandCount();
         totalScrap += sd.getScrapCount();
       }
-      result.put("jsid", httpSession.getId());
       result.put("totalRecommand", totalRecommand);
       result.put("totalScrap", totalScrap);
       result.put("status", "success");
@@ -224,13 +223,19 @@ public class UserController {
     Map<String, Object> result = new HashMap<String, Object>();
     try{
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
       User user = (User)session.getAttribute("user");
       if(user!=null){
         result.put("nickName",  user.getNickName());
         result.put("dashNo", user.getDashNo());
       }
       result.put("status", "success");
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
       if (session.getAttribute("user") != null) {
         User user = (User)session.getAttribute("user");
         result.put("nickName",  user.getNickName());
@@ -239,13 +244,19 @@ public class UserController {
       } else {
         result.put("staus", "no session");
       }
+<<<<<<< HEAD
 >>>>>>> ab790f4c9b1ed45fd179485582ae2edb5603ef9e
+=======
+>>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
     }catch (Exception e) {
       e.printStackTrace();
       result.put("status", "failure");
     }
     return new Gson().toJson(result);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
   }*/
 
 }

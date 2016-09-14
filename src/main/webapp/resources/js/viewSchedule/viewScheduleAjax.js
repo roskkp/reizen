@@ -14,23 +14,19 @@ function getUser(){
 					var ti = data[data.length -1];
 					var t = ti.time;
 					var timed = t.split(' ')[0];
-					console.log("timed:::::"+timed);
 					var da = data[0].time 
 					var time = da.split(' ')[0];
-					console.log(time);
 					$('.username').text(data[i].schedule.user.nickName);
 					$('.description').text(time+"~"+timed);
 					$('.bio').text(data[i].schedule.title);
-					$('.heart').text(" "+data[i].schedule.scrapCount);
-					$('.fa-calendar-minus-o').text(" "+data[i].schedule.recommandCount);
-					console.log(data[i].schedule.user.thumbNail);
+					$('.fa-calendar-minus-o').text(" "+data[i].schedule.scrapCount);
+					$('.heart').text(" "+data[i].schedule.recommandCount);
 					if (data[i].schedule.user.thumbNail != null) {
 						$('.avatar').attr("src","/resources/images/thumbnail/"+ data[i].schedule.user.thumbNail);
 					}
 					else{
 						$('.avatar').attr("src","/resources/images/thumbnail/thumnail.jpg");
 					}
-					console.log('마지막 data'+data[i].time);
 				}
 
 			}
@@ -54,7 +50,6 @@ function getPictures(){
 				
 				var data = result.data;
 			for (var i = 0; i < data.length; i++) {
-					console.log(data[i].transportation);
 				/*$('#updatefile').css({'background' : 'url(\''
 					+'/resources/images/viewSchedule/' +data[i].picturePath});*/
 				$('#updatePrice').val(data[i].price);
@@ -69,29 +64,32 @@ function getPictures(){
 }
 
 
-
 /**************스크랩******************/
-function userScheduleAjax(){
+function number() {
 	$.ajax({
-		url : reizenUrl + 'postscript/sscrs.do?',
-		data:{
-			scheduleNo:scheduleNo
-		},
+		url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
 		method : 'post',
 		dataType : 'json',
+		data : {
+			scheduleNo : scheduleNo
+		},
 		success : function(result) {
-				if (result.status != 'success') {
-					console.log('일정 불러오기 실패');
-					return;
+			if (result.status == 'success') {
+				var data = result.data;
+			
+				for (var i = 0; i < data.length; i++) {
+				data[i].schedule.scrapCount
+				data[i].schedule.recommandCount
+			
 				}
-				
-				console.log('성공');		
+
+			}
 		}
-	
+
 	});
 
+	
 }
-
 /***************user nono******************/
 function userScheduleAjax(){
 	var source = $('#schedule').html();
@@ -110,17 +108,23 @@ function userScheduleAjax(){
 
 				$('ol.timeline').append(template(result));
 				
-				var allPanels = $('.postBox').fadeOut();
-				$('.accordion').accordion({
+			
+			/*	
+				var allPanels = $('.postLength').hide();
+				$('.accordion').on('click',function(){
+					alert('ds');
+					$('.postLength').show();
+				});*/
+				/*$('.accordion').accordion({
 
 					collapsible : true
-				});
-				baseHeight = $('.fa-camera-retro').position().top-83;
+				});*/
+				baseHeight = $('.front').position().top-83;
 
 				mapDay = 1;
 				initMap();
 				
-				$(document).on('click','.deletePicts',function(){
+				$(document).on('click','.del',function(){
 					$.ajax({
 						url : reizenUrl + 'postscript/deletePicts.do',
 						dataType : 'json',
@@ -139,6 +143,38 @@ function userScheduleAjax(){
 					})
 				})
 				
+				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
+					console.log('카테고리 테스트'+$($('.front')[i]).attr('data-locate'));
+					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
+					case 'A01':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-envira')
+						break;
+					case 'A02':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-bank')
+						break;
+					case 'A03':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-anchor')
+						break;
+					case 'A04':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag')
+						break;
+					case 'A05':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery')
+						break;
+					case 'B02':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel')
+						break;
+					case 'A03':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+						break;
+					default:
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+						break;
+					}
+					
+					
+				}
+				
 				for (var i = 0; i < $('.tran').length; i++) {
 						console.log($($('.tran')[i]).attr('data-trans'));
 						switch ($($('.tran')[i]).attr('data-trans')) {
@@ -152,21 +188,26 @@ function userScheduleAjax(){
 							$($('.tran')[i]).text('이동수단 : 버스')
 							break;
 						case '4':
-							$($('.tran')[i]).text('이동수단 : 차')
+							$($('.tran')[i]).text('이동수단 : 비행기')
 							break;
 						
 					}
 				}
 				
 				
-				for(var i=0; i<list.length; i++){
-					console.log('picture'+list[i].picturePath);
-					if(list[i].picturePath == null){
-						console.log('picture'+list[i].picturePath);
-						$('.scriptImage').remove();
+				var size = $('.scriptImage').length;
+				for (var i = size-1; i >= 0; i--) {
+					if($($('.scriptImage')[i]).attr('src') == "/resources/images/viewSchedule/"){
+						console.log('여기들어왔나여?');
+						$($('.scriptImage')[i]).remove();
 					}
-				
 				}
+				
+				$('.accordion').hide();
+
+				$(".sho").on('click', function() {
+					$(this).parents('article').next().toggle(500);
+				});
 		}
 	
 	
@@ -196,14 +237,17 @@ function scheduleAjax() {
 						console.log('null check')
 						list[i].check = 'true';
 					}
-				
+					
 				
 				}
+					
+		
 				$('ol.timeline').append(template(result));
+				
+		
 				
 					/*for(var i=0; i<list.length; i++){*/
 					for (var i = 0; i < $('.tran').length; i++) {
-						console.log($($('.tran')[i]).attr('data-trans'));
 						switch ($($('.tran')[i]).attr('data-trans')) {
 						case '1':
 							$($('.tran')[i]).text('이동수단 : 자동차')
@@ -215,16 +259,59 @@ function scheduleAjax() {
 							$($('.tran')[i]).text('이동수단 : 버스')
 							break;
 						case '4':
-							$($('.tran')[i]).text('이동수단 : 차')
+							$($('.tran')[i]).text('이동수단 : 비행기')
 							break;
 						
 					}
 					}
 					
-				
-				
+				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
+					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
+					case 'A01':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-envira')
+						break;
+					case 'A02':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-bank')
+						break;
+					case 'A03':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-anchor')
+						break;
+					case 'A04':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag')
+						break;
+					case 'A05':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery')
+						break;
+					case 'B02':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel')
+						break;
+					case 'A03':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+						break;
+					default:
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+						break;
+					}
+					
+					
+				}
+					
+				var size = $('.scriptImage').length;
+				for (var i = size-1; i >= 0; i--) {
+					if($($('.scriptImage')[i]).attr('src') == "/resources/images/viewSchedule/"){
+						$($('.scriptImage')[i]).remove();
+					}
+				}
 
-				$(document).on('click', '.deletePicts', function(e) { // 삭제버튼 이벤트 
+									
+					$('.accordion').hide();
+
+					$(".sho").on('click', function() {
+						$(this).parents('article').next().toggle(500);
+					});
+				
+				$(document).on('click', '.del', function(e) {
+					alert('dsada');// 삭제버튼 이벤트 
 					var $this= $(this);
 					swal({   
 						title: "Are you sure?",   
@@ -235,11 +322,13 @@ function scheduleAjax() {
 						confirmButtonText: "Yes, delete it!",   
 						closeOnConfirm: false }, 
 						function(){
+							alert('dsad');
 							$.ajax({
 								url : reizenUrl + 'postscript/deletePicts.do',
 								dataType : 'json',
 								data : {
-									pictureNo :$('.pictsNo').val(),
+									pictureNo :$this.attr('data-pictsNo'),
+									routeNo:$('.accordion').attr('data-routeNo')
 									
 								},
 								method : 'post',
@@ -247,9 +336,18 @@ function scheduleAjax() {
 									if (result.status != 'success') {
 										alert('후기 삭제 에러');
 									}
-									swal("Deleted!", "Your imaginary file has been deleted.", "success");
-									location.reload();
-									
+									  swal({
+										    title: "후기",
+										    text: "삭제되었습니다.",
+										    timer: 3000,
+										    confirmButtonText: "Ok!", 
+										  }, function(){
+										    window.location.reload();
+										  });
+										  setTimeout(function() {
+										    window.location.reload();
+										  }, 3000);
+							
 								}
 							})
 							 
@@ -257,12 +355,12 @@ function scheduleAjax() {
 				});
 
 
-				var allPanels = $('.postBox').fadeOut();
+		/*		var allPanels = $('.postBox').fadeOut();
 				$('.accordion').accordion({
 
 					collapsible : true
-				});
-				baseHeight = $('.fa-camera-retro').position().top-83;
+				});*/
+				baseHeight = $('.front').position().top-83;
 
 				mapDay = 1;
 				initMap();
@@ -270,6 +368,191 @@ function scheduleAjax() {
 			
 		}
 	});
+}
+
+
+/***************좋아영**********************/
+function usersrAjax() {
+
+	$.ajax({
+		url : reizenUrl + 'postscript/checkRecm.do?scheduleNo='+scheduleNo,
+		method : 'get',
+		dataType : 'json',
+		success : function(result) {
+			if (result.status != 'success') {
+				console.log('error');
+				return;
+			}
+			console.log(result.scrap);
+			if(result.scrap == 'checked'){
+				$('.fa-calendar-minus-o').css("color","pink").attr('data-active','true');
+			}
+			if(result.recm == 'checked'){
+				$('.heart').css("color","pink").attr('data-active','true');
+			}
+		}
+	}) // ajax
+
+	$('.scheduleButton').on('click',function(){
+
+		var url = null;
+		var toggle = null;
+		if($('.fa-calendar-minus-o').attr('data-active') != 'true'){ // 기 추천 기록이 없다면
+			toggle = false;
+			url =  'postscript/sscrs.do?scheduleNo='+scheduleNo;
+		}else{ // 기 추천 기록이 있다면
+			toggle = true;
+			url = 'postscript/deleteScrap.do?scheduleNo='+scheduleNo;
+		}
+		
+		$.ajax({
+			url : reizenUrl + url,
+			method : 'get',
+			dataType : 'json',
+			success : function(result) {
+				if (result.status != 'success') {
+					console.log('error');
+					return;
+				}
+				if(toggle){
+					$.ajax({
+						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						method : 'post',
+						dataType : 'json',
+						data : {
+							scheduleNo : scheduleNo
+						},
+						success : function(result) {
+							if (result.status == 'success') {
+								var data = result.data;
+							
+								for (var i = 0; i < data.length; i++) {
+								
+								  swal({
+									    title: "스크랩",
+									    text: "취소되셨습니다.",
+									    timer: 3000,
+									    confirmButtonText: "Ok!",
+									  })
+									   $('.fa-calendar-minus-o').text(' '+" "+data[i].schedule.scrapCount);
+									$('.fa-calendar-minus-o').css("color","#ffffff").removeAttr('data-active');
+						
+								}
+
+							}
+						}
+
+					});
+				
+				}else{
+					
+					$.ajax({
+						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						method : 'post',
+						dataType : 'json',
+						data : {
+							scheduleNo : scheduleNo
+						},
+						success : function(result) {
+							if (result.status == 'success') {
+								var data = result.data;
+							
+								for (var i = 0; i < data.length; i++) {
+								
+								  swal({
+									    title: "후기",
+									    text: "스크랩되셨습니다.",
+									    timer: 3000,
+									    confirmButtonText: "Ok!", 
+									  })
+									 $('.fa-calendar-minus-o').text(' '+" "+data[i].schedule.scrapCount);
+									 $('.fa-calendar-minus-o').css("color","pink").attr('data-active','true');
+								}
+
+							}
+						}
+
+					});
+					
+				
+			
+					
+				}
+			}
+		})//ajax
+	});//scrap on click
+	
+	$('.heart').on('click',function(){
+		var url = null;
+		var toggle = null;
+		var $this = $(this);
+		if($(this).attr('data-active') != 'true'){ // 기 추천 기록이 없다면
+			toggle = false;
+			url =  'postscript/srecm.do?scheduleNo='+scheduleNo;
+			
+		}else{ // 기 추천 기록이 있다면
+			toggle = true;
+			url = 'postscript/deleteRecm.do?scheduleNo='+scheduleNo;
+		}
+		$.ajax({
+			url : reizenUrl + url,
+			method : 'get',
+			dataType : 'json',
+			success : function(result) {
+				if (result.status != 'success') { 
+					console.log('error');
+					return;
+				}
+				if(toggle){
+					$.ajax({
+						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						method : 'post',
+						dataType : 'json',
+						data : {
+							scheduleNo : scheduleNo
+						},
+						success : function(result) {
+							if (result.status == 'success') {
+								var data = result.data;
+							
+								for (var i = 0; i < data.length; i++) {
+								$this.text(' '+data[i].schedule.recommandCount);
+								$this.css("color","#ffffff").removeAttr('data-active');
+								}
+
+							}
+						}
+
+					});
+				
+				}else{
+					$.ajax({
+						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						method : 'post',
+						dataType : 'json',
+						data : {
+							scheduleNo : scheduleNo
+						},
+						success : function(result) {
+							if (result.status == 'success') {
+								var data = result.data;
+							
+								for (var i = 0; i < data.length; i++) {
+								$this.text(' '+data[i].schedule.recommandCount)
+								$this.css("color","pink").attr('data-active','true');
+								}
+
+							}
+						}
+
+					});
+					
+					
+				}
+			}
+		})// ajax
+	}); // like on click
+	
 }
 
 /***********************user****************************//*

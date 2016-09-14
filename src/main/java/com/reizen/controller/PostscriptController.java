@@ -44,6 +44,7 @@ public class PostscriptController {
   public String getDataset(int scheduleNo) {
     Map<String, Object> data = new HashMap<String, Object>();
     try {
+      System.out.println("scheduleNo::"+scheduleNo);
       data.put("list", postscriptService.postscript(scheduleNo));
       data.put("status", "success");
     } catch (Exception e) {
@@ -54,6 +55,7 @@ public class PostscriptController {
     return new Gson().toJson(data);
   }
 
+  
   @RequestMapping(path = "checkPostscript", produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String check(@RequestParam int scheduleNo, HttpSession session) {
@@ -83,7 +85,7 @@ public class PostscriptController {
     Map<String, Object> data = new HashMap<String, Object>();
     try {
       int userNo = ((User) session.getAttribute("user")).getUserNo();
-      data.put("status", postscriptService.sscrs(userNo, scheduleNo));
+      postscriptService.sscrs(userNo,scheduleNo);
       data.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
@@ -92,12 +94,89 @@ public class PostscriptController {
     return new Gson().toJson(data);
   }
   
+  @RequestMapping(path = "checkRecm", produces = "application/json;charset=UTF-8")
+  @ResponseBody
+  public String checkRecm(int scheduleNo,HttpSession session) {
+    Map<String, Object> data = new HashMap<String, Object>();
+   
+    int userNo = ((User) session.getAttribute("user")).getUserNo();
+    System.out.println("userNO::::"+userNo);
+    System.out.println();
+  
+    try {
+      data = postscriptService.checkRecm(userNo,scheduleNo);
+      data.put("data",  postscriptService.checkRecm(userNo,scheduleNo));
+      data.put("status", "success");
+    } catch (Exception e) {
+      e.printStackTrace();
+      data.put("status", "failure");
+    }
+    System.out.println("select::::::"+new Gson().toJson(data));
+    return new Gson().toJson(data);
+  }
+
+  
+  
+  @RequestMapping(path="srecm",  produces = "application/json;charset=UTF-8")
+  @ResponseBody
+  public String srecm(int scheduleNo,HttpSession session){
+    Map<String, Object> data = new HashMap<String, Object>();
+    try {
+    System.out.println("scheduleNo :::::"+scheduleNo);
+      int userNo = ((User) session.getAttribute("user")).getUserNo();
+  
+      postscriptService.srecm(userNo,scheduleNo);
+       data.put("status", "success");
+    } catch (Exception e) {
+      e.printStackTrace();
+      data.put("status", "failure");
+    }
+    return new Gson().toJson(data);
+  }
+  
+
+  @RequestMapping(path = "deleteRecm", produces = "application/json;charset=UTF-8")
+  @ResponseBody
+  public String deleteRecm(int scheduleNo,HttpSession session) {
+    Map<String, Object> data = new HashMap<String, Object>();
+
+    try {
+      postscriptService.deleteRecm(scheduleNo);
+      data.put("status", "success");
+    } catch (Exception e) {
+      e.printStackTrace();
+      data.put("status", "failure");
+    }
+    return new Gson().toJson(data);
+  }
+  @RequestMapping(path = "deleteScrap", produces = "application/json;charset=UTF-8")
+  @ResponseBody
+  public String deleteScrap(int scheduleNo) {
+    Map<String, Object> data = new HashMap<String, Object>();
+ 
+    try {
+      System.out.println("delete NO"+scheduleNo);
+      
+      postscriptService.deleteScrap(scheduleNo);
+      data.put("status", "success");
+      System.out.println("data:::::::"+data);
+    } catch (Exception e) {
+      e.printStackTrace();
+      data.put("status", "failure");
+    }
+    return new Gson().toJson(data);
+  }
+  
+
+  
+  
+  
   @RequestMapping(path = "deletePicts", produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String delRecm(int pictureNo) {
     Map<String, Object> data = new HashMap<String, Object>();
     try {
-      
+      System.out.println("delete NO"+pictureNo);
       postscriptService.deletePicts(pictureNo);
       data.put("status", "success");
     } catch (Exception e) {
@@ -106,9 +185,6 @@ public class PostscriptController {
     }
     return new Gson().toJson(data);
   }
-  
-  
-  
   
   @RequestMapping(path = "userPost", produces = "application/json;charset=UTF-8")
   @ResponseBody
