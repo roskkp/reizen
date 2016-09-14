@@ -247,7 +247,6 @@ function listAjax(scheduleNo, day){
 }
 
 function deleteScheduleAjax(scheduleNo){
-	console.log(reizenUrl);
 	$.ajax({
 		url : reizenUrl+'dashboard/removeplan.do?scdNo='+scheduleNo,
 		method : 'GET',
@@ -373,7 +372,6 @@ function dataTheorem(){
 
 function aroundSearch(mapX,mapY){
 	$('#draggable').empty();
-	console.log(mapX+'ddd'+mapY);
 	$.ajax({
 		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1',
 		method: 'GET',
@@ -403,7 +401,6 @@ function aroundSearch(mapX,mapY){
 					pointMap(mapX, mapY, maps);
 					infinityScroll = false;
 				}else{
-					
 					swal("데이터가 없어요 :(", "", "error"); 
 					return ;
 				}

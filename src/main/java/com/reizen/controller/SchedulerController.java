@@ -301,7 +301,7 @@ public class SchedulerController {
   @ResponseBody
   public String bestRoute(@RequestParam("data") org.json.JSONArray data ){
     List<String> dataSet = new ArrayList<>();
-    List<Map<String, Double>> list = new ArrayList<>();
+    Map<String,Map<String, Double>> list = new HashMap<>();
     Map<String, Double> start = new HashMap<>();
     Map<String, Double> root;
     for (int i = 0; i < data.length()-1; i++) {
@@ -320,17 +320,14 @@ public class SchedulerController {
           }
         }
       }
-      if( i != 0) list.add(root);
+      if( i != 0) list.put("t"+i,root);
     }
-    
     String targets = "";
     for (String tn : dataSet) {
       targets += tn;
     }
-
     String path = BestRoute.routeOptimum(list, start, targets).get("path").toString();
     String[] paths = path.split("t");
-    
     List<JSONObject> resultList = new ArrayList<JSONObject>();
     resultList.add(((JSONObject)data.get(0)));
     for (String string : paths) {
@@ -338,8 +335,6 @@ public class SchedulerController {
         resultList.add(((JSONObject)data.get(Integer.parseInt(string))));
       }
     }
-    System.out.println("path : "+path);
-    System.out.println("result : "+resultList);
     try {
       result.put("data", resultList);
       result.put("seq",path);

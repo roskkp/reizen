@@ -98,7 +98,6 @@ $(function() {
 								date=result[0].time;
 								title=result[0].title;
 								total = result.length;
-								console.log(date,title);
 							});
 							listAjax(scheduleNo, 1);
 						}
@@ -137,6 +136,7 @@ $(function() {
 		});
 		contentId = (location.href.substr(location.href.lastIndexOf('=') + 1)).replace("#","");
 		$('#updateDay').on('hide.bs.modal', function (){
+			swal("add??")
 			$('#updateTime').modal('show');
 			$('#btnTimeSubmit').off('click').on('click', function(){
 				var hour = $('#updateTime input:first').val();
@@ -144,9 +144,7 @@ $(function() {
 					if( this.id=='btnTimeSubmit'){
 						var min = $('#updateMin').val();
 						var time = hour+":"+min;
-
 						updateTime();		
-
 						addAjax(contentId, date, day, time, scheduleNo);
 						getTotal(scheduleNo);
 						return;
@@ -202,72 +200,55 @@ $(function() {
 		revert: true,
 		containment : "#sortable",
 		update : function(event, ui) {
+			// drag update
 			if(ui.item.hasClass('dropped')){
 				$('#updateTime').modal('show');
 				$('#btnTimeSubmit').off('click').on('click', function(){
-					var hour = $('#updateHour option:selected').val()
-					if( hour >= 0 && hour <= 24 ){ // 시간 검증
-						var min = $('#updateMin option:selected').val();
-						var time = hour+":"+min;
-						ui.item.find('span.scheduleTime').text(time);
-
-						contentId = ui.item.attr('data-contentid');
-						date = $('#daysInfo').attr('data-date');
-						day = $('#daysInfo').attr('data-day');
-
-						updateTime();		
-
-						return;
-					}else{
-						swal({
-							 title: "잘못된 시간입니다.",   
-							 text: "시간을 다시 입력해주세요.",   
-							 type: "error",   
-							 showCancelButton: false,   
-							 confirmButtonColor: "#DD6B55",   
-							 confirmButtonText: "확인",   
-							 closeOnConfirm: true, 
-							 function(){
-								 $('#selectTime').modal('show');
-							 }
+					var time = $('#updateHour option:selected').val()+":"+$('#updateMin option:selected').val()
+					$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
+							if(result.status=='exist'){
+								swal({
+									 title: "잘못된 시간입니다.",   
+									 text: "시간을 다시 입력해주세요.",   
+									 type: "error",   
+									 showCancelButton: false,   
+									 confirmButtonColor: "#DD6B55",   
+									 confirmButtonText: "확인",   
+									 closeOnConfirm: true, 
+									 function(){
+										 $('#selectTime').modal('show');
+									 }
+								});
+								listAjax(scheduleNo, day);
+							} else {
+								ui.item.find('span.scheduleTime').text(time);
+								contentId = ui.item.attr('data-contentid');
+								date = $('#daysInfo').attr('data-date');
+								day = $('#daysInfo').attr('data-day');
+								updateTime();		
+							} //else
 						});
-					}
 				});	// btn click
-			}else if(!ui.item.hasClass('dropped')) {
+				$('.adm-cancel').off('click').on('click',function(){
+					listAjax(scheduleNo, day);
+				})
+			}
+			// drag add
+			else if(!ui.item.hasClass('dropped')) {
 				ui.item.addClass('dropped');
-				
 				$('#selectTime').modal('show');
 				$('#s-btnTimeSubmit').off('click').on('click', function(){
-					var hour = $('#s-updateHour option:selected').val()
-
-					if ( hour >= 0 && hour <= 24){
-						var min = $('#s-updateMin option:selected').val();
-						var time = hour+":"+min;
-						contentId = ui.item.attr('data-contentid');
-						date = $('#daysInfo').attr('data-date');
-						day = $('#daysInfo').attr('data-day');
-
-						addAjax(contentId, date, day, time, scheduleNo);
-						$('div#scheduleWrap').removeClass('wrapUp').addClass('wrapDown');
-						$('article#progress').removeClass('progressUp').addClass('progressDown');
-						return;
-					}else{
-						swal({
-							 title: "잘못된 시간입니다.",   
-							 text: "시간을 다시 입력해주세요.",   
-							 type: "error",   
-							 showCancelButton: false,   
-							 confirmButtonColor: "#DD6B55",   
-							 confirmButtonText: "확인",   
-							 closeOnConfirm: true, 
-							 function(){
-								 $('#selectTime').modal('show')
-							 }
-						});
-					}
+					var time = $('#s-updateHour option:selected').val()+":"+$('#s-updateMin option:selected').val()
+					contentId = ui.item.attr('data-contentid');
+					date = $('#daysInfo').attr('data-date');
+					day = $('#daysInfo').attr('data-day');
+					addAjax(contentId, date, day, time, scheduleNo);
+					$('div#scheduleWrap').removeClass('wrapUp').addClass('wrapDown');
+					$('article#progress').removeClass('progressUp').addClass('progressDown');
+					return;
 				});
 				$('.adm-cancel').on('click', function(){
-					ui.item.remove();
+					listAjax(scheduleNo, day);
 				});
 			}	// check class dropped
 		}	// update 
@@ -349,23 +330,16 @@ $(function() {
 
 	$('#btnAdd').off('click').on('click', function(){
 		date = $('#daysInfo').attr('data-date');
-
 		var addDay = new Date(date);
-
 		addDay.setDate(addDay.getDate()+1);	
 		date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
 		$('#daysInfo').attr('data-date', date);
 		day++;
 		$('#daysInfo').attr('data-day', day);
 		$('#daysInfo').text('DAY'+day);
-
-		console.log('추가 할 : '+scheduleNo+', '+day);
 		updateDayList('add', scheduleNo, day);
-
-		console.log('리스트보여줄  : '+scheduleNo+', '+day);
 		listAjax(scheduleNo, day);
 		total++;
-		console.log('total : '+total);
 	});	// btnAdd
 
 	$('#btnDelete').off('click').on('click', function(){
@@ -373,24 +347,18 @@ $(function() {
 			sweetAlert("INFO","삭제할 데이터가 없어요 :( ","info");
 			return;
 		}
-		console.log('삭제 할 : '+scheduleNo+', '+day);
 		deleteDayAjax(scheduleNo, day);
 		updateDayList('min', scheduleNo, day);
 		date = $('#daysInfo').attr('data-date');
-
 		var addDay = new Date(date);
-
 		addDay.setDate(addDay.getDate()-1);	
 		date = addDay.getFullYear()+'-'+(addDay.getMonth()+1)+'-'+addDay.getDate();
 		$('#daysInfo').attr('data-date', date);
 		day--;
 		$('#daysInfo').attr('data-day', day);
 		$('#daysInfo').text('DAY'+day);
-
-		console.log('리스트보여줄  : '+scheduleNo+', '+day);
 		listAjax(scheduleNo, day);
 		total--;
-		console.log('total : '+total);
 	});	// btnDelete
 
 	$('#btnPrev').off('click').on('click', function(){
@@ -520,7 +488,6 @@ $(function() {
 			 confirmButtonText: "Yes, delete it!",   
 			 closeOnConfirm: false}, 
 			 function(){
-				 console.log(routeNo);
 				 removeRouteAjax(routeNo)
 				 listAjax(scheduleNo, day);
 			 });
@@ -567,7 +534,6 @@ $(function() {
 		var date = $('.adm-formMargin option:selected').val();
 		var day = $('.adm-formMargin option:selected').data('day');
 		var routeNo=$(this).data('routeno');
-		console.log(time,date,day,contentId,routeNo);
 		if(time==null || date ==null || day==null){ // 입력값 검증 
 			swal("Failed!", "모든 정보를 기입해 주세요", "error"); 
 			return;
@@ -580,7 +546,6 @@ $(function() {
 	$('#btnLocation').off('click').on('click', function(){
 		$.getJSON(reizenUrl+'location/scrapSpotList.do', function(response){
 			if(response.status=='success'){
-				console.log(response.data);
 				if( response.data[0] != null ){
 					var source = $('#searchResult').text();
 					var template = Handlebars.compile(source);
@@ -633,7 +598,6 @@ function updateTime(){
 	for(var i=0; i<$time.length; i++){
 		times = $time.eq(i).text();
 		routeNo = $('#sortable > li').eq(i).attr('data-routeno');
-		console.log(times+", "+routeNo);
 		data.push({
 			time : times,
 			routeNo : routeNo
@@ -920,7 +884,6 @@ function baseMap(){
 
 	var sortList=[];
 	for(var i=0; i<spots.length-1; i++){
-		console.log(i+' : '+getDistance(spots[i], spots[i+1]));
 	}
 
 }
@@ -979,10 +942,6 @@ function bestRouteMap(mapId){
 	spotPath.setMap(map);
 
 	var sortList=[];
-	for(var i=0; i<spots.length-1; i++){
-		console.log(i+' : '+getDistance(spots[i], spots[i+1]));
-	}
-
 }
 
 

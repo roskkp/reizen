@@ -19,6 +19,6 @@ public interface MemoService {
   public void insertMemoAlarm(int cid);
 
   public List<Map<String, Object>> checkAlarm(String numbers);
-  
-  public void deleteMemoAlarm(Map<String, Object> params);
+
+  public void deleteMemoAlarm(int rno);
 }

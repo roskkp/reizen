@@ -115,7 +115,6 @@ function serchInfo(path , cid) {
 					if ( key == 'img' && i == 1 ) {
 						$('.info-img1').attr("src",value.value);
 					} else if ( key == 'img' && i > 1) {
-						console.log('img'+i+' : '+value.value)
 						$('.carousel-inner').append('<div class="item delItem"><img class="info-img'+i+'" src="'+value.value+'" alt="'+i+'"><!-- 이미지'+i+' --><div class="carousel-caption"></div></div>')
 					}
 				})
@@ -133,8 +132,6 @@ function searchAjax(){
 	}	
 	
 	var date = $('span.date').text().replace(/[.]/gi, '-');
-	
-	console.log('search debug: '+keyword+', '+areaCode+', '+category);
 	
 	$.ajax({
 		url: reizenUrl+"location/searchkeyword.do",
@@ -176,7 +173,6 @@ function addRouteAjax(contentId,time){
 			if (result.status != 'success') {
 				console.log('일정 추가 에러');
 			}
-			console.log('일정 추가 성공');
 			listAjax($('.location'));
 		}
 	})
@@ -341,7 +337,6 @@ function getWeather(lat, lon){
 }
 	
 function aroundSearch(){
-	console.log(centerLng,centerLat,typeId,size,page);
 	$.ajax({
 		url : reizenUrl+'location/aroundList.do?mapX='+centerLng+'&mapY='+centerLat+'&tid='+typeId+'&size='+size+'&page='+page,
 		method: 'GET',

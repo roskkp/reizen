@@ -228,6 +228,14 @@ public class UserController {
         result.put("dashNo", user.getDashNo());
       }
       result.put("status", "success");
+      if (session.getAttribute("user") != null) {
+        User user = (User)session.getAttribute("user");
+        result.put("nickName",  user.getNickName());
+        result.put("dashNo", user.getDashNo());
+        result.put("status", "success");
+      } else {
+        result.put("staus", "no session");
+      }
     }catch (Exception e) {
       e.printStackTrace();
       result.put("status", "failure");

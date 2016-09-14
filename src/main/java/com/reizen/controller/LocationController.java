@@ -370,6 +370,7 @@ public class LocationController {
   @ResponseBody
   public String checkAlarm(@RequestParam("data") String routeNumbers){
     Map<String, Object> result = new HashMap<String, Object>();
+    System.out.println(routeNumbers);
     try {
       if (!routeNumbers.equals("[]")) {
         result.put("data", memoService.checkAlarm(routeNumbers.replace("[", " ").replace("]", " ")));  
@@ -384,13 +385,10 @@ public class LocationController {
   
   @RequestMapping(path="clearMemoAlarm")
   @ResponseBody
-  public String clearMemoAlarm(HttpSession session, int routeNo){
+  public String clearMemoAlarm(int routeNo){
     Map<String, Object> result = new HashMap<String, Object>();
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("rno", routeNo);
-    params.put("uno", ((User)session.getAttribute("user")).getUserNo());
     try {
-      memoService.deleteMemoAlarm(params);
+      memoService.deleteMemoAlarm(routeNo);
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
@@ -398,4 +396,5 @@ public class LocationController {
     }
     return new Gson().toJson(result);
   }
+  
 }

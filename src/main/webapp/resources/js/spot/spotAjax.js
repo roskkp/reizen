@@ -1,5 +1,5 @@
 //spot 초기화면 실행시...
-function serchInfo(path, cid) {
+function searchInfo(path, cid) {
 	var sparqlPath = 'http://data.visitkorea.or.kr/sparql?format=json&query='+encodeURIComponent(path);
 	$.ajax({
 		url : reizenUrl + 'location/searchDetail.do',
@@ -38,6 +38,7 @@ function serchInfo(path, cid) {
 					if (key == 'img' && i == 1) {
 						$('.info-img1').attr("src",value.value);
 					} else if (key == 'img'	&& i > 1) {
+						console.log("detail img : "+value.value);
 						$('.carousel-inner').append('<div class="item"><img class="info-img'+i+'" src="'+value.value+'" alt="'+i+'"><!-- 이미지'+i+' --><div class="carousel-caption"></div></div>');
 					}
 				})
@@ -45,7 +46,7 @@ function serchInfo(path, cid) {
 
 			if ($('.info-img1').attr("src") == '') {
 				$('.info-img1').attr("src",result.subData.firstImage);
-				if (result.subData.firstImage2 != '' ) {
+				if (typeof(result.subData.firstImage2) != 'undefined' ) {
 					$('.carousel-inner').append('<div class="item"><img class="info-img2" src="'+result.subData.firstImage2+'" alt="2"><!-- 이미지2 --><div class="carousel-caption"></div></div>');
 				}
 			}
@@ -57,7 +58,6 @@ function serchInfo(path, cid) {
 				$(this).children().first().animate({top:'0',opacity:'0'});
 				$(this).children().last().removeClass('dash-hover');
 			})
-
 		}
 	})
 }
@@ -116,7 +116,7 @@ function searchAround(tid){
 			if (result.status != 'success') {
 				console.log('error');
 				return;
-			};
+			}
 			
 			i=0; // 탭 마다 처음 위치에 포스트를 넣기 위해 
 			result.data.forEach(function(value,index){
