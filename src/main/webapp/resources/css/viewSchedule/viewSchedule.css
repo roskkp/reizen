@@ -965,7 +965,7 @@ h1 {
 }
 .price-btn {
     border: 1px solid #ffffff;
-    background: #cac9dc;
+    background: #85b9ef;
     padding: 4px 3px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
@@ -977,7 +977,7 @@ h1 {
    }
 .tran{
   border: 1px solid #ffffff;
-    background: #c8c8dc;
+    background: #85b9ef;
     padding: 4px 3px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
@@ -1011,7 +1011,7 @@ h1 {
 }
 .priceTrans {
     color: white;
-    width: 30%;
+    width: 35%;
     margin-left: 6%;
     /* margin-right: -8px; */
     margin-top: 1%;
