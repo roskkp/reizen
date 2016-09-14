@@ -377,7 +377,7 @@ function usersrAjax() {
 									    timer: 3000,
 									    confirmButtonText: "Ok!",
 									  })
-									   $('.fa-calendar-minus-o').text(' '+" "+data[i].schedule.scrapCount);
+									   $('.fa-calendar-minus-o').next().text(' '+" "+data[i].schedule.scrapCount);
 									$('.fa-calendar-minus-o').css("color","#ffffff").removeAttr('data-active');
 						
 								}
@@ -408,7 +408,7 @@ function usersrAjax() {
 									    timer: 3000,
 									    confirmButtonText: "Ok!", 
 									  })
-									 $('.fa-calendar-minus-o').text(' '+" "+data[i].schedule.scrapCount);
+									 $('.fa-calendar-minus-o').next().text(' '+" "+data[i].schedule.scrapCount);
 									 $('.fa-calendar-minus-o').css("color","pink").attr('data-active','true');
 								}
 
