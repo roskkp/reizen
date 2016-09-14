@@ -98,7 +98,6 @@ public class UserController {
         totalRecommand += sd.getRecommandCount();
         totalScrap += sd.getScrapCount();
       }
-      result.put("jsid", httpSession.getId());
       result.put("totalRecommand", totalRecommand);
       result.put("totalScrap", totalScrap);
       result.put("status", "success");

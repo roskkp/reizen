@@ -69,10 +69,10 @@
     values (#{uno}, #{rno})
   </insert>
   
-  <delete id="deleteMemoAlarm" parameterType="map">
+  <delete id="deleteMemoAlarm" parameterType="int">
     delete
     from malm
-    where uno = #{uno} and rno = #{rno}
+    where rno = #{rno}
   </delete>
   
 </mapper>

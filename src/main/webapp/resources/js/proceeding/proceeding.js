@@ -93,8 +93,7 @@ var aroundCount;
 var title=null;
 var beforeFilter;
 $(window).resize(function() {
-
-	var size = $('#carousel-example-generic').css('width').replace('px','');
+//	var size = $('#carousel-example-generic').css('width').replace('px','');
 	if (size != '0') {
 		var imgWidth = size-46;
 		$('.carousel-inner').css('margin-left',(imgWidth/2)*-1+'px');
@@ -158,7 +157,10 @@ function load() {
 			}
 		});		
 		
-		setInterval(checkAlarm(), 1000*60*3);
+		setInterval(() => {
+			checkAlarm()
+		}, 1000*60*1);
+		
 		(function ($) { //좌측 카드 드래그 document ready 가 아님 
 			$("#sortable").sortable({
 				revert : true,
@@ -186,6 +188,7 @@ function load() {
 					$('#btnTimeSubmit').off('click').on('click', function(){
 						var $target = ui.item;
 						var contentId = $target.find('div.panel-heading').data('contentid');
+						console.log('currentDay : '+currentDay);
 						var time = $('#updateHour option:selected').val()+':'+$('#updateMin option:selected').val();
 						$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+currentDay+'&time='+time, function(result){
 							if(result.status=='exist'){

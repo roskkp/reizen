@@ -27,6 +27,7 @@ public class AjaxFilter implements Filter{
       throws IOException, ServletException {
     HttpServletResponse httpResponse = (HttpServletResponse)response;
     httpResponse.addHeader("Access-Control-Allow-Origin", "*");
+    httpResponse.addHeader("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
     
     chain.doFilter(request, response);
   }
