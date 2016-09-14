@@ -98,7 +98,8 @@ function userScheduleAjax(){
 					console.log('일정 불러오기 실패');
 					return;
 				}
-
+				alert('test')
+				console.log(result)
 				$('ol.timeline').append(template(result));
 				
 				baseHeight = $('.front').position().top-83;
@@ -206,6 +207,8 @@ function scheduleAjax() {
 						list[i].check = 'true';
 					}
 				}
+				alert('test')
+				console.log(result)
 				$('ol.timeline').append(template(result));
 				for (var i = 0; i < $('.tran').length; i++) {
 					switch ($($('.tran')[i]).attr('data-trans')) {

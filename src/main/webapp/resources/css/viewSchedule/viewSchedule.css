@@ -40,10 +40,9 @@ body {
     height: 20px;
     float: right;
     margin-top: 8px;
-    font-weight: 800;
     /* -webkit-border-radius: 6px; */
-    -moz-border-radius: 6px;
-    border-radius: 6px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     color: #ffffff;
     font-size: 13px;
     text-decoration: none;

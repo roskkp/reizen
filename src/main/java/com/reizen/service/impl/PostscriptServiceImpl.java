@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.reizen.dao.PostscriptDao;
 import com.reizen.domain.Post;
-import com.reizen.domain.ScheduleScrap;
 import com.reizen.service.PostscriptService;
 
 
