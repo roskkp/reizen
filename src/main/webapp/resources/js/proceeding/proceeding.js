@@ -104,7 +104,7 @@ $(window).resize(function() {
 }).resize();
 
 
-function init(){ // 변수 초기화 
+function init(){ // 변수 초기화
 	$('#weather').load("weather.html");
 	list = new Array();
 	cardSource = $('#cardBox').text();
@@ -125,7 +125,7 @@ function init(){ // 변수 초기화
 	}
 }
 
-//시간 업데이터 function 
+// 시간 업데이터 function
 function updateTime(){
 	var $time = $('#sortable li span.time');
 	var data=[];
@@ -144,10 +144,10 @@ function updateTime(){
 	indexAjax(data);
 }
 
-// 접근 허용 
+// 접근 허용
 function load() {
 		init(); // 전역변수 초기화
-		listAjax(); // 카드 리스트 호출 
+		listAjax(); // 카드 리스트 호출
 		$(document).on('click','.panel-heading',function() { // 좌측 카드 클릭 이벤트
 			if (cancelFollow) {
 				var scale = $($('.events-wrapper .events ol li a')[$(this).attr("data-index")-1]).attr("data-scale");
@@ -159,7 +159,7 @@ function load() {
 		});		
 		
 		setInterval(checkAlarm(), 1000*60*3);
-		(function ($) { //좌측 카드 드래그 document ready 가 아님 
+		(function ($) { // 좌측 카드 드래그 document ready 가 아님
 			$("#sortable").sortable({
 				revert : true,
 				start : function(e, ui) {
@@ -172,7 +172,8 @@ function load() {
 
 					$('#updateHour').empty();
 					$('.adm-form-group').show();
-					for(var i=0; i<24; i++){ // 00시 ~ 23시30분 까지 지원 *db가 24시를 거부합니다.
+					for(var i=0; i<24; i++){ // 00시 ~ 23시30분 까지 지원 *db가 24시를
+												// 거부합니다.
 						if(i<10){
 							$('#updateHour').append('<option value='+'0'+i+'>'+'0'+i+'</option>');
 							continue;
@@ -182,7 +183,7 @@ function load() {
 					$('#btnTimeSubmit').text('수정');
 					$('#timeModal').modal('show').on('hidden.bs.modal',function(e){
 						updateTime();
-					}); // 모달 비활성화시 발생하는 이벤트, 아래의 캔슬버튼 처리 이걸로 통일함 
+					}); // 모달 비활성화시 발생하는 이벤트, 아래의 캔슬버튼 처리 이걸로 통일함
 					$('#btnTimeSubmit').off('click').on('click', function(){
 						var $target = ui.item;
 						var contentId = $target.find('div.panel-heading').data('contentid');
@@ -197,29 +198,26 @@ function load() {
 								updateTime();
 								$('#timeModal, #insertRoute').modal('hide');
 								$('#btnTimeSubmit').text('추가');
-							} //else
+							} // else
 						});
 					});
-					/*$('#btnSubmit, #btnCancel').off('click').on('click', function(){
-						var hour = $('#updateTime input:first').val();
-						if ( hour >= 1 && hour <= 24){
-
-							if(this.id == 'btnSubmit'){
-
-								var min = $('#updateMin').val();
-								var time = hour+":"+min;
-								var list = ui.item;
-								list.find('span.time').text(time);
-
-								updateTime();
-								return;
-							}
-						} swal("Time Error", "올바른 시간을 입력하세요", "warning");
-					});*/
+					/*
+					 * $('#btnSubmit, #btnCancel').off('click').on('click',
+					 * function(){ var hour = $('#updateTime
+					 * input:first').val(); if ( hour >= 1 && hour <= 24){
+					 * 
+					 * if(this.id == 'btnSubmit'){
+					 * 
+					 * var min = $('#updateMin').val(); var time = hour+":"+min;
+					 * var list = ui.item; list.find('span.time').text(time);
+					 * 
+					 * updateTime(); return; } } swal("Time Error", "올바른 시간을
+					 * 입력하세요", "warning"); });
+					 */
 				}
 			});
 		})(jQuery);
-		$("ul, li").disableSelection();    //무슨 기능 하는지 모르겠음 
+		$("ul, li").disableSelection();    // 무슨 기능 하는지 모르겠음
 		
 		$(document).on('click','.memoBtn',function(e){		// 메모버튼 클릭 이벤트 리스너
 			$panelHeading = $(this).parents('.panel-heading');
@@ -259,7 +257,7 @@ function load() {
 			e.preventDefault();
 		});
 
-		$(document).on('click', '.moveDay', function(){ // 날짜 이동 버튼 이벤트 리스너 
+		$(document).on('click', '.moveDay', function(){ // 날짜 이동 버튼 이벤트 리스너
 			var day = $(this).attr('data-day');
 			if ( day >= 1 && day <= totalPage){
 				if( $(this).attr('data-pre') == $('#btn_prev').attr('data-pre')){
@@ -277,7 +275,7 @@ function load() {
 			}
 		});
 
-		// 경로 버튼 클릭 이벤트 
+		// 경로 버튼 클릭 이벤트
 		$(document).on('click', 'a.btn_way', function(){
 
 			var $self = $(this).parent('div').parent('li');
@@ -323,7 +321,7 @@ function load() {
 			});
 		});
 
-	/**		검색 조건 처리 		**/
+	/** 검색 조건 처리 * */
 	$radio1 = $('#inlineRadio1');
 	$radio2 = $('#inlineRadio2');
 	$citySelect = $('#citySelect');
@@ -339,7 +337,7 @@ function load() {
 		$citySelect.attr('disabled', false);
 	});
 		
-	/********** search *********/
+	/** ******** search ******** */
 	$('#searchInput').on('keydown', function(event){
 		if( event.keyCode == 13 ){
 			$('ul.resultList').removeClass('resultListUp');
@@ -371,7 +369,7 @@ function load() {
 			aroundCountAjax();
 			$('ul.resultList').addClass('resultListUp');
 		} // if page==1
-	}); //btnRadius
+	}); // btnRadius
 	
 	$('.resultWrap').off('click').on('click', 'a#btnPrev, a#btnNext', function(){
 		var btn = $(this).attr('id');
@@ -471,7 +469,7 @@ function load() {
 				} else {
 					addRouteAjax(contentId,time);
 					$('#timeModal, #insertRoute').modal('hide');
-				} //else
+				} // else
 			});
 		});
 	}).on('click', 'a.mapBtn', function(){                // map버튼

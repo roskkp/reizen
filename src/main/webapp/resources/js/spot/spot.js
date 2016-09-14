@@ -110,7 +110,7 @@ function init() {
 		break;
 	}
 
-	serchInfo(path, contentId);
+	searchInfo(path, contentId);
 	
 	scheduleData(contentId);
 	
@@ -144,7 +144,6 @@ function initMap() {
 	});
 	
 	var label = $('.spot-name').text().trim();
-	console.log(label)
 	var marker = new google.maps.Marker({
 		position: spot,
 		map: map,

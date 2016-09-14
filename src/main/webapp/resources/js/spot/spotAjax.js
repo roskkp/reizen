@@ -1,5 +1,5 @@
 //spot 초기화면 실행시...
-function serchInfo(path, cid) {
+function searchInfo(path, cid) {
 	var sparqlPath = 'http://data.visitkorea.or.kr/sparql?format=json&query='+encodeURIComponent(path);
 	$.ajax({
 		url : reizenUrl + 'location/searchDetail.do',
@@ -57,7 +57,6 @@ function serchInfo(path, cid) {
 				$(this).children().first().animate({top:'0',opacity:'0'});
 				$(this).children().last().removeClass('dash-hover');
 			})
-
 		}
 	})
 }
@@ -116,7 +115,7 @@ function searchAround(tid){
 			if (result.status != 'success') {
 				console.log('error');
 				return;
-			};
+			}
 			
 			i=0; // 탭 마다 처음 위치에 포스트를 넣기 위해 
 			result.data.forEach(function(value,index){
