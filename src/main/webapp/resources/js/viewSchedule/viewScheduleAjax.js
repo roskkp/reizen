@@ -19,8 +19,8 @@ function getUser(){
 					$('.username').text(data[i].schedule.user.nickName);
 					$('.description').text(time+"~"+timed);
 					$('.bio').text(data[i].schedule.title);
-					$('.fa-calendar-minus-o').text(" "+data[i].schedule.scrapCount);
-					$('.heart').text(" "+data[i].schedule.recommandCount);
+					$('.fa-calendar-minus-o').next().text(" "+data[i].schedule.scrapCount);
+					$('.heart').next().text(" "+data[i].schedule.recommandCount);
 					if (data[i].schedule.user.thumbNail != null) {
 						$('.avatar').attr("src","/resources/images/thumbnail/"+ data[i].schedule.user.thumbNail);
 					}
@@ -36,7 +36,6 @@ function getUser(){
 }
 /****************getPictures********************/
 function getPictures(){
-	alert('들어왔나여?')
 	$.ajax({
 		url : reizenUrl + "postscript/selectPict.do",
 		method : 'post',
@@ -46,17 +45,11 @@ function getPictures(){
 		},
 		success : function(result) {
 			if (result.status == 'success') {
-				alert('들어왔나여?')
-				
 				var data = result.data;
 			for (var i = 0; i < data.length; i++) {
-				/*$('#updatefile').css({'background' : 'url(\''
-					+'/resources/images/viewSchedule/' +data[i].picturePath});*/
 				$('#updatePrice').val(data[i].price);
 				$(".select").val(data[i].transportation);
-				/*$('.select-options').attr(data[i].transportation);*/
 				$('.cont').val(data[i].content);
-				
 				}
 			}
 		}
@@ -108,17 +101,6 @@ function userScheduleAjax(){
 
 				$('ol.timeline').append(template(result));
 				
-			
-			/*	
-				var allPanels = $('.postLength').hide();
-				$('.accordion').on('click',function(){
-					alert('ds');
-					$('.postLength').show();
-				});*/
-				/*$('.accordion').accordion({
-
-					collapsible : true
-				});*/
 				baseHeight = $('.front').position().top-83;
 
 				mapDay = 1;
@@ -171,10 +153,7 @@ function userScheduleAjax(){
 						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
 						break;
 					}
-					
-					
 				}
-				
 				for (var i = 0; i < $('.tran').length; i++) {
 						console.log($($('.tran')[i]).attr('data-trans'));
 						switch ($($('.tran')[i]).attr('data-trans')) {
@@ -190,31 +169,20 @@ function userScheduleAjax(){
 						case '4':
 							$($('.tran')[i]).text('이동수단 : 비행기')
 							break;
-						
 					}
-					}
-				
-				
+				}
 				var size = $('.scriptImage').length;
 				for (var i = size-1; i >= 0; i--) {
 					if($($('.scriptImage')[i]).attr('src') == "/resources/images/viewSchedule/"){
-						console.log('여기들어왔나여?');
 						$($('.scriptImage')[i]).remove();
 					}
 				}
-				
 				$('.accordion').hide();
-
-				$(".sho").on('click', function() {
+				$(".show").on('click', function() {
 					$(this).parents('article').next().toggle(500);
 				});
 		}
-	
-	
-	
-	
 	});
-
 }
 
 /** ************ 일정보기 ************* */
@@ -237,34 +205,25 @@ function scheduleAjax() {
 						console.log('null check')
 						list[i].check = 'true';
 					}
-					
-				
 				}
-					
-		
 				$('ol.timeline').append(template(result));
-				
-		
-				
-					/*for(var i=0; i<list.length; i++){*/
-					for (var i = 0; i < $('.tran').length; i++) {
-						switch ($($('.tran')[i]).attr('data-trans')) {
-						case '1':
-							$($('.tran')[i]).text('이동수단 : 자동차')
-							break;
-						case '2':
-							$($('.tran')[i]).text('이동수단 : 기차')
-							break;
-						case '3':
-							$($('.tran')[i]).text('이동수단 : 버스')
-							break;
-						case '4':
-							$($('.tran')[i]).text('이동수단 : 비행기')
-							break;
-						
-					}
-					}
+				for (var i = 0; i < $('.tran').length; i++) {
+					switch ($($('.tran')[i]).attr('data-trans')) {
+					case '1':
+						$($('.tran')[i]).text('이동수단 : 자동차')
+						break;
+					case '2':
+						$($('.tran')[i]).text('이동수단 : 기차')
+						break;
+					case '3':
+						$($('.tran')[i]).text('이동수단 : 버스')
+						break;
+					case '4':
+						$($('.tran')[i]).text('이동수단 : 비행기')
+						break;
 					
+					}
+				}
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
 					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
 					case 'A01':
@@ -293,7 +252,6 @@ function scheduleAjax() {
 						break;
 					}
 					
-					
 				}
 					
 				var size = $('.scriptImage').length;
@@ -302,16 +260,13 @@ function scheduleAjax() {
 						$($('.scriptImage')[i]).remove();
 					}
 				}
+				$('.accordion').hide();
 
-									
-					$('.accordion').hide();
-
-					$(".sho").on('click', function() {
-						$(this).parents('article').next().toggle(500);
-					});
+				$(".show").on('click', function() {
+					$(this).parents('article').next().toggle(500);
+				});
 				
 				$(document).on('click', '.del', function(e) {
-					alert('dsada');// 삭제버튼 이벤트 
 					var $this= $(this);
 					swal({   
 						title: "Are you sure?",   
@@ -322,7 +277,6 @@ function scheduleAjax() {
 						confirmButtonText: "Yes, delete it!",   
 						closeOnConfirm: false }, 
 						function(){
-							alert('dsad');
 							$.ajax({
 								url : reizenUrl + 'postscript/deletePicts.do',
 								dataType : 'json',
@@ -353,19 +307,9 @@ function scheduleAjax() {
 							 
 					});
 				});
-
-
-		/*		var allPanels = $('.postBox').fadeOut();
-				$('.accordion').accordion({
-
-					collapsible : true
-				});*/
 				baseHeight = $('.front').position().top-83;
-
 				mapDay = 1;
-				initMap();
-				
-			
+				initMap()
 		}
 	});
 }
@@ -394,7 +338,6 @@ function usersrAjax() {
 	}) // ajax
 
 	$('.scheduleButton').on('click',function(){
-
 		var url = null;
 		var toggle = null;
 		if($('.fa-calendar-minus-o').attr('data-active') != 'true'){ // 기 추천 기록이 없다면
@@ -473,10 +416,6 @@ function usersrAjax() {
 						}
 
 					});
-					
-				
-			
-					
 				}
 			}
 		})//ajax
@@ -513,18 +452,14 @@ function usersrAjax() {
 						},
 						success : function(result) {
 							if (result.status == 'success') {
-								var data = result.data;
-							
+								var data = result.data
 								for (var i = 0; i < data.length; i++) {
-								$this.text(' '+data[i].schedule.recommandCount);
+								$this.next().text(' '+data[i].schedule.recommandCount);
 								$this.css("color","#ffffff").removeAttr('data-active');
 								}
-
 							}
 						}
-
 					});
-				
 				}else{
 					$.ajax({
 						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
@@ -536,64 +471,15 @@ function usersrAjax() {
 						success : function(result) {
 							if (result.status == 'success') {
 								var data = result.data;
-							
 								for (var i = 0; i < data.length; i++) {
-								$this.text(' '+data[i].schedule.recommandCount)
+								$this.next().text(' '+data[i].schedule.recommandCount)
 								$this.css("color","pink").attr('data-active','true');
 								}
-
 							}
 						}
-
 					});
-					
-					
 				}
 			}
 		})// ajax
 	}); // like on click
-	
 }
-
-/***********************user****************************//*
-function getUser(){
-	$.ajax({
-		url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
-		method : 'post',
-		dataType : 'json',
-		data : {
-			scheduleNo : scheduleNo
-		},
-		success : function(result) {
-			if (result.status == 'success') {
-				var data = result.data;
-			}
-		}
-	})
-}
-*/
-
-/**********************post*******************************//*
-function addPostAjax() {
-	$.ajax({
-		url : reizenUrl + 'postscript/addPost.do',
-		dataType : 'json',
-		data : {
-			scheduleNo : scheduleNo,
-			picturePath : $('#photoFile').val(),
-			content : $('.cont').val(),
-			routeNo : $('.btn-default').attr('routeNo'),
-			transportation : $(".select option:selected").val(),
-			price : $('.price').val()
-
-		},
-		method : 'post',
-		success : function(result) {
-			if (result.status != 'success') {
-				alert('후기 추가 에러');
-			}
-			alert('성공');
-			location.reload();
-		}
-	})
-}*/
