@@ -144,31 +144,28 @@ function userScheduleAjax(){
 				})
 				
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
-					console.log('카테고리 테스트'+$($('.front')[i]).attr('data-locate'));
+					console.log($($('.timeline').children(".front")[i]).attr('data-locate'))
 					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
-					case 'A01':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-envira')
+					case '12':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera')
 						break;
-					case 'A02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-bank')
+					case '14': // 문화
+						$($('.timeline').children(".front")[i]).addClass('fa fa-university');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-anchor')
+					case '15': // 축제
+						$($('.timeline').children(".front")[i]).addClass('fa fa-star');
 						break;
-					case 'A04':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag')
+					case '28': // 레포츠
+						$($('.timeline').children(".front")[i]).addClass('fa fa-motorcycle');
 						break;
-					case 'A05':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery')
+					case '32': // 숙박
+						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel');
 						break;
-					case 'B02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel')
+					case '38': // 쇼핑
+						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
-						break;
-					default:
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+					case '39': // 음식
+						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery');
 						break;
 					}
 					
@@ -266,30 +263,28 @@ function scheduleAjax() {
 					}
 					
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
+					console.log($($('.timeline').children(".front")[i]).attr('data-locate'))
 					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
-					case 'A01':
+					case '12':
 						$($('.timeline').children(".front")[i]).addClass('fa fa-envira')
 						break;
-					case 'A02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-bank')
+					case '14': // 문화
+						$($('.timeline').children(".front")[i]).addClass('fa fa-university');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-anchor')
+					case '15': // 축제
+						$($('.timeline').children(".front")[i]).addClass('fa fa-star');
 						break;
-					case 'A04':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag')
+					case '28': // 레포츠
+						$($('.timeline').children(".front")[i]).addClass('fa fa-motorcycle');
 						break;
-					case 'A05':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery')
+					case '32': // 숙박
+						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel');
 						break;
-					case 'B02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel')
+					case '38': // 쇼핑
+						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
-						break;
-					default:
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+					case '39': // 음식
+						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery');
 						break;
 					}
 					

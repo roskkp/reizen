@@ -502,12 +502,10 @@ border: 1px solid #ffffff;
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-.modal-content{
+.modal-content {
     background-color: #fff;
-    width: 70%;
+    width: 54%;
     margin-left: 10%;
-  
-  
 }
 .fa-arrow-right{
   color: white;
@@ -549,9 +547,8 @@ border: 1px solid #ffffff;
     border-color: #8795bc;
     font-size: 18px;
     border: 0px;
-    box-shadow: 0px 0px 1px 2px #8795bc;
+    box-shadow: 0px 0px 1px 1px #8795bc;
 }
-
 .price:focus {
 
     outline: 0px;
@@ -572,7 +569,7 @@ border: 1px solid #ffffff;
     background-color: rgba(255,253,231 ,0.1);
     border: 1px solid #8795bc;
     color: #8795bc;
-    width: 440px;
+    width: 420px;
 }
 .cont:focus {
     transition: 0.5s;
