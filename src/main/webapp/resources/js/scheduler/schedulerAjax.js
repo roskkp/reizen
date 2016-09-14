@@ -247,7 +247,6 @@ function listAjax(scheduleNo, day){
 }
 
 function deleteScheduleAjax(scheduleNo){
-	console.log(reizenUrl);
 	$.ajax({
 		url : reizenUrl+'dashboard/removeplan.do?scdNo='+scheduleNo,
 		method : 'GET',
@@ -341,7 +340,7 @@ function dataTheorem(){
 			routeInfo.cid = routeData[i].cid;
 			routeInfo.mapX = routeData[i].mapX;
 			routeInfo.mapY = routeData[i].mapY;
-			routeInfo.index = 1;
+			routeInfo.index = i+1;
 			routeInfo.sdno = scheduleNo;
 			routeInfo.day = day;
 			if (routeData[i].name > 10) {
@@ -357,7 +356,7 @@ function dataTheorem(){
 	routeInfo.cid = routeData[$('.btnEnd').attr('data-end')].cid;
 	routeInfo.mapX = routeData[$('.btnEnd').attr('data-end')].mapX;
 	routeInfo.mapY = routeData[$('.btnEnd').attr('data-end')].mapY;
-	routeInfo.index = 1;
+	routeInfo.index = routeData2.length+1;
 	routeInfo.sdno = scheduleNo;
 	routeInfo.day = day;
 	if (routeData[$('.btnEnd').attr('data-end')].name > 10) {
@@ -373,7 +372,6 @@ function dataTheorem(){
 
 function aroundSearch(mapX,mapY){
 	$('#draggable').empty();
-	console.log(mapX+'ddd'+mapY);
 	$.ajax({
 		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1',
 		method: 'GET',

@@ -64,8 +64,9 @@ public class MemoServiceImpl implements MemoService {
     return memoDao.checkAlarm(numbers);
   }
   @Override
-  public void deleteMemoAlarm(Map<String, Object> params) {
-    memoDao.deleteMemoAlarm(params);
+  public void deleteMemoAlarm(int rno) {
+    memoDao.deleteMemoAlarm(rno);
+    
   }
 
 }

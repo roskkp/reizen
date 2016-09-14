@@ -38,6 +38,7 @@ function searchInfo(path, cid) {
 					if (key == 'img' && i == 1) {
 						$('.info-img1').attr("src",value.value);
 					} else if (key == 'img'	&& i > 1) {
+						console.log("detail img : "+value.value);
 						$('.carousel-inner').append('<div class="item"><img class="info-img'+i+'" src="'+value.value+'" alt="'+i+'"><!-- 이미지'+i+' --><div class="carousel-caption"></div></div>');
 					}
 				})
@@ -45,7 +46,7 @@ function searchInfo(path, cid) {
 
 			if ($('.info-img1').attr("src") == '') {
 				$('.info-img1').attr("src",result.subData.firstImage);
-				if (result.subData.firstImage2 != '' ) {
+				if (typeof(result.subData.firstImage2) != 'undefined' ) {
 					$('.carousel-inner').append('<div class="item"><img class="info-img2" src="'+result.subData.firstImage2+'" alt="2"><!-- 이미지2 --><div class="carousel-caption"></div></div>');
 				}
 			}
