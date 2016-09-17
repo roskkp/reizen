@@ -217,7 +217,7 @@ function searchSchedule(){
 
 function searchCategoryM(cate01){
 	$.ajax({
-		url: "http://reizen.com:8888/category/middle.do?cate01="+cate01,
+		url: nodeUrl+":8888/category/middle.do?cate01="+cate01,
 		dataType: 'json',
 		success: function(result){
 			$('.subclass-list').empty();

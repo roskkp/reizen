@@ -163,7 +163,7 @@ var start = 1;
 $('#btnBlog').off('click').on('click', function(){
 	var keyword = $('.spot-name').text();
 	$.ajax({
-		url : 'http://reizen.com:8899/naverPost.do?keyword='+keyword+'&start='+start,
+		url : nodeUrl+':8899/naverPost.do?keyword='+keyword+'&start='+start,
 		type : 'GET',
 		success : function(result){
 			console.log(result.rss.channel[0].item);
