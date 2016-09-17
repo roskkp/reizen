@@ -129,8 +129,7 @@ function userScheduleAjax(){
 						url : reizenUrl + 'postscript/deletePicts.do',
 						dataType : 'json',
 						data : {
-							pictureNo :$('.pictsNo').val(),
-							
+							pictureNo :$('.pictsNo').val()
 						},
 						method : 'post',
 						success : function(result) {
@@ -141,7 +140,7 @@ function userScheduleAjax(){
 							location.reload();
 						}
 					})
-				})
+				});
 				
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
 					console.log('카테고리 테스트'+$($('.front')[i]).attr('data-locate'));
