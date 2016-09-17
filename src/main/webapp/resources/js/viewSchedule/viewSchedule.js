@@ -27,11 +27,12 @@ $(function() {
 						getUser();
 						userScheduleAjax();
 						usersrAjax();
+						addSchedule();
 					}else if(result.pass=='right'){
 						getUser();
 						scheduleAjax();
 						usersrAjax();
-					
+						 MySchedule();
 					}
 				}else{
 					swal('check proceeding status fail');
@@ -46,6 +47,7 @@ $(function() {
 	}
 	
 
+	
 	$('#photoFile')
 	.fileupload({
 	    replaceFileInput:false,autoUpload : false})
@@ -221,6 +223,40 @@ Handlebars.registerHelper("inc", function(value, options){
 });
 
 
+
+/**********************addSchedule***************************/
+function addSchedule(){
+	$(document).on('click','#addSchedule',function() {
+		swal({   
+			title: "스케줄을 추가하시겠습니까?",   
+			text: "버튼을 누르시면 추가가 완료됩나다.",     
+			showCancelButton: true,   
+			confirmButtonColor: "#59b3f1",   
+			confirmButtonText: "추가",   
+			closeOnConfirm: false }, 
+			function(){
+				location.href="http://reizen.com:8080/scheduler/scheduler.html?copyScheduleNo="+scheduleNo
+		});
+		
+	});
+}
+
+
+function MySchedule() {
+	$(document).on('click','#addSchedule',function() {
+		swal({   
+			title: "스케줄을 추가하시겠습니까?",   
+			text: "버튼을 누르시면 추가가 완료됩나다.",     
+			showCancelButton: true,   
+			confirmButtonColor: "#59b3f1",   
+			confirmButtonText: "추가",   
+			closeOnConfirm: false }, 
+			function(){
+				location.href="http://reizen.com:8080/scheduler/scheduler.html?scheduleNo="+scheduleNo
+		});
+		
+	});
+}
 /**************	맵	**************/
 
 function initMap() {

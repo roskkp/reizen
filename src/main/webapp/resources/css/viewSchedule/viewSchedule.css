@@ -6,7 +6,29 @@
   
 
 } */
-
+#fileText{
+	color: blue;
+}
+#transP{
+	color: blue;
+}
+#textView{
+	color:blue;
+}
+#addSchedule {
+    background: #ffffff;
+    padding: 1px 4px;
+    border: 1px solid white;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    color: #6a9ce9;
+    font-size: 12px;
+    font-family: 600;
+    font-weight: 600;
+    text-decoration: none;
+    vertical-align: middle;
+}
 
 .btn{
 	    color: #8795bc;

@@ -32,9 +32,12 @@
           <div class="user-wrapper">
             <div class="user-profile">
               <img class="avatar" alt="Ash" />
-              <div class="username"></div>
+              <div class="username">
+              </div>
               <div class="bio"></div>
-              <div class="description"></div>
+              <div class="description">
+              </div>
+                <button id="addSchedule">일정추가</button>
             </div>
             <div class="info">
               <ul class="data">
@@ -109,7 +112,9 @@
 					<form id='ajaxform' enctype='multipart/form-data' action='/postscript/addPost.do'>
 						<input type="hidden" name="routeNo" id='routeNo'/>
 						<input type="hidden" name="scheduleNo " id='scheduleNo'/>
+						<p id="fileText">파일작성:</p>
 						<input id='photoFile' type='file' class='file' name='files' />
+						<p id="transP">가격,이동수단:</p>
 						<input type='text' class='price' placeholder='소요비용' name='price'>
 						<select class='select' name='transportation'>
 							<option value='5'>-- 이동수단 --</option>
@@ -118,6 +123,7 @@
 							<option value='3'>버스</option>
 							<option value='4'>비행기</option>
 						</select>
+						<p id="textView">후기작성</p>
 						<textarea name='content' rows='10' cols='40' id='boxing' class='cont'>
             </textarea>
 						<button class='btn btn-primary' id="btnUpdate" type="submit">작성</button>
