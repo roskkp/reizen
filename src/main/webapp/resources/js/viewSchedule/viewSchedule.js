@@ -14,7 +14,6 @@ $(function() {
 	scheduleNo = location.href.substr(location.href.lastIndexOf('=') + 1);
 	var user = sessionStorage.getItem('userNo');
 	if( user ){
-			/*no = $(location).attr('search').substring(12);*/
 		$.ajax({
 			url : reizenUrl+'postscript/checkPostscript.do?scheduleNo='+scheduleNo,
 			method : 'GET',
@@ -28,17 +27,18 @@ $(function() {
 						getUser();
 						userScheduleAjax();
 						usersrAjax();
+						addSchedule();
 					}else if(result.pass=='right'){
 						getUser();
 						scheduleAjax();
 						usersrAjax();
-					
+						 MySchedule();
 					}
 				}else{
-					alert('check proceeding status fail');
+					swal('check proceeding status fail');
 				}
 			}, error  : function(){
-				alert('ajax error');
+				swal('ajax error');
 			}
 		});
 	}else {
@@ -47,15 +47,13 @@ $(function() {
 	}
 	
 
+	
 	$('#photoFile')
 	.fileupload({
 	    replaceFileInput:false,autoUpload : false})
 	.on('fileuploadadd', function(e, data) {
 		filesList.pop(); 
-		console.log('여기들어왓나');
-		console.log(data.files[0]);
 		filesList.push(data.files[0]);
-		console.log(filesList);
 		
 	})
 	.on('fileuploaddone', function (e, data) {
@@ -97,10 +95,7 @@ $(function() {
 		 replaceFileInput:false,autoUpload : false
 	}).on('fileuploadadd', function(e, data) {
 		filesList.pop(); 
-		console.log('여기들어왓나');
-		console.log(data.files[0]);
 		filesList.push(data.files[0]);
-		console.log(filesList);
 	}).on('fileuploaddone', function (e, data) {
 		  swal({
 			    title: "후기",
@@ -122,8 +117,6 @@ $(function() {
 	
 	/****************updatePost*********************/
 	$('#update-Post').submit(function(event){
-		alert(filesList.length);
-		
 		event.preventDefault();
 		if(filesList.length>0){
 			event.preventDefault();
@@ -139,23 +132,10 @@ $(function() {
 		}
 	});
 
-	/*routeNo = $('#routeNo').attr('value',$(this).parents('.accordion').attr('data-routeNo').trim());*/
 	$('#scheduleNo').attr('value',scheduleNo);
 	
 	mapNameSource = $('#mapData').html();
 	mapNameTemplate = Handlebars.compile(mapNameSource);
-
-/*	$(document).on('click','.scheduleButton',function(e){
-=======
-	$(document).on('click', '.scheduleButton', function(e){
->>>>>>> 6b5b2658de58e9a5467defa49eb78a4da7e55550
-		alert('일정보기');
-		userScAjax();
-		location.href= 'http://reizen.com:8080//scheduler/dashboard.html?no='+sessionStorage.getItem('dashNo')
-		e.preventDefault();
-	});
-
-	*/
 	
 	$('.integration-checklist__copy-button').click(function() {
 		$('.aaa').empty();
@@ -213,77 +193,7 @@ $(function() {
 			}
 		}
 	});
-/*	getUser();
-	scheduleAjax();*/
 });
-
-
-
-/*
- * function post(data){ var source = $('#scriptTemplate-post').html(); var
- * template = Handlebars.compile(source); $.ajax({ url : reizenUrl +
- * "postscript/postscript.do", method : 'post', dataType : 'json', data : {
- * scheduleNo : 36 }, success : function(result) { if (result.status !=
- * 'success') {
- * 
- * alert("댓츠 노노"); } else if(data == result) {
- * 
- * 
- * 
- *  } else{ $('#accordion').append(template(result)); } }, error : function() {
- * console.log('error'); } }); }
- */
-
-
-/*********************postSelect*********************************//*
-function postSelect(scheduleNo){
-	
-	$.ajax({
-		url:reizenUrl+'postscript/addPost.do',
-		dataType:'json',
-		data:{
-			scheduleNo:scheduleNo
-		},
-		method:'post',
-		success : function(result){
-			if( result.status != 'success'){
-				alert('추가에러');
-			}
-			console.log('ㅊㅋ');
-		}
-		
-	})
-}
-
-*/
-/**********************selectPictures******************************/
-
-
-
-/*function selectPicture(){
-	
-	$.ajax({
-		url:reizenUrl+'postscript/selectPicture.do',
-		dataType:'json',
-		data:{
-			pictureNo:$('#pictureNo').attr('value')
-		},
-		method:'post',
-		success : function(result){
-			if( result.status != 'success'){
-				alert('추가에러');
-			}
-			console.log('ㅊㅋ');
-		}
-		
-	})
-}
-
-*/
-
-
-
-
 
 /**************	일정보기 Handlebars helper	**************/
 var cnt = 1;
@@ -313,6 +223,40 @@ Handlebars.registerHelper("inc", function(value, options){
 });
 
 
+
+/**********************addSchedule***************************/
+function addSchedule(){
+	$(document).on('click','#addSchedule',function() {
+		swal({   
+			title: "스케줄을 추가하시겠습니까?",   
+			text: "버튼을 누르시면 추가가 완료됩나다.",     
+			showCancelButton: true,   
+			confirmButtonColor: "#59b3f1",   
+			confirmButtonText: "추가",   
+			closeOnConfirm: false }, 
+			function(){
+				location.href="http://reizen.com:8080/scheduler/scheduler.html?copyScheduleNo="+scheduleNo
+		});
+		
+	});
+}
+
+
+function MySchedule() {
+	$(document).on('click','#addSchedule',function() {
+		swal({   
+			title: "스케줄을 추가하시겠습니까?",   
+			text: "버튼을 누르시면 추가가 완료됩나다.",     
+			showCancelButton: true,   
+			confirmButtonColor: "#59b3f1",   
+			confirmButtonText: "추가",   
+			closeOnConfirm: false }, 
+			function(){
+				location.href="http://reizen.com:8080/scheduler/scheduler.html?scheduleNo="+scheduleNo
+		});
+		
+	});
+}
 /**************	맵	**************/
 
 function initMap() {

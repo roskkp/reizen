@@ -1,6 +1,5 @@
 package com.reizen.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.reizen.domain.Location;
-import com.reizen.domain.Memo;
 import com.reizen.domain.User;
 import com.reizen.service.LocationService;
 import com.reizen.service.MemoService;
 import com.reizen.service.ScheduleService;
-import com.reizen.util.CalculateTime;
 
 @Controller
 @RequestMapping("/location/")
@@ -52,22 +49,9 @@ public class LocationController {
   @RequestMapping(path="searchkeyword", method=RequestMethod.POST , produces="application/json;charset=utf-8")
   @ResponseBody
   public String searchKeyword(String keyword, String areaCode, String localCode, String category, String date, int page, int size, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS, @RequestParam(value="cateL", defaultValue = "") List<Object> cateL){
-    Map<String, Object> params = new HashMap<>();
-    params.put("keyword", keyword);
-    params.put("areaCode", areaCode);
-    params.put("localCode", localCode);
-    params.put("category", category);
-    params.put("cateS", cateS);
-    params.put("cateL", cateL);
-    params.put("cateSSize", cateS.size());
-    params.put("cateLSize", cateL.size());
-    params.put("date", date);
-    params.put("startNo", (page-1)*size);
-    params.put("size", size);
-    System.out.println(params);
-    Map<String, Object> result = new HashMap<>();
+    Map<String,Object> result = new HashMap<String,Object>();
     try {
-      result = locationService.selectLocations(params);
+      result.put("data", locationService.selectLocations(keyword, areaCode, localCode, category, date, page, size, cateS, cateL));
       result.put("status", "success");
     } catch (Exception e) {
       result.put("status", "failure");
@@ -81,16 +65,7 @@ public class LocationController {
   public String searchAreaCode(String value){
     Map<String, Object> result = new HashMap<String, Object>();
     try {
-      List<String> data = locationService.selectArea(value);
-      List<String> areaData = locationService.selectCity(value);
-      for (int j = 0; j < areaData.size(); j++) {
-        for (int i = 0; i < data.size(); i++) {
-          if (data.get(i).split("/")[0].equals(areaData.get(j).split("/")[0])) {
-            data.add(i, areaData.get(j));
-            break;
-          }
-        } 
-      }
+      List<String> data = locationService.selectAreaCity(value);
       result.put("data", data);
       result.put("status", "success");
     } catch (Exception e) {
@@ -103,7 +78,6 @@ public class LocationController {
   @RequestMapping(path="searchKeywordAuto", method=RequestMethod.POST , produces="application/json;charset=utf-8")
   @ResponseBody
   public String searchKeywordAuto(String keyword, String areaCode, String localCode, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS){
-    System.out.println("keyword "+keyword+" / areaCode "+areaCode+" / localCode "+localCode+" / cateS "+cateS);
     Map<String, Object> result = new HashMap<String, Object>();
     try {
       List<String> data = locationService.autoKeyword(keyword,areaCode,localCode,cateS);
@@ -219,19 +193,7 @@ public class LocationController {
 	public String getMemo(int cid,HttpSession httpSession) {
     Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			List<Memo> list = memoService.getMemoList(cid);
-			int i = 0;
-			for (Memo memo : list) {
-				memo.setDateAgo(CalculateTime.calc(memo.getRegDate()));
-				list.set(i, memo);
-				i++;
-			}
-			if(httpSession.getAttribute("user")!=null){
-				result.put("nick", ((User)(httpSession.getAttribute("user"))).getNickName());
-			}else{
-				result.put("nick",null);
-			}
-			result.put("data",list);
+		  result = memoService.getMemoList(cid,httpSession);
 			result.put("status", "success");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -287,7 +249,7 @@ public class LocationController {
   public String around(String mapX, String mapY, String tid) {
     Map<String, Object> result = new HashMap<String, Object>();
     try {
-      result = locationService.around(mapY, mapX, tid);
+      result.put("data", locationService.around(mapY, mapX, tid));
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
@@ -315,20 +277,8 @@ public class LocationController {
   @ResponseBody
   public String aroundList(String mapX, String mapY, String tid, int size, int page) {
     Map<String, Object> result = new HashMap<String, Object>();
-    List<Location> list = new ArrayList<>();
-    System.out.println(mapX.length());
-    System.out.println(mapY.length());
-    if(mapX.length()!=14){
-    	mapX=mapX.concat("0");
-    }
-    if(mapY.length() != 13){
-    	mapY=mapY.concat("0");
-    }
-    System.out.println(mapX+'t'+ mapY);
     try {
-      list.add(locationService.getLocationByMap(mapY,mapX));
-      list.addAll(locationService.selectAroundList(mapY, mapX, tid, size, page));
-      result.put("data", list);
+      result.put("data", locationService.selectAroundList(mapX, mapY, tid, size, page));
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
@@ -340,7 +290,6 @@ public class LocationController {
   @RequestMapping(path="countAround")
   @ResponseBody
   public String countAround(String mapX, String mapY, String tid){
-    System.out.println(tid);
     Map<String, Object> result = new HashMap<String, Object>();
     try {
       result.put("count", locationService.countAroundList(mapY, mapX, tid));
@@ -370,7 +319,6 @@ public class LocationController {
   @ResponseBody
   public String checkAlarm(@RequestParam("data") String routeNumbers){
     Map<String, Object> result = new HashMap<String, Object>();
-    System.out.println(routeNumbers);
     try {
       if (!routeNumbers.equals("[]")) {
         result.put("data", memoService.checkAlarm(routeNumbers.replace("[", " ").replace("]", " ")));  

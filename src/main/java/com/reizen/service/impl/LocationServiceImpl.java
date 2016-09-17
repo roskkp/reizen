@@ -1,5 +1,6 @@
 package com.reizen.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,27 +20,31 @@ public class LocationServiceImpl implements LocationService {
   @Autowired
   LocationDao locationDao;
   
-  Map<String, Object> result = new HashMap<>();
-  
   @Override
   public void insertLocation(Location location) {
     locationDao.insertLocation(location);
   }
   
   @Override
-  public Map<String, Object> selectLocations(Map<String, Object> params){
-    Map<String, Object> result = new HashMap<>();
-    try {
-      result.put("data", locationDao.selectLocations(params));
-    } catch (Exception e) {
-      result.put("data", "noData");
-      e.printStackTrace();
-    }
-    return result;
+  public List<Location> selectLocations(String keyword, String areaCode, String localCode, String category, String date, int page, int size, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS, @RequestParam(value="cateL", defaultValue = "") List<Object> cateL){
+    Map<String, Object> params = new HashMap<>();
+    params.put("keyword", keyword);
+    params.put("areaCode", areaCode);
+    params.put("localCode", localCode);
+    params.put("category", category);
+    params.put("cateS", cateS);
+    params.put("cateL", cateL);
+    params.put("cateSSize", cateS.size());
+    params.put("cateLSize", cateL.size());
+    params.put("date", date);
+    params.put("startNo", (page-1)*size);
+    params.put("size", size);
+    return locationDao.selectLocations(params);
   }
   
   @Override
   public Map<String, Object> detailSelect(String path, int contentId) {
+    Map<String, Object> result = new HashMap<>();
     try {
       result.put("data", HttpSend.getSend(path));
       Location location = locationDao.detailSelect(contentId);
@@ -54,17 +59,12 @@ public class LocationServiceImpl implements LocationService {
   }
   
   @Override
-  public Map<String, Object> around(String lat, String lon, String tid) {
+  public List<Location> around(String lat, String lon, String tid) {
     Map<String, Object> params = new HashMap<>();
     params.put("lat", lat);
     params.put("lon", lon);
     params.put("tid", tid);
-    try {
-      result.put("data", locationDao.selectAround(params));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return result;
+    return locationDao.selectAround(params);
   }
 
   @Override
@@ -83,13 +83,18 @@ public class LocationServiceImpl implements LocationService {
   }
 
   @Override
-  public List<String> selectArea(String value) {
-    return locationDao.selectArea(value);
-  }
-
-  @Override
-  public List<String> selectCity(String value) {
-    return locationDao.selectCity(value);
+  public List<String> selectAreaCity(String value) {
+    List<String> data = locationDao.selectArea(value);
+    List<String> areaData = locationDao.selectCity(value);
+    for (int j = 0; j < areaData.size(); j++) {
+      for (int i = 0; i < data.size(); i++) {
+        if (data.get(i).split("/")[0].equals(areaData.get(j).split("/")[0])) {
+          data.add(i, areaData.get(j));
+          break;
+        }
+      } 
+    }
+    return data;
   }
 
   @Override
@@ -99,59 +104,59 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public Map<String, Object> statusCheck(String nick, int cid) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("nick", nick);
-		map.put("cid",cid);
-		Map<String, Object> rsMap = new HashMap<>();
-		if(locationDao.scrapCheck(map)>=1){
-			rsMap.put("scrap", "checked");
+		Map<String, Object> params = new HashMap<>();
+		params.put("nick", nick);
+		params.put("cid",cid);
+		Map<String, Object> result = new HashMap<>();
+		if(locationDao.scrapCheck(params)>=1){
+			result.put("scrap", "checked");
 		}else{
-			rsMap.put("scrap", "unChecked");
+			result.put("scrap", "unChecked");
 		}
-		if(locationDao.recmCheck(map)>=1){
-			rsMap.put("recm", "checked");
+		if(locationDao.recmCheck(params)>=1){
+			result.put("recm", "checked");
 		}else{
-			rsMap.put("recm", "unChecked");
+			result.put("recm", "unChecked");
 		}
-		return rsMap;
+		return result;
 	}
 
 	@Override
 	public void addRecm(String nick, int cid) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("nick", nick);
-		map.put("cid",cid);
-		locationDao.insertRecm(map);
-		map.put("type", "addRecm");
-		locationDao.updateCount(map);
+		Map<String, Object> params = new HashMap<>();
+		params.put("nick", nick);
+		params.put("cid",cid);
+		locationDao.insertRecm(params);
+		params.put("type", "addRecm");
+		locationDao.updateCount(params);
 	}
 
 	@Override
 	public void removeRecm(int cid) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("cid",cid);
-		locationDao.deleteRecm(map);
-		map.put("type", "delRecm");
-		locationDao.updateCount(map);
+		Map<String, Object> params = new HashMap<>();
+		params.put("cid",cid);
+		locationDao.deleteRecm(params);
+		params.put("type", "delRecm");
+		locationDao.updateCount(params);
 	}
 
 	@Override
 	public void addScrap(String nick, int cid) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("nick", nick);
-		map.put("cid",cid);
-		locationDao.insertScrap(map);
-		map.put("type", "addScrap");
-		locationDao.updateCount(map);
+		Map<String, Object> params = new HashMap<>();
+		params.put("nick", nick);
+		params.put("cid",cid);
+		locationDao.insertScrap(params);
+		params.put("type", "addScrap");
+		locationDao.updateCount(params);
 	}
 
 	@Override
 	public void removeScrap(int cid) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("cid",cid);
-		locationDao.deleteScrap(map);
-		map.put("type", "delScrap");
-		locationDao.updateCount(map);
+		Map<String, Object> params = new HashMap<>();
+		params.put("cid",cid);
+		locationDao.deleteScrap(params);
+		params.put("type", "delScrap");
+		locationDao.updateCount(params);
 	}
 
   @Override
@@ -170,14 +175,23 @@ public class LocationServiceImpl implements LocationService {
   }
 
   @Override
-  public List<Location> selectAroundList(String lat, String lon, String tid, int size, int page) {
+  public List<Location> selectAroundList(String mapX, String mapY, String tid, int size, int page) {
+    List<Location> list = new ArrayList<>();
     Map<String, Object> params = new HashMap<>();
-    params.put("mapX", lon);
-    params.put("mapY", lat);
+    if(mapX.length()!=14){
+      mapX=mapX.concat("0");
+    }
+    if(mapY.length() != 13){
+      mapY=mapY.concat("0");
+    }
+    params.put("mapX", mapX);
+    params.put("mapY", mapY);
+    list.add(locationDao.selectLocationByMap(params));
     params.put("tid", tid);
     params.put("size", size);
     params.put("page", (page-1)*size);
-    return locationDao.selectAroundList(params);
+    list.addAll(locationDao.selectAroundList(params));
+    return list;
   }
 
   @Override
@@ -189,12 +203,4 @@ public class LocationServiceImpl implements LocationService {
     return locationDao.countAroundList(params);
   }
 
-@Override
-public Location getLocationByMap(String mapY, String mapX) {
-	 Map<String, Object> params = new HashMap<>();
-	 params.put("mapX", mapX);
-	 params.put("mapY", mapY);
-	return locationDao.selectLocationByMap(params);
-}
-	
 }

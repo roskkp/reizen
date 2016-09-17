@@ -35,8 +35,10 @@ $(function(){
 			$('video').get(0).play();
 		},
 		onLeave: function(index, nextIndex, direction){
-			if(index == 1){
-				$('.ui-autocomplete').hide();
+			if ($('#ui-id-1').css('display') == 'none' && $('#ui-id-2').css('display') == 'none') {
+				
+			} else {
+				return false;
 			}
 		},
 		afterLoad: function(anchorLink, index){

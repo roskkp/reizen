@@ -8,9 +8,9 @@
 	<resultMap type="picture" id="pictureMap">
 		<id column="pino" property="pictureNo" jdbcType="INTEGER" />
 		<result column="po_pic" property="picturePath" jdbcType="VARCHAR" />
-    <result column="po_cont" property="content" jdbcType="VARCHAR" />
-		<result column="sdno" property="scheduleNo" jdbcType="INTEGER"/>
-		<result column="pono" property="postNo" jdbcType="INTEGER"/>
+		<result column="po_cont" property="content" jdbcType="VARCHAR" />
+		<result column="sdno" property="scheduleNo" jdbcType="INTEGER" />
+		<result column="pono" property="postNo" jdbcType="INTEGER" />
 		<result column="price" property="price" />
 		<result column="trans" property="transportation" jdbcType="INTEGER" />
 		<association property="route" javaType="route">
@@ -20,7 +20,7 @@
 			<result column="time" property="time" />
 			<association property="location" javaType="location">
 				<result column="cid" property="contentId" jdbcType="INTEGER" />
-				<result column="cate01" property="category01" jdbcType="VARCHAR"/>
+				<result column="cate01" property="category01" jdbcType="VARCHAR" />
 				<result column="tid" property="typeId" jdbcType="INTEGER" />
 				<result column="ltel" property="tel" jdbcType="VARCHAR" />
 				<result column="addr1" property="address1" jdbcType="VARCHAR" />
@@ -44,7 +44,7 @@
 		</association>
 		<association property="post" javaType="post">
 			<result column="pono" property="postNo" jdbcType="INTEGER" />
-			<result column="sdno" property="scheduleNo" jdbcType="INTEGER"/>
+			<result column="sdno" property="scheduleNo" jdbcType="INTEGER" />
 			<result column="regd" property="regDate" />
 		</association>
 	</resultMap>
@@ -64,131 +64,139 @@
 			</association>
 		</association>
 	</resultMap>
-	
-	 <resultMap type="post" id="postMap">
-      <id column="pono" property="postNo" jdbcType="INTEGER" />
-    <result column="sdno" property="scheduleNo" />
-    <result column="regd" property="regDate"/>
-  </resultMap>
-  <resultMap type="scheduleScrap" id="scrapMap">
-  <id column="uno" property="userNo" jdbcType="INTEGER"/>
-    <result column="sdno" property="scheduleNo" jdbcType="INTEGER"/>
-  </resultMap>
-	
-	
+
+	<resultMap type="post" id="postMap">
+		<id column="pono" property="postNo" jdbcType="INTEGER" />
+		<result column="sdno" property="scheduleNo" />
+		<result column="regd" property="regDate" />
+	</resultMap>
+
+	<resultMap type="scheduleScrap" id="scrapMap">
+		<id column="uno" property="userNo" jdbcType="INTEGER" />
+		<result column="sdno" property="scheduleNo" jdbcType="INTEGER" />
+	</resultMap>
+
+
 	<select id="postscript" resultMap="pictureMap" parameterType="int">
-  SELECT
-    r.day,r.rno,r.tseq,r.time,ps.trans,ps.pino,ps.price,ps.po_pic,ps.po_cont,p.regd,l.map_x,l.map_y,l.ltel,l.addr1, l.cid, l.lname,l.tid, l.cate03,cl.cate01 cate01,cl.C01NAME cateName, l.img1, u.nick
-  from scdls s
-  left join routes r on s.sdno=r.sdno
-  left join picts ps on ps.rno=r.rno
-  left join posts p on p.pono=ps.pono
-  left join lcts l on l.cid=r.cid
-  left join cate_s cs on cs.cate03=l.cate03
-  left join cate_m cm on cs.cate02=cm.cate02
-  left join cate_l cl on cm.CATE01=cl.CATE01
-  left join users u on u.uno = s.uno
-  where s.sdno=#{scheduleNo}
-  order by r.day,r.time
-
-
+		SELECT
+		r.day,r.rno,r.tseq,r.time,ps.trans,ps.pino,ps.price,ps.po_pic,ps.po_cont,p.regd,l.map_x,l.map_y,l.ltel,l.addr1,
+		l.cid, l.lname,l.tid, l.cate03,cl.cate01 cate01,cl.C01NAME cateName,
+		l.img1, u.nick
+		from scdls s
+		left join routes r on s.sdno=r.sdno
+		left join
+		picts ps on ps.rno=r.rno
+		left join posts p on p.pono=ps.pono
+		left join
+		lcts l on l.cid=r.cid
+		left join cate_s cs on cs.cate03=l.cate03
+		left
+		join cate_m cm on cs.cate02=cm.cate02
+		left join cate_l cl on
+		cm.CATE01=cl.CATE01
+		left join users u on u.uno = s.uno
+		where
+		s.sdno=#{scheduleNo}
+		order by r.day,r.time
 	</select>
-	
 
-	
-	 <update id="updateCount" parameterType="map">
-   update scdls
-   set 
-   <if test="type == 'addRecm' ">
-    S_RECM  = S_RECM + 1
-   </if>
-   <if test="type == 'delRecm' ">
-     S_RECM = S_RECM - 1
-   </if>
-   <if test="type == 'addScrap' ">
-     S_SRC = S_SRC + 1
-   </if>
-   <if test="type == 'delScrap' ">
-     S_SRC = S_SRC - 1
-   </if>
-   where SDNO = #{scheduleNo}
-  </update>
-  
-	 <delete id="deleteRecm" parameterType="map">
-  DELETE FROM  s_recm
-   WHERE  sdno=#{scheduleNo}
-  </delete>
-     <delete id="deleteScrap" parameterType="map">
-  DELETE FROM  s_scrs
-   WHERE  sdno=#{scheduleNo}
-  </delete>
-  
-  <select id="checkRecm" parameterType="map" resultType="int">
-    select count(*)
-    from s_recm sr, users u
-    where u.uno = sr.uno 
-    and sr.sdno = #{scheduleNo}
-    and u.uno = #{userNo} 
-  </select>
-  <select id="checkScrap" parameterType="map" resultType="int">
-    select count(*)
-    from s_scrs sr, users u
-    where u.uno = sr.uno 
-    and sr.sdno = #{scheduleNo}
-    and u.uno = #{userNo} 
-  </select>
-  
-	<insert id="srecm" parameterType="map">
-INSERT INTO s_recm (SDNO, UNO) 
-VALUES (#{scheduleNo}, #{userNo});
-	</insert>
-	 <insert id="sscrs" parameterType="map">
-  INSERT INTO s_scrs (UNO, SDNO)
-   VALUES (#{userNo}, #{scheduleNo});
-
-  </insert>
-	<select id="postSelect" resultMap="postMap" parameterType="int">
-	 Select
-	 pono
-	 from posts
-	 where sdno=#{scheduleNo} 
-	
-	</select>
-	<update id="updatePicture"  parameterType="map">
-	UPDATE picts
-	SET PO_PIC=#{picturePath}, 
-	PO_CONT=#{content}, 
-	TRANS=#{transportation},
-	PRICE=#{price} 
-	WHERE rno=#{routeNo} 
-
+	<update id="updateCount" parameterType="map">
+		update scdls
+		set
+		<if test="type == 'addRecm' ">
+			S_RECM = S_RECM + 1
+		</if>
+		<if test="type == 'delRecm' ">
+			S_RECM = S_RECM - 1
+		</if>
+		<if test="type == 'addScrap' ">
+			S_SRC = S_SRC + 1
+		</if>
+		<if test="type == 'delScrap' ">
+			S_SRC = S_SRC - 1
+		</if>
+		where SDNO = #{scheduleNo}
 	</update>
-	
-	<select id="selectPicture" resultMap="pictureMap" parameterType="int">
-	Select rno,po_pic,po_cont,trans,price From picts
-	where rno=#{routeNo}
-	
+
+	<delete id="deleteRecm" parameterType="map">
+		DELETE FROM s_recm
+		WHERE
+		sdno=#{scheduleNo}
+	</delete>
+	<delete id="deleteScrap" parameterType="map">
+		DELETE FROM s_scrs
+		WHERE
+		sdno=#{scheduleNo}
+	</delete>
+
+	<select id="checkRecm" parameterType="map" resultType="int">
+		select
+		count(*)
+		from s_recm sr, users u
+		where u.uno = sr.uno
+		and sr.sdno =
+		#{scheduleNo}
+		and u.uno = #{userNo}
 	</select>
 
-<insert id="addPost" parameterType="post">
-insert into posts(sdno,regd)values(#{scheduleNo},now())
+	<select id="checkScrap" parameterType="map" resultType="int">
+		select
+		count(*)
+		from s_scrs sr, users u
+		where u.uno = sr.uno
+		and sr.sdno =
+		#{scheduleNo}
+		and u.uno = #{userNo}
+	</select>
 
-</insert>
+	<insert id="srecm" parameterType="map">
+		INSERT INTO s_recm (SDNO, UNO)
+		VALUES (#{scheduleNo}, #{userNo});
+	</insert>
 
-<insert id="addPicture"  parameterType="map">
-insert into picts(pono,sdno,po_pic,po_cont,rno,trans,price)
-values(#{postNo},#{scheduleNo},#{picturePath},#{content},#{routeNo},#{transportation},#{price})
-</insert>
+	<insert id="sscrs" parameterType="map">
+		INSERT INTO s_scrs (UNO, SDNO)
+		VALUES (#{userNo}, #{scheduleNo});
+	</insert>
+
+	<select id="postNoSelect" resultType="integer" parameterType="int">
+		Select
+		pono
+		from posts
+		where sdno=#{scheduleNo}
+	</select>
+
+	<update id="updatePicture" parameterType="map">
+		UPDATE picts
+		SET PO_PIC=#{picturePath},
+		PO_CONT=#{content},
+		TRANS=#{transportation},
+		PRICE=#{price}
+		WHERE rno=#{routeNo}
+	</update>
+
+	<select id="selectPicture" resultMap="pictureMap" parameterType="int">
+		Select rno,po_pic,po_cont,trans,price From picts
+		where rno=#{routeNo}
+	</select>
+
+	<insert id="addPost" parameterType="post" useGeneratedKeys="true"
+		keyProperty="postNo">
+		insert into posts(sdno,regd)values(#{scheduleNo},now())
+	</insert>
+
+	<insert id="addPicture" parameterType="map">
+		insert into picts(pono,sdno,po_pic,po_cont,rno,trans,price)
+		values(#{postNo},#{scheduleNo},#{picturePath},#{content},#{routeNo},#{transportation},#{price})
+	</insert>
 
 
-   <select id="checkPostscript" resultType="int" parameterType="int">
-    select ifnull(
-    (select uno
-    from scdls
-    where sdno=#{value}), 0)
-  </select>
-
-
+	<select id="checkPostscript" resultType="int" parameterType="int">
+		select ifnull(
+		(select uno
+		from scdls
+		where sdno=#{value}), 0)
+	</select>
 
 	<select id="userPost" resultMap="usersMap" parameterType="int">
 		SELECT
@@ -199,13 +207,10 @@ values(#{postNo},#{scheduleNo},#{picturePath},#{content},#{routeNo},#{transporta
 		WHERE s.sdno=#{scheduleNo}
 		order by r.time
 	</select>
-	
-	
+
 	<delete id="deletePicts" parameterType="int">
-  DELETE FROM picts 
-   WHERE  PINO=#{pictureNo}
-	
-	
+		DELETE FROM picts
+		WHERE PINO=#{pictureNo}
 	</delete>
 
 </mapper>
