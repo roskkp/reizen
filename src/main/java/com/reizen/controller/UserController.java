@@ -36,13 +36,11 @@ public class UserController {
   @Autowired
   ScheduleService scheduleService;
 
-  Map<String, Object> result = new HashMap<String, Object>();
-
   @RequestMapping(value = "signup", method = RequestMethod.POST)
   @ResponseBody
   public String addUser(@ModelAttribute User user,
       @RequestParam("files") List<MultipartFile> images,HttpServletRequest request) {
-    
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
       String fileName= "empty.png";
       if(!images.isEmpty()){ // 이미지가 있다면 
@@ -54,7 +52,6 @@ public class UserController {
               request.getSession().getServletContext().getRealPath("/") + "/resources/images/thumbnail/" + fileName));
         }
       }
-      
       user.setThumbNail(fileName);
       userService.addUser(user);
       result.put("status", "success");
@@ -62,13 +59,13 @@ public class UserController {
       e.printStackTrace();
       result.put("status", "failure");
     }
-
     return new Gson().toJson(result);
   }
 
   @RequestMapping(path = "checkMail", produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String checkMail(String email) {
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
       if (userService.checkMail(email) == null) {
         result.put("status", "success");
@@ -82,24 +79,12 @@ public class UserController {
   }
 
 
-
   @RequestMapping(path = "login", produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String checkUser(User user, HttpSession httpSession) {
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
-      User resultUser = userService.checkUser(user);
-      result.put("user", resultUser);
-      result.put("activeScheduleNo", scheduleService.activeSchedule(resultUser.getUserNo()));
-      httpSession.setAttribute("user", resultUser);
-      int totalRecommand = 0;
-      int totalScrap = 0;
-      List<Schedule> list = scheduleService.totalCount(resultUser.getUserNo());
-      for (Schedule sd : list) {
-        totalRecommand += sd.getRecommandCount();
-        totalScrap += sd.getScrapCount();
-      }
-      result.put("totalRecommand", totalRecommand);
-      result.put("totalScrap", totalScrap);
+      result = userService.checkUser(user, httpSession);
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
@@ -111,6 +96,7 @@ public class UserController {
   @RequestMapping(path="updateUserForm", produces="application/json;charset=UTF-8")
   @ResponseBody
   public String getUser(HttpSession httpSession){
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
       int no = ((User)httpSession.getAttribute("user")).getUserNo();
       result.put("user", userService.getUser(no));
@@ -126,19 +112,19 @@ public class UserController {
   @ResponseBody
   public String updateUser(User user, HttpSession httpSession,
       @RequestParam("files") List<MultipartFile> images, HttpServletRequest request) {
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
-        String fileName= "empty.png";
-        if(!images.isEmpty()){ // 이미지가 있다면 
-          MultipartFile mpf= images.get(0);
-          String originalFileName = mpf.getOriginalFilename();
-          if( originalFileName.contains(".") ){
-            fileName = CommonUtils.getRandomString() + originalFileName.substring(originalFileName.lastIndexOf("."));
-            FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(
-                request.getSession().getServletContext().getRealPath("/") + "/resources/images/thumbnail/" + fileName));
-            user.setThumbNail(fileName);
-          }
+      String fileName= "empty.png";
+      if(!images.isEmpty()){ // 이미지가 있다면 
+        MultipartFile mpf= images.get(0);
+        String originalFileName = mpf.getOriginalFilename();
+        if( originalFileName.contains(".") ){
+          fileName = CommonUtils.getRandomString() + originalFileName.substring(originalFileName.lastIndexOf("."));
+          FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(
+              request.getSession().getServletContext().getRealPath("/") + "/resources/images/thumbnail/" + fileName));
+          user.setThumbNail(fileName);
         }
-      
+      }
       user.setUserNo(((User)httpSession.getAttribute("user")).getUserNo());
       System.out.println("[회원 정보 수정 debug] : "+userService.updateUser(user));
       User returnUser = userService.getUser(user.getUserNo());
@@ -155,6 +141,7 @@ public class UserController {
   @RequestMapping(path="leaveUser")
   @ResponseBody
   public String leave(HttpSession session, HttpServletRequest request){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
       User user = (User)session.getAttribute("user");
       File image = new File(request.getSession().getServletContext().getRealPath("/")+"resources/images/thumbnail/"+user.getThumbNail());
@@ -170,10 +157,11 @@ public class UserController {
     }
     return new Gson().toJson(result);
   }
-  
+
   @RequestMapping(path="googleLogin", produces="application/json; charset=UTF-8")
   @ResponseBody
   public String googleLogin(User user, HttpSession session){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
       user.setPassword("apiGuest");
       user.setThumbNail("empty.png");
@@ -203,10 +191,11 @@ public class UserController {
     }
     return new Gson().toJson(result);
   }
-  
+
   @RequestMapping(path="logout")
   @ResponseBody
   public String logout(HttpSession session){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
       session.invalidate();
       result.put("status", "success");
@@ -216,7 +205,7 @@ public class UserController {
     }
     return new Gson().toJson(result);
   }
-  
+
   @RequestMapping(path="checkUser") // mobile 로그인 확인 interceptor 적용
   @ResponseBody
   public String checkUser(HttpSession session){
@@ -236,5 +225,5 @@ public class UserController {
     }
     return new Gson().toJson(result);
   }
-  
+
 }

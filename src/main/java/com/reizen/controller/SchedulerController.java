@@ -1,13 +1,11 @@
 package com.reizen.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,15 +22,11 @@ import com.reizen.domain.User;
 import com.reizen.service.MemoService;
 import com.reizen.service.RouteService;
 import com.reizen.service.ScheduleService;
-import com.reizen.util.BestRoute;
 import com.reizen.util.CalculateTime;
-import com.reizen.util.DistanceCalc;
 
 @Controller
 @RequestMapping("/scheduler/")
 public class SchedulerController {
-
-  Map<String, Object> result = new HashMap<String, Object>();
 
   @Autowired
   RouteService routeService;
@@ -58,6 +52,7 @@ public class SchedulerController {
   @RequestMapping(path="updateDay")
   @ResponseBody
   public String updateDay(Route route, @RequestParam String condition){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
       routeService.updateDay(route, condition);
       result.put("status", "success");
@@ -73,6 +68,7 @@ public class SchedulerController {
   @RequestMapping(path="deleteDay", produces="application/json; charset=UTF-8")
   @ResponseBody
   public String deleteDay(Route route){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
       routeService.deleteDay(route);
       result.put("status", "success");
@@ -88,6 +84,7 @@ public class SchedulerController {
   @RequestMapping(path="scheduleDayCount", produces="application/json; charset=UTF-8")
   @ResponseBody
   public String scheduleDayCount(@RequestParam int scheduleNo){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
       result.put("total", routeService.getCount(scheduleNo));
       result.put("status", "success");
@@ -102,6 +99,7 @@ public class SchedulerController {
   @RequestMapping(path="scheduleList", produces="application/json; charset=UTF-8")
   @ResponseBody
   public String list(@RequestParam int day, int scheduleNo){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
       result.put("list", routeService.getList(day, scheduleNo).get("list"));
       result.put("status", "success");
@@ -116,11 +114,12 @@ public class SchedulerController {
   /*      scheduler 페이지에서 -> schedule 생성      */
   @RequestMapping(path="addSchedule", produces="application/json; charset=UTF-8")
   @ResponseBody
-  public String add(Schedule sc, HttpSession session){
+  public String add(Schedule schedule, HttpSession session){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
-      sc.setUser((User)session.getAttribute("user"));
-      scheduleService.addSchedule(sc);
-      result.put("scheduleNo", sc.getScheduleNo());
+      schedule.setUser((User)session.getAttribute("user"));
+      scheduleService.addSchedule(schedule);
+      result.put("scheduleNo", schedule.getScheduleNo());
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
@@ -133,6 +132,7 @@ public class SchedulerController {
   @RequestMapping(path="removeRoute")
   @ResponseBody
   public String removeRoute(@RequestParam int routeNo){
+    Map<String, Object> result = new HashMap<String, Object>();
     try{
     routeService.removeRoute(routeNo);
     result.put("status", "success");
@@ -148,6 +148,7 @@ public class SchedulerController {
   @RequestMapping(path="searchSchedule", produces="application/json; charset=UTF-8")
   @ResponseBody
   public String searchSchedule(int cId){
+    Map<String, Object> result = new HashMap<String, Object>();
     Map<String, Object> params = new HashMap<>();
     params.put("contentId", cId);
     try {
@@ -163,8 +164,8 @@ public class SchedulerController {
   @RequestMapping(path="addRoute")
   @ResponseBody
   public String addRoute(Route route, int scheduleNo, int day, String currentDate){
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
-      result.clear();
       routeService.addRoute(route, day, scheduleNo, currentDate);
       result.put("status", "success");
     } catch (Exception e) {
@@ -177,9 +178,8 @@ public class SchedulerController {
   @RequestMapping(path="updateRoute")
   @ResponseBody
   public String updateRoute(Route route, int scheduleNo, int day, String currentDate){
-	  System.out.println(route);
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
-      result.clear();
       routeService.updateRoute(route, day,scheduleNo, currentDate);
       result.put("status", "success");
     } catch (Exception e) {
@@ -193,6 +193,7 @@ public class SchedulerController {
   @RequestMapping(path = "scCheck")
   @ResponseBody
   public String check(@RequestParam int sc, HttpSession session) {
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
       int uno = ((User)session.getAttribute("user")).getUserNo();
       int resultUserNo = scheduleService.checkProceeding(sc);
@@ -214,6 +215,7 @@ public class SchedulerController {
   @RequestMapping(path = "routeDelete", produces = "application/json;charset=utf-8")
   @ResponseBody
   public String routeDelete(@RequestParam int routeNo, int scheduleNo,int day, String currentDate){
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
       routeService.deleteSchedule(routeNo, scheduleNo, day, currentDate);
       result.put("status", "success");
@@ -227,11 +229,9 @@ public class SchedulerController {
   @RequestMapping(path="arrayUpdate", produces="application/json; charset=utf-8", method=RequestMethod.POST)
   @ResponseBody
   public String array(@RequestBody String route) { 
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
-      JSONObject jsonObject = new JSONObject(route);
-      String jsonData = jsonObject.get("data").toString();
-      String time = ((String)jsonObject.get("currentDate")).substring(0, 10);
-      routeService.updateSchedule(jsonData, time);
+      routeService.updateSchedule(route);
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();
@@ -243,6 +243,7 @@ public class SchedulerController {
   @RequestMapping(path = "memo", produces = "application/json;charset=utf-8")
   @ResponseBody
   public String memo(@RequestParam int contentId) {
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
       List<Memo> list = memoService.getListFour(contentId);
       int i = 0;
@@ -263,6 +264,7 @@ public class SchedulerController {
   @RequestMapping(path="searchkeyword", method=RequestMethod.POST , produces="application/json;charset=utf-8")
   @ResponseBody
   public String searchKeyword(String keyword, String areaCode, String localCode, String category, String date, int page, String nop, String month, String term){
+    Map<String, Object> result = new HashMap<String, Object>();
     Map<String, Object> params = new HashMap<>();
     params.put("keyword", keyword);
     params.put("areaCode", areaCode);
@@ -286,9 +288,9 @@ public class SchedulerController {
   @RequestMapping(path="copySchedule")
   @ResponseBody
   public String copySchedule(@RequestParam int scheduleNo, int copyScheduleNo){
-    System.out.println(scheduleNo+"<-----copy   "+copyScheduleNo);
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
-      System.out.println(routeService.copySchedule(scheduleNo, copyScheduleNo));
+      routeService.copySchedule(scheduleNo, copyScheduleNo);
       result.put("status", "success");
     } catch (Exception e) {
       result.put("status", "failure");
@@ -300,56 +302,13 @@ public class SchedulerController {
   @RequestMapping(path="bestRoute")
   @ResponseBody
   public String bestRoute(@RequestParam("data") org.json.JSONArray data ){
-    List<String> dataSet = new ArrayList<>();
-    Map<String,Map<String, Double>> list = new HashMap<>();
-    Map<String, Double> start = new HashMap<>();
-    Map<String, Double> root;
-    for (int i = 0; i < data.length()-1; i++) {
-      dataSet.add("t"+(i+1));
-      root = new HashMap<>();
-      for (int j = 1; j < data.length(); j++) {
-        double lat1 = Double.parseDouble(((JSONObject)data.get(i)).getString("mapY"));
-        double lon1 = Double.parseDouble(((JSONObject)data.get(i)).getString("mapX"));
-        double lat2 = Double.parseDouble(((JSONObject)data.get(j)).getString("mapY"));
-        double lon2 = Double.parseDouble(((JSONObject)data.get(j)).getString("mapX"));
-        if (i == 0) {
-          start.put("t"+j, DistanceCalc.distance(lat1,lon1,lat2,lon2)); 
-        } else {
-          if (i != j) {
-            root.put("t"+j, DistanceCalc.distance(lat1,lon1,lat2,lon2));
-          }
-        }
-      }
-      if( i != 0) list.put("t"+i,root);
-    }
-    String targets = "";
-    for (String tn : dataSet) {
-      targets += tn;
-    }
-    String path = BestRoute.routeOptimum(list, start, targets).get("path").toString();
-    String[] paths = path.split("t");
-    List<JSONObject> resultList = new ArrayList<JSONObject>();
-    resultList.add(((JSONObject)data.get(0)));
-    for (String string : paths) {
-     if (!string.equals("")) {
-        resultList.add(((JSONObject)data.get(Integer.parseInt(string))));
-      }
-    }
-    try {
-      result.put("data", resultList);
-      result.put("seq",path);
-      result.remove("list");
-      result.put("status", "success");
-    } catch (Exception e) {
-      result.put("status", "failure");
-      e.printStackTrace();
-    }
-    return new Gson().toJson(result);
+    return new Gson().toJson(routeService.checkRoute(data));
   }
   
   @RequestMapping(path="bestRouteUpdate")
   @ResponseBody
   public String bestRouteUpdate(@RequestParam("data") org.json.JSONArray data ){
+    Map<String, Object> result = new HashMap<String, Object>();
     try {
       routeService.bestRoute(data);
       result.put("status", "success");

@@ -3,12 +3,14 @@ package com.reizen.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.reizen.domain.Memo;
 
 public interface MemoService {
 	public List<Memo> getListFour(int no);
 
-	public List<Memo> getMemoList(int cid);
+	public Map<String, Object> getMemoList(int cid,HttpSession httpSession);
 
 	public void writeMemo(int cid, int dsno, String content);
 

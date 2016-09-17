@@ -90,18 +90,15 @@
 	<insert id="sscrs" parameterType="int">
 	INSERT INTO s_scrs (UNO, SDNO)
 	 VALUES (#{userNo}, #{scheduleNo});
-
 	</insert>
 	
-	
-	
-	<select id="postSelect" resultMap="postMap" parameterType="int">
+	<select id="postNoSelect" resultType="integer" parameterType="int">
 	 Select
 	 pono
 	 from posts
 	 where sdno=#{scheduleNo}
-	
 	</select>
+	
 	<update id="updatePicture"  parameterType="map">
 	UPDATE picts
 	SET PO_PIC=#{picturePath}, 
@@ -118,9 +115,8 @@
 	
 	</select>
 
-<insert id="addPost" parameterType="post">
+<insert id="addPost" parameterType="post" useGeneratedKeys="true" keyProperty="postNo">
 insert into posts(sdno,regd)values(#{scheduleNo},now())
-
 </insert>
 
 <insert id="addPicture"  parameterType="map">
