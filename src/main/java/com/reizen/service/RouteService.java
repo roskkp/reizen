@@ -20,7 +20,7 @@ public interface RouteService {
 
 	public void deleteSchedule(int routeNo, int day, int no, String currentDate);
 
-	public void updateSchedule(String jsonData, String time);
+	public void updateSchedule(String route);
 
 	public void updateDay(Route route, String condition);
 
@@ -29,6 +29,8 @@ public interface RouteService {
 	public int removeRoute(int no);
 	
 	public int copySchedule(int scheduleNo, int copyScheduleNo);
+	
+	public Map<String, Object> checkRoute(org.json.JSONArray data);
 
   public void bestRoute(JSONArray data);
 }

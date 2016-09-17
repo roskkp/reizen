@@ -381,8 +381,13 @@ input:focus {
 }
 
 ul#ui-id-1 {
-	max-height: 300px;
+	max-height: 250px;
 	overflow-y: scroll;
+}
+
+ul#ui-id-2 {
+  max-height: 250px;
+  overflow-y: scroll;
 }
 
 #areaBar {
