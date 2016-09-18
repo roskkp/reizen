@@ -354,9 +354,8 @@ function sessionCheck(){
 		$('.login').fadeIn();
 		$('.min-thumbnail').css('background-image', 'url(' + "/resources/images/thumbnail/" + sessionStorage.getItem('thumbnail')+ ')').fadeIn();
 		$('#id').text(sessionStorage.getItem('nick'));
-		$('.like-count').text(sessionStorage.getItem('totalScrap'));
-		$('.write-count').text(sessionStorage.getItem('totalRecommand'));
-		
+		$('.like-count').text(sessionStorage.getItem('totalRecommand'));
+		$('.write-count').text(sessionStorage.getItem('totalScrap'));
 		var activeList = JSON.parse(sessionStorage.getItem("activeScheduleNo"));
 		
 		if(activeList.length>0){

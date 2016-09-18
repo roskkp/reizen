@@ -177,6 +177,7 @@ public class PostscriptController {
       e.printStackTrace();
       result.put("status", "failure");
     }
+    System.out.println("user::::"+new Gson().toJson(result));
     return new Gson().toJson(result);
   }
 
