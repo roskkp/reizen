@@ -1,15 +1,14 @@
 package com.reizen.util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BestRoute {
 
   public static Map<String, Object> routeOptimum(Map<String,Map<String, Double>> list, Map<String, Double> start,String targets){
-
     // return 해줄 데이터 선언 및 초기화;
     Map<String, Object> result = new HashMap<String, Object>();
-
     // 들어온 경로의 수 파악 및 데이터 준비
     int size = list.size();
     Map<String,Map<String, Double>> data = new HashMap<>();
@@ -28,7 +27,6 @@ public class BestRoute {
       result.put("path", "t1t2");
       result.put("distance",list.get("0").get("t2")+data.get("0").get("t1"));
     }
-
     // 계산된 데이터 중 최소거리 찾기
     // 결과 값 셋팅 후 반환
     result.put("path", data.get("end").keySet().toString().replace("[", "").replace("]", ""));
@@ -68,7 +66,6 @@ public class BestRoute {
                   if (resultDistance > data.get(""+i).get(key)+list.get("t"+j).get(key2)) {
                     resultDistance = data.get(""+i).get(key)+list.get("t"+j).get(key2);
                     resultPath = key+key2;
-                    System.out.println(resultPath+" / "+resultDistance);
                   }
                 }
               }
@@ -77,8 +74,32 @@ public class BestRoute {
         }
       }
     }
-    
-    if (depth == 1) {
+    if (depth > 1) {
+      int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
+      double targetValue;
+      String targetName;
+      List<String> targetNames;
+      Map<String, Double> value = null;
+      Map<String,Map<String, Double>> results = new HashMap<>();
+      for (int k = 0; k < length; k++) {
+        targetValue = 999999999;
+        targetName = "t"+(k+1);
+        for (int i = 0; i < result.size(); i++) {
+          for (String key : result.get(""+i).keySet()) {
+            if (key.endsWith(targetName)) {
+              if (targetValue > result.get(""+i).get(key)) {
+                value = new HashMap<>();
+                targetValue = result.get(""+i).get(key);
+                value.put(key, targetValue);
+                System.out.println("key : "+key+" / value : "+targetValue);
+              }
+            }
+          }
+        }
+//        results.put(""+k, value);
+      }
+//      result = results;
+    } else if (depth == 1) {
       int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
       double targetValue;
       String targetName;
@@ -102,8 +123,6 @@ public class BestRoute {
       }
       result = results;
     }
-
-
     // 경로가 끝이 아니므로, 재귀
     if (depth != 0) {
       result = toFor(result,list, depth,end,targets);  
@@ -114,7 +133,6 @@ public class BestRoute {
     }
     return result;
   }
-
   // 중복된 for 문을 줄이려고 동적으로 if 문 변경
   public static boolean checkIf (int depth, String key, String target, String key2) {
     if (depth == 0 ) {

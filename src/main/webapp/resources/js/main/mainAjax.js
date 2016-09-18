@@ -95,10 +95,7 @@ $( "#searchBar" ).autocomplete({
 });
 
 function searchLocation(){
-	for (var i = 0; i < $('.filter-value').length; i++) {
-		console.log($($('.filter-value')[i]).length)	
-	}
-	
+	console.log(reizenUrl+"location/searchkeyword.do");
 	cateS = categoryJson(cateS,9);
 	cateL = categoryJson(cateL,3);
 	$.ajax({
