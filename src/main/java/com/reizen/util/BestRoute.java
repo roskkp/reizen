@@ -22,8 +22,6 @@ public class BestRoute {
       data.put(""+index,value);
       index++;
     }
-    System.out.println(data);
-    System.out.println(list);
     if (size != 0) {
       data = toFor(data,list, size,end,targets);
     } else {
@@ -38,7 +36,6 @@ public class BestRoute {
   }
 
   public static Map<String,Map<String, Double>> toFor(Map<String,Map<String, Double>> data , Map<String,Map<String, Double>> list, int size,String end,String targets){
-    System.out.println("dataSize : "+data.size());
     Map<String,Map<String, Double>> result = new HashMap<>();
     String resultPath = null;
     double resultDistance = 999999999; 
@@ -71,6 +68,7 @@ public class BestRoute {
                   if (resultDistance > data.get(""+i).get(key)+list.get("t"+j).get(key2)) {
                     resultDistance = data.get(""+i).get(key)+list.get("t"+j).get(key2);
                     resultPath = key+key2;
+                    System.out.println(resultPath+" / "+resultDistance);
                   }
                 }
               }
@@ -78,6 +76,31 @@ public class BestRoute {
           } 
         }
       }
+    }
+    
+    if (depth == 1) {
+      int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
+      double targetValue;
+      String targetName;
+      Map<String, Double> value = null;
+      Map<String,Map<String, Double>> results = new HashMap<>();
+      for (int k = 0; k < length; k++) {
+        targetValue = 999999999;
+        targetName = "t"+(k+1);
+        for (int i = 0; i < result.size(); i++) {
+          for (String key : result.get(""+i).keySet()) {
+            if (key.endsWith(targetName)) {
+              if (targetValue > result.get(""+i).get(key)) {
+                value = new HashMap<>();
+                targetValue = result.get(""+i).get(key);
+                value.put(key, targetValue);
+              }
+            }
+          }
+        }
+        results.put(""+k, value);
+      }
+      result = results;
     }
 
 
@@ -87,7 +110,6 @@ public class BestRoute {
     } else {
       Map<String, Double> value = new HashMap<>();
       value.put(resultPath,resultDistance);
-      System.out.println(value);
       result.put("end",value);
     }
     return result;
