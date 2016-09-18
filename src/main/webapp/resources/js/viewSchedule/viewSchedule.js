@@ -63,10 +63,10 @@ $(function() {
 			    timer: 3000,
 			    confirmButtonText: "Ok!", 
 			  }, function(){
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  });
 			  setTimeout(function() {
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  }, 3000);
 			
 	})
@@ -103,10 +103,10 @@ $(function() {
 			    timer: 3000,
 			    confirmButtonText: "Ok!", 
 			  }, function(){
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  });
 			  setTimeout(function() {
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  }, 3000);
 			
 	});
@@ -174,9 +174,7 @@ $(function() {
 
 	var maphover = true;
 	$(document).on('click','.mapName',function(){
-			$('.front[data-no='+$(this).attr('data-no')+']').css('color','rgb(220, 186, 220)');
 		
-	
 		$('.scroll').animate({scrollTop : $('.scroll').scrollTop()+$('.front[data-no='+$(this).attr('data-no')+']').position().top-baseHeight}, 400);
 		
 	})

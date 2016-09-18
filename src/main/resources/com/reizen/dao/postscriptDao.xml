@@ -58,7 +58,8 @@
 			<result column="s_recm" property="recommandCount" jdbcType="INTEGER" />
 			<result column="s_src" property="scrapCount" jdbcType="INTEGER" />
 			<association property="user" javaType="user">
-				<result column="uno" property="postNo" jdbcType="INTEGER" />
+				<result column="uno" property="userNo" jdbcType="INTEGER" />
+	       <result column="dsno" property="dashNo" jdbcType="INTEGER"/>
 				<result column="nick" property="nickName" jdbcType="VARCHAR" />
 				<result column="thumb" property="thumbNail" jdbcType="VARCHAR" />
 			</association>
@@ -198,13 +199,14 @@
 	</select>
 
 	<select id="userPost" resultMap="usersMap" parameterType="int">
-	 select
-	 u.nick, u.thumb, s.title, s.s_recm, s.s_src, r.time, s.sdno
-	 from users u
-	 left join scdls s on u.uno=s.uno
-	 left join routes r on s.sdno=r.sdno
-	 where s.sdno=#{scheduleNo}
-	 order by r.time
+  select
+  u.nick, u.thumb, s.title, s.s_recm, s.s_src, r.time, s.sdno, u.uno, d.dsno
+  from users u
+  left join scdls s on u.uno=s.uno
+  left join routes r on s.sdno=r.sdno
+  left join dsbd b on u.uno=d.uno
+  where s.sdno=#{scheduleNo}
+  order by r.time
 	</select>
 
 	<delete id="deletePicts" parameterType="int">
