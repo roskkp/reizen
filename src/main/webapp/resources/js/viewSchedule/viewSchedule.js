@@ -235,7 +235,7 @@ function addSchedule(){
 			confirmButtonText: "추가",   
 			closeOnConfirm: false }, 
 			function(){
-				location.href="http://reizen.com:8080/scheduler/scheduler.html?copyScheduleNo="+scheduleNo
+				location.href="/scheduler/scheduler.html?copyScheduleNo="+scheduleNo
 		});
 		
 	});
@@ -252,7 +252,7 @@ function MySchedule() {
 			confirmButtonText: "추가",   
 			closeOnConfirm: false }, 
 			function(){
-				location.href="http://reizen.com:8080/scheduler/scheduler.html?scheduleNo="+scheduleNo
+				location.href="/scheduler/scheduler.html?scheduleNo="+scheduleNo
 		});
 		
 	});

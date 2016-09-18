@@ -1,10 +1,12 @@
-/*var reizenUrl = "http://192.168.0.16:8080/";*/
-var reizenUrl = "http://reizen.com:8080/";
-//var reizenUrl = "http://localhost:8080/"
+//var reizenUrl = "http://reizen.com:8080/";
+//var nodeUrl = "http://reizen.com";
+var reizenUrl = "http://localhost:8080/";
+var nodeUrl = "http://localhost";
+//var reizenUrl = "http://192.168.43.6:8080/";
+//var nodeUrl = "http://192.168.43.6";
 //var reizenUrl = "http://192.168.0.42:8080/";
-//var reizenUrl = "http://52.78.165.93:8080/"
-var nodeUrl = "http://reizen.com";
 //var nodeUrl = "http://192.168.0.42";
+//var reizenUrl = "http://52.78.165.93:8080/"
 //var nodeUrl = "http://52.78.165.93"
 
 $(function() {

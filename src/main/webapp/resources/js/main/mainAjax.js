@@ -95,7 +95,6 @@ $( "#searchBar" ).autocomplete({
 });
 
 function searchLocation(){
-	console.log(reizenUrl+"location/searchkeyword.do");
 	cateS = categoryJson(cateS,9);
 	cateL = categoryJson(cateL,3);
 	$.ajax({
