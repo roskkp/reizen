@@ -200,10 +200,10 @@
 
 	<select id="userPost" resultMap="usersMap" parameterType="int">
 		SELECT
-		U.NICK,U.THUMB,S.TITLE,S.S_RECM,S.S_SRC,R.TIME,s.sdno
+		U.NICK,U.THUMB,s.TITLE,s.S_RECM,s.S_SRC,r.TIME,s.sdno
 		FROM users U
-		LEFT JOIN SCDLS S ON u.uno=s.uno
-		LEFT JOIN ROUTES R ON s.sdno=r.sdno
+		LEFT JOIN scdls s ON u.uno=s.uno
+		LEFT JOIN routes r ON s.sdno=r.sdno
 		WHERE s.sdno=#{scheduleNo}
 		order by r.time
 	</select>

@@ -204,53 +204,5 @@ public class UserController {
     }
     return new Gson().toJson(result);
   }
-  
-/*  @RequestMapping(path="checkUser") // mobile 로그인 확인 interceptor 적용
-=======
 
-  @RequestMapping(path="checkUser") // mobile 로그인 확인 interceptor 적용
->>>>>>> 659952c7228c432b1412088acd2fa29baa4e5fc0
-  @ResponseBody
-  public String checkUser(HttpSession session){
-    Map<String, Object> result = new HashMap<String, Object>();
-    try{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
-      User user = (User)session.getAttribute("user");
-      if(user!=null){
-        result.put("nickName",  user.getNickName());
-        result.put("dashNo", user.getDashNo());
-      }
-      result.put("status", "success");
-<<<<<<< HEAD
-=======
-=======
->>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
-      if (session.getAttribute("user") != null) {
-        User user = (User)session.getAttribute("user");
-        result.put("nickName",  user.getNickName());
-        result.put("dashNo", user.getDashNo());
-        result.put("status", "success");
-      } else {
-        result.put("staus", "no session");
-      }
-<<<<<<< HEAD
->>>>>>> ab790f4c9b1ed45fd179485582ae2edb5603ef9e
-=======
->>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
-    }catch (Exception e) {
-      e.printStackTrace();
-      result.put("status", "failure");
-    }
-    return new Gson().toJson(result);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> ba6541349412fa5284ccadd9b208b699f387e7ad
-=======
->>>>>>> 03787a7df6847cd0d560e20bded772c3f3f53391
-  }*/
 }
