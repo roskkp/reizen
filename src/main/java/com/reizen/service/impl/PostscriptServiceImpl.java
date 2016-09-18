@@ -42,7 +42,6 @@ public class PostscriptServiceImpl implements PostscriptService{
     Map<String, Object> params = new HashMap<String, Object>();
     try {
       Integer postNo = postscriptDao.postNoSelect(scheduleNo);
-      System.out.println("postNo check :: "+postNo);
       if (postNo == null) {
         postscriptDao.addPost(post);
         postNo = post.getPostNo();
