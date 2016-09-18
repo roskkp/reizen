@@ -154,8 +154,8 @@ public class PostscriptController {
 
   @RequestMapping(path = "deletePicts", produces = "application/json;charset=UTF-8")
   @ResponseBody
-  public String delRecm(@RequestParam int pictureNo) {
-    System.out.println(pictureNo);
+  public String delRecm(int pictureNo) {
+    System.out.println("pictureNo : "+pictureNo);
     Map<String, Object> result = new HashMap<String, Object>();
     try {
       postscriptService.deletePicts(pictureNo);
