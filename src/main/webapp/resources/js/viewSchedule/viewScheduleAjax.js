@@ -21,7 +21,6 @@ function getUser(){
 					$('.bio').text(data[i].schedule.title);
 					$('.fa-calendar-minus-o').next().text(" "+data[i].schedule.scrapCount);
 					$('.heart').next().text(" "+data[i].schedule.recommandCount);
-					console.log(data[i].schedule.user.dashNo);
 					var dashNo =data[i].schedule.user.dashNo
 					$(document).on('click','.username',function(e){ // 닉네임 클릭하면 해당 회원 dashboard로 가게
 						location.href='dashboard.html?no='+dashNo
@@ -189,11 +188,9 @@ function scheduleAjax() {
 				}
 				for(var i=0; i<list.length; i++){
 					if(list[i].content != null || list[i].picturePath != null){
-						console.log('null check')
 						list[i].check = 'true';
 					}
 				}
-				console.log(result)
 				$('ol.timeline').append(template(result));
 				for (var i = 0; i < $('.tran').length; i++) {
 					switch ($($('.tran')[i]).attr('data-trans')) {
@@ -213,7 +210,6 @@ function scheduleAjax() {
 					}
 				}
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
-					console.log($($('.timeline').children(".front")[i]).attr('data-locate'))
 					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
 					case '12':
 						$($('.timeline').children(".front")[i]).addClass('fa fa-camera')
@@ -313,7 +309,6 @@ function usersrAjax() {
 				console.log('error');
 				return;
 			}
-			console.log(result.scrap);
 			if(result.scrap == 'checked'){
 				$('.fa-calendar-minus-o').css("color","pink").attr('data-active','true');
 			}

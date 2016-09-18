@@ -53,7 +53,6 @@ public class PostscriptController {
       if(resultUserNo == userNo){
         result.put("pass","right");
       }else{
-        System.out.println("회원 불일치");
         result.put("pass", "false");
       }
       result.put("status", "success");
@@ -85,8 +84,7 @@ public class PostscriptController {
     Map<String, Object> result = new HashMap<String, Object>();
 
     int userNo = ((User) session.getAttribute("user")).getUserNo();
-    System.out.println("userNO::::"+userNo);
-    System.out.println();
+
 
     try {
       result = postscriptService.checkRecm(userNo,scheduleNo);
@@ -96,7 +94,6 @@ public class PostscriptController {
       e.printStackTrace();
       result.put("status", "failure");
     }
-    System.out.println("select::::::"+new Gson().toJson(result));
     return new Gson().toJson(result);
   }
 
@@ -107,7 +104,6 @@ public class PostscriptController {
   public String srecm(int scheduleNo,HttpSession session){
     Map<String, Object> result = new HashMap<String, Object>();
     try {
-      System.out.println("scheduleNo :::::"+scheduleNo);
       int userNo = ((User) session.getAttribute("user")).getUserNo();
 
       postscriptService.srecm(userNo,scheduleNo);
@@ -177,7 +173,6 @@ public class PostscriptController {
       e.printStackTrace();
       result.put("status", "failure");
     }
-    System.out.println("user::::"+new Gson().toJson(result));
     return new Gson().toJson(result);
   }
 
