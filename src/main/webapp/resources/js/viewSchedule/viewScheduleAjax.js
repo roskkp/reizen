@@ -113,7 +113,6 @@ function userScheduleAjax(){
 				mapDay = 1;
 				initMap();
 				
-				
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
 					console.log($($('.timeline').children(".front")[i]).attr('data-locate'))
 					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {

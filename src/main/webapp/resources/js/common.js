@@ -10,13 +10,10 @@ var nodeUrl = "http://localhost";
 //var nodeUrl = "http://52.78.165.93"
 
 $(function() {
-
 	$('header').load('/scheduler/header.html');
-
 	$('#modaltrigger').on('click',function(){
 		$('ul > li > i').css('display','none');
 	});
-	
 	$(window).resize(function(){
 		var height = window.innerHeight ||
         document.documentElement.clientHeight ||
