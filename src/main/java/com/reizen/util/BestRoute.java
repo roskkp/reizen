@@ -2,8 +2,10 @@ package com.reizen.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class BestRoute {
 
@@ -76,44 +78,46 @@ public class BestRoute {
       }
     }
     int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
+    System.out.println("length - depth : "+(length - depth)+" / length : "+length+" / depth : "+depth);
     if ( length - depth != 1 && depth > 1) {
-      System.out.println("length : "+length+" / depth : "+depth+" / size : "+size);
-      System.out.println(length - depth);
       double targetValue;
-      String targetName;
-      List<String> targetNames = new ArrayList<>();
+      String targetName; 
       Map<String, Double> value = null;
       Map<String,Map<String, Double>> results = new HashMap<>();
+      int count = 0;
       for (int k = 0; k < length; k++) {
-        targetValue = 999999999;
         targetName = "t"+(k+1);
-        for (int a = 0; a < length; a++) {
-          if (k != a && length - depth != targetNames.size()) {
-            targetNames.add("t"+(a+1)); 
-          }
-          System.out.println("targetName : "+targetName);
-          System.out.println("targetNames : "+targetNames);
-        }
-        for (int i = 0; i < result.size(); i++) {
-          for (String key : result.get(""+i).keySet()) {
-            value = new HashMap<>();
-            targetValue = result.get(""+i).get(key);
-            value.put(key, targetValue);
-//            System.out.println("key : "+key+" / value : "+targetValue);
-//            if (key.endsWith(targetName)) {
-//              if (targetValue > result.get(""+i).get(key)) {
-//                value = new HashMap<>();
-//                targetValue = result.get(""+i).get(key);
-//                value.put(key, targetValue);
-//                System.out.println("key : "+key+" / value : "+targetValue);
-//              }
-//            }
+        Map<String, List<String>> before = new HashMap<>();
+        List<String> first = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+          if (k != i) {
+            first.add("t"+(i+1));
           }
         }
-//        results.put(""+k, value);
+        before.put(targetName,first);
+        Map<String, List<String>> after = target(length-depth, targetName, k, before, true);
+        int nos = 0;
+        for (int l = 0; l < after.size(); l++) {
+          if (nos == l) {
+            targetValue = 999999999;
+            for (int i = 0; i < result.size(); i++) {
+              for (String key : result.get(""+i).keySet()) {
+                if (key.endsWith(targetName) && keyContain(after.get(""+l), key)) {
+                  if (targetValue > result.get(""+i).get(key)) {
+                    value = new HashMap<>();
+                    targetValue = result.get(""+i).get(key);
+                    value.put(key, targetValue);
+                  }
+                }
+              }
+            }
+            nos++;
+            results.put(""+count, value);
+            count++;
+          }
+        }
       }
-//      result = results;
-      System.out.println(result.size());
+      result = results;
     } else if (depth == 1) {
       double targetValue;
       String targetName;
@@ -147,6 +151,26 @@ public class BestRoute {
     }
     return result;
   }
+  
+  // 경우의 수를 줄이기 위한
+  public static Map<String,List<String>> target(int length, String targetName, int k, Map<String,List<String>> data, boolean pass ){
+//    System.out.println("length : "+length+" / targetName : "+targetName+" / data : "+data);
+    Map<String, List<String>> result = new HashMap<>();
+    
+    Set<Set<String>> outerSet = asd(length, targetName, k, data);
+
+    int no = 0;
+    for (Set<String> set : outerSet) {
+      List<String> innerList = new ArrayList<>();
+      for (String string : set) {
+        innerList.add(string);
+      }
+      result.put(""+no, innerList);
+      no++;
+    }
+    return result;
+  }
+  
   // 중복된 for 문을 줄이려고 동적으로 if 문 변경
   public static boolean checkIf (int depth, String key, String target, String key2) {
     if (depth == 0 ) {
@@ -154,5 +178,32 @@ public class BestRoute {
     } else {
       return key.endsWith(target) && !key.replace(target, "").equals(key2)  && !key.contains(key2);
     }
+  }
+  
+  // 중복된 for 문을 줄이려고 동적으로 if 문 변경
+  public static boolean keyContain(List<String> list, String key) {
+    for (String string : list) {
+      if (!key.contains(string)){
+//        System.out.println("return false");
+        return false;
+      };
+    }
+    return true;
+  }
+  
+  public static Set<Set<String>> asd(int length, String targetName, int k, Map<String,List<String>> data){
+    Set<Set<String>> outerSet = new HashSet<>();
+    for (int i = 0; i < data.get(targetName).size(); i++) {
+      for (int j = 0; j < data.get(targetName).size(); j++) {
+        if (!(""+i).contains((""+j))) {
+          Set<String> innerSet = new HashSet<>();
+          innerSet.add(data.get(targetName).get(i));
+          innerSet.add(data.get(targetName).get(j));
+          outerSet.add(innerSet);
+        }
+      }
+    }
+    System.out.println("outerSet : "+outerSet);
+    return outerSet;
   }
 }
