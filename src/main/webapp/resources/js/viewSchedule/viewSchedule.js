@@ -27,11 +27,12 @@ $(function() {
 						getUser();
 						userScheduleAjax();
 						usersrAjax();
+						addSchedule();
 					}else if(result.pass=='right'){
 						getUser();
 						scheduleAjax();
 						usersrAjax();
-					
+						 MySchedule();
 					}
 				}else{
 					swal('check proceeding status fail');
@@ -46,6 +47,7 @@ $(function() {
 	}
 	
 
+	
 	$('#photoFile')
 	.fileupload({
 	    replaceFileInput:false,autoUpload : false})
@@ -61,10 +63,10 @@ $(function() {
 			    timer: 3000,
 			    confirmButtonText: "Ok!", 
 			  }, function(){
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  });
 			  setTimeout(function() {
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  }, 3000);
 			
 	})
@@ -101,10 +103,10 @@ $(function() {
 			    timer: 3000,
 			    confirmButtonText: "Ok!", 
 			  }, function(){
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  });
 			  setTimeout(function() {
-			    window.location.reload();
+				  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 			  }, 3000);
 			
 	});
@@ -172,9 +174,7 @@ $(function() {
 
 	var maphover = true;
 	$(document).on('click','.mapName',function(){
-			$('.front[data-no='+$(this).attr('data-no')+']').css('color','rgb(220, 186, 220)');
 		
-	
 		$('.scroll').animate({scrollTop : $('.scroll').scrollTop()+$('.front[data-no='+$(this).attr('data-no')+']').position().top-baseHeight}, 400);
 		
 	})
@@ -224,6 +224,40 @@ Handlebars.registerHelper("formatDate", function(datetime) {
 	return moment(datetime).format("YYYY-MM-DD");
 });
 
+
+/**********************addSchedule***************************/
+function addSchedule(){
+	$(document).on('click','#addSchedule',function() {
+		swal({   
+			title: "스케줄을 추가하시겠습니까?",   
+			text: "버튼을 누르시면 추가가 완료됩나다.",     
+			showCancelButton: true,   
+			confirmButtonColor: "#59b3f1",   
+			confirmButtonText: "추가",   
+			closeOnConfirm: false }, 
+			function(){
+				location.href="/scheduler/scheduler.html?copyScheduleNo="+scheduleNo
+		});
+		
+	});
+}
+
+
+function MySchedule() {
+	$(document).on('click','#addSchedule',function() {
+		swal({   
+			title: "스케줄을 추가하시겠습니까?",   
+			text: "버튼을 누르시면 추가가 완료됩나다.",     
+			showCancelButton: true,   
+			confirmButtonColor: "#59b3f1",   
+			confirmButtonText: "추가",   
+			closeOnConfirm: false }, 
+			function(){
+				location.href="/scheduler/scheduler.html?scheduleNo="+scheduleNo
+		});
+		
+	});
+}
 /**************	맵	**************/
 
 function initMap() {

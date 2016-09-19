@@ -104,7 +104,7 @@ function indexAjax(data){
 }
 
 function addAjax(contentId, date, day, time, scheduleNo){
-	$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
+	$.getJSON(nodeUrl+':8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
 		if(result.status=='exist'){ // 기 존재하는 시간이라면
 			swal("Failed!", "해당 시간에는 다른 일정이 있네요!", "error"); 
 			listAjax(scheduleNo, day);
@@ -237,7 +237,7 @@ function listAjax(scheduleNo, day){
 			baseMap();
 		}// success
 	});
-	$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
+	$.getJSON(nodeUrl+':8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
 		if(result.length<=0){ // 스케줄이 없다면 
 			emptySchedule = true;
 		}else{

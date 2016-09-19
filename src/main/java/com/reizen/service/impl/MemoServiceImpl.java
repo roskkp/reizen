@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reizen.dao.MemoDao;
 import com.reizen.domain.Memo;
+import com.reizen.domain.User;
 import com.reizen.service.MemoService;
+import com.reizen.util.CalculateTime;
 
 @Service
 public class MemoServiceImpl implements MemoService {
@@ -22,8 +26,22 @@ public class MemoServiceImpl implements MemoService {
 		return memoDao.selectListFour(no);
 	}
 	@Override
-	public List<Memo> getMemoList(int cid) {
-		return memoDao.selectMemo(cid);
+	public Map<String, Object> getMemoList(int cid,HttpSession httpSession) {
+    Map<String, Object> result = new HashMap<String, Object>();
+    List<Memo> list = memoDao.selectMemo(cid);
+	  int i = 0;
+    for (Memo memo : list) {
+      memo.setDateAgo(CalculateTime.calc(memo.getRegDate()));
+      list.set(i, memo);
+      i++;
+    }
+    if(httpSession.getAttribute("user")!=null){
+      result.put("nick", ((User)(httpSession.getAttribute("user"))).getNickName());
+    }else{
+      result.put("nick",null);
+    }
+    result.put("data",list);
+		return result;
 	}
 
 	@Override
@@ -63,10 +81,10 @@ public class MemoServiceImpl implements MemoService {
   public List<Map<String, Object>> checkAlarm(String numbers){
     return memoDao.checkAlarm(numbers);
   }
+  
   @Override
   public void deleteMemoAlarm(int rno) {
     memoDao.deleteMemoAlarm(rno);
-    
   }
 
 }

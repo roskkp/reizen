@@ -282,7 +282,7 @@ $(function(){
 
 	/*********** 네이버 로그인 ***********/
 
-	var naver = new naver_id_login("5VKp7qdAUXuURPz9imbk", "http://reizen.com:8080/");
+	var naver = new naver_id_login("5VKp7qdAUXuURPz9imbk", reizenUrl);
 	var state = naver.getUniqState();
 	naver.setDomain("reizen.com");
 	naver.setState(state);
@@ -354,9 +354,8 @@ function sessionCheck(){
 		$('.login').fadeIn();
 		$('.min-thumbnail').css('background-image', 'url(' + "/resources/images/thumbnail/" + sessionStorage.getItem('thumbnail')+ ')').fadeIn();
 		$('#id').text(sessionStorage.getItem('nick'));
-		$('.like-count').text(sessionStorage.getItem('totalScrap'));
-		$('.write-count').text(sessionStorage.getItem('totalRecommand'));
-		
+		$('.like-count').text(sessionStorage.getItem('totalRecommand'));
+		$('.write-count').text(sessionStorage.getItem('totalScrap'));
 		var activeList = JSON.parse(sessionStorage.getItem("activeScheduleNo"));
 		
 		if(activeList.length>0){
@@ -385,7 +384,7 @@ function sessionCheck(){
 			$('.min-thumbnail').css('background-image','');
 			sessionStorage.clear();
 			sessionCheck();
-			$(location).attr('href', 'http://reizen.com:8080')
+			$(location).attr('href', reizenUrl)
 		});
 		$('.login').on('click', function() {
 			$('nav.headerNav').css('height', navHeight);

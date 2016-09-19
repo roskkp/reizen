@@ -4,3 +4,4 @@ src/main/webapp/node_modules/
 .project
 .settings/
 bin/
+build/

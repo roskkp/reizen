@@ -11,13 +11,13 @@ public interface LocationService {
   
 	public void insertLocation(Location location);
 
-	public Map<String, Object> selectLocations(Map<String, Object> params);
+	public List<Location> selectLocations(String keyword, String areaCode, String localCode, String category, String date, int page, int size, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS, @RequestParam(value="cateL", defaultValue = "") List<Object> cateL);
 
 	public void updateLocation(Location location);
 
 	public Map<String, Object> detailSelect(String path, int contentId);
 	
-	public Map<String, Object> around(String lat, String lon, String tid);
+	public List<Location> around(String lat, String lon, String tid);
   
   public List<Location> selectAroundList(String lat, String lon, String tid, int size, int page);
   
@@ -27,10 +27,8 @@ public interface LocationService {
 
 	public List<String> selectCateL();
 
-	public List<String> selectArea(String value);
-
-	public List<String> selectCity(String value);
-
+	public List<String> selectAreaCity(String value);
+	
 	public void insertLcdd(Map<String, Object> params);
 
 	public Map<String, Object> statusCheck(String nick, int cid);
@@ -47,6 +45,4 @@ public interface LocationService {
 
   public List<String> autoKeyword(String keyword, String areaCode, String localCode, @RequestParam(value="cateS", defaultValue = "") List<Object> cateS);
   
-  public Location getLocationByMap(String mapY,String mapX);
-
 }

@@ -4,16 +4,21 @@
   visibility: hidden;
   padding-right: 10px;
 }
-
+.modal-body {
+    /* position: relative; */
+    /* padding: 15px; */
+    padding-left: 20px; 
+}
 .select {
     cursor: pointer;
     display: inline-block;
     position: relative;
     font-size: 18px;
-    color:#f3bbbb;
-    border-color:#f3bbbb;
-    margin-top: 7%;
-    width: 150px;
+    color: #8c8f99;
+    border-color: #8c8f99;
+    margin-top: 2%;
+    margin-left: 10px;
+    width: 135px;
     height: 40px;
 }
 

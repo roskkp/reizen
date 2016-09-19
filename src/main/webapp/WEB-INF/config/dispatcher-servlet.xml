@@ -11,38 +11,22 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="com.reizen" />
-	<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	<context:component-scan base-package="com.reizen.controller">
+	 <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+   <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+   <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+  </context:component-scan>
+	
 	<mvc:annotation-driven />
+	
+	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/scheduler/scCheck.do"/>
 			<mvc:mapping path="/scCheck.do"/>
       <!-- <mvc:mapping path="/user/checkUser.do"/> -->
 			<bean id="sessionCheckInterceptor" class="com.reizen.interceptor.SessionCheckInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
-
-	<context:property-placeholder
-		location="classpath*:com/reizen/dao/jdbc.properties" />
-
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath*:com/reizen/dao/**/*.xml" />
-		<property name="typeAliasesPackage" value="com.reizen.domain" />
-	</bean>
-
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.reizen.dao" />
-	</bean>
-
 </beans>

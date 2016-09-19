@@ -21,6 +21,13 @@ function getUser(){
 					$('.bio').text(data[i].schedule.title);
 					$('.fa-calendar-minus-o').next().text(" "+data[i].schedule.scrapCount);
 					$('.heart').next().text(" "+data[i].schedule.recommandCount);
+					var dashNo =data[i].schedule.user.dashNo
+					$(document).on('click','.username',function(e){ // 닉네임 클릭하면 해당 회원 dashboard로 가게
+						location.href='dashboard.html?no='+dashNo
+						e.preventDefault();
+					});	
+
+
 					if (data[i].schedule.user.thumbNail != null) {
 						$('.avatar').attr("src","/resources/images/thumbnail/"+ data[i].schedule.user.thumbNail);
 					}
@@ -98,7 +105,6 @@ function userScheduleAjax(){
 					console.log('일정 불러오기 실패');
 					return;
 				}
-				alert('test')
 				console.log(result)
 				$('ol.timeline').append(template(result));
 				
@@ -107,51 +113,29 @@ function userScheduleAjax(){
 				mapDay = 1;
 				initMap();
 				
-				$(document).on('click','.del',function(){
-					$.ajax({
-						url : reizenUrl + 'postscript/deletePicts.do',
-						dataType : 'json',
-						data : {
-							pictureNo :$('.pictsNo').val(),
-							
-						},
-						method : 'post',
-						success : function(result) {
-							if (result.status != 'success') {
-								alert('후기 삭제 에러');
-							}
-							alert('성공');
-							location.reload();
-						}
-					})
-				})
-				
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
-					console.log('카테고리 테스트'+$($('.front')[i]).attr('data-locate'));
+					console.log($($('.timeline').children(".front")[i]).attr('data-locate'))
 					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
-					case 'A01':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-envira')
+					case '12':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera')
 						break;
-					case 'A02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-bank')
+					case '14': // 문화
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-anchor')
+					case '15': // 축제
+						$($('.timeline').children(".front")[i]).addClass('fa fa-star');
 						break;
-					case 'A04':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag')
+					case '28': // 레포츠
+						$($('.timeline').children(".front")[i]).addClass('fa fa-motorcycle');
 						break;
-					case 'A05':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery')
+					case '32': // 숙박
+						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel');
 						break;
-					case 'B02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel')
+					case '38': // 쇼핑
+						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
-						break;
-					default:
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+					case '39': // 음식
+						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery');
 						break;
 					}
 				}
@@ -203,7 +187,6 @@ function scheduleAjax() {
 				}
 				for(var i=0; i<list.length; i++){
 					if(list[i].content != null || list[i].picturePath != null){
-						console.log('null check')
 						list[i].check = 'true';
 					}
 				}
@@ -227,29 +210,26 @@ function scheduleAjax() {
 				}
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
 					switch ($($('.timeline').children(".front")[i]).attr('data-locate')) {
-					case 'A01':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-envira')
+					case '12':
+						$($('.timeline').children(".front")[i]).addClass('fa fa-camera')
 						break;
-					case 'A02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-bank')
+					case '14': // 문화
+						$($('.timeline').children(".front")[i]).addClass('fa fa-university');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-anchor')
+					case '15': // 축제
+						$($('.timeline').children(".front")[i]).addClass('fa fa-star');
 						break;
-					case 'A04':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag')
+					case '28': // 레포츠
+						$($('.timeline').children(".front")[i]).addClass('fa fa-motorcycle');
 						break;
-					case 'A05':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery')
+					case '32': // 숙박
+						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel');
 						break;
-					case 'B02':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-hotel')
+					case '38': // 쇼핑
+						$($('.timeline').children(".front")[i]).addClass('fa fa-shopping-bag');
 						break;
-					case 'A03':
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
-						break;
-					default:
-						$($('.timeline').children(".front")[i]).addClass('fa fa-camera-retro')
+					case '39': // 음식
+						$($('.timeline').children(".front")[i]).addClass('fa fa-cutlery');
 						break;
 					}
 					
@@ -297,10 +277,10 @@ function scheduleAjax() {
 										    timer: 3000,
 										    confirmButtonText: "Ok!", 
 										  }, function(){
-										    window.location.reload();
+										   location.href="viewSchedule.html?shceduleNo="+scheduleNo
 										  });
 										  setTimeout(function() {
-										    window.location.reload();
+											  location.href="viewSchedule.html?shceduleNo="+scheduleNo
 										  }, 3000);
 							
 								}
@@ -328,7 +308,6 @@ function usersrAjax() {
 				console.log('error');
 				return;
 			}
-			console.log(result.scrap);
 			if(result.scrap == 'checked'){
 				$('.fa-calendar-minus-o').css("color","pink").attr('data-active','true');
 			}

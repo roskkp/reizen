@@ -188,6 +188,10 @@ function listAjax($value){
 		dataType: 'json',
 		method: 'get',
 		success: function(result){
+			if (result.status != "success") {
+				console.log('데이터 로딩 실패...');
+				return;
+			}
 			if (result.total != null) {
 				totalPage = result.total;
 				currentDate = new Date();

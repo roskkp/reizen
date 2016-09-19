@@ -1,15 +1,15 @@
 package com.reizen.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BestRoute {
 
   public static Map<String, Object> routeOptimum(Map<String,Map<String, Double>> list, Map<String, Double> start,String targets){
-
     // return 해줄 데이터 선언 및 초기화;
     Map<String, Object> result = new HashMap<String, Object>();
-
     // 들어온 경로의 수 파악 및 데이터 준비
     int size = list.size();
     Map<String,Map<String, Double>> data = new HashMap<>();
@@ -22,15 +22,12 @@ public class BestRoute {
       data.put(""+index,value);
       index++;
     }
-    System.out.println(data);
-    System.out.println(list);
     if (size != 0) {
       data = toFor(data,list, size,end,targets);
     } else {
       result.put("path", "t1t2");
       result.put("distance",list.get("0").get("t2")+data.get("0").get("t1"));
     }
-
     // 계산된 데이터 중 최소거리 찾기
     // 결과 값 셋팅 후 반환
     result.put("path", data.get("end").keySet().toString().replace("[", "").replace("]", ""));
@@ -38,7 +35,6 @@ public class BestRoute {
   }
 
   public static Map<String,Map<String, Double>> toFor(Map<String,Map<String, Double>> data , Map<String,Map<String, Double>> list, int size,String end,String targets){
-    System.out.println("dataSize : "+data.size());
     Map<String,Map<String, Double>> result = new HashMap<>();
     String resultPath = null;
     double resultDistance = 999999999; 
@@ -79,20 +75,78 @@ public class BestRoute {
         }
       }
     }
-
-
+    int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
+    if ( length - depth != 1 && depth > 1) {
+      System.out.println("length : "+length+" / depth : "+depth+" / size : "+size);
+      System.out.println(length - depth);
+      double targetValue;
+      String targetName;
+      List<String> targetNames = new ArrayList<>();
+      Map<String, Double> value = null;
+      Map<String,Map<String, Double>> results = new HashMap<>();
+      for (int k = 0; k < length; k++) {
+        targetValue = 999999999;
+        targetName = "t"+(k+1);
+        for (int a = 0; a < length; a++) {
+          if (k != a && length - depth != targetNames.size()) {
+            targetNames.add("t"+(a+1)); 
+          }
+          System.out.println("targetName : "+targetName);
+          System.out.println("targetNames : "+targetNames);
+        }
+        for (int i = 0; i < result.size(); i++) {
+          for (String key : result.get(""+i).keySet()) {
+            value = new HashMap<>();
+            targetValue = result.get(""+i).get(key);
+            value.put(key, targetValue);
+//            System.out.println("key : "+key+" / value : "+targetValue);
+//            if (key.endsWith(targetName)) {
+//              if (targetValue > result.get(""+i).get(key)) {
+//                value = new HashMap<>();
+//                targetValue = result.get(""+i).get(key);
+//                value.put(key, targetValue);
+//                System.out.println("key : "+key+" / value : "+targetValue);
+//              }
+//            }
+          }
+        }
+//        results.put(""+k, value);
+      }
+//      result = results;
+      System.out.println(result.size());
+    } else if (depth == 1) {
+      double targetValue;
+      String targetName;
+      Map<String, Double> value = null;
+      Map<String,Map<String, Double>> results = new HashMap<>();
+      for (int k = 0; k < length; k++) {
+        targetValue = 999999999;
+        targetName = "t"+(k+1);
+        for (int i = 0; i < result.size(); i++) {
+          for (String key : result.get(""+i).keySet()) {
+            if (key.endsWith(targetName)) {
+              if (targetValue > result.get(""+i).get(key)) {
+                value = new HashMap<>();
+                targetValue = result.get(""+i).get(key);
+                value.put(key, targetValue);
+              }
+            }
+          }
+        }
+        results.put(""+k, value);
+      }
+      result = results;
+    }
     // 경로가 끝이 아니므로, 재귀
     if (depth != 0) {
       result = toFor(result,list, depth,end,targets);  
     } else {
       Map<String, Double> value = new HashMap<>();
       value.put(resultPath,resultDistance);
-      System.out.println(value);
       result.put("end",value);
     }
     return result;
   }
-
   // 중복된 for 문을 줄이려고 동적으로 if 문 변경
   public static boolean checkIf (int depth, String key, String target, String key2) {
     if (depth == 0 ) {

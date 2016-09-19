@@ -3,7 +3,6 @@ package com.reizen.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.reizen.domain.Picture;
 import com.reizen.domain.Post;
 import com.reizen.domain.ScheduleScrap;
 
@@ -33,7 +32,7 @@ public interface PostscriptDao {
   
   public int deletePicts(int pictureNo);
   
-  public Post postSelect(int routeNo);
+  public Integer postNoSelect(int routeNo);
   
   public int checkRecm(Map<String, Object> map);
   
