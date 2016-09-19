@@ -1,5 +1,6 @@
 package com.reizen.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,33 +75,46 @@ public class BestRoute {
         }
       }
     }
-    if (depth > 1) {
-      int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
+    int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
+    if ( length - depth != 1 && depth > 1) {
+      System.out.println("length : "+length+" / depth : "+depth+" / size : "+size);
+      System.out.println(length - depth);
       double targetValue;
       String targetName;
-      List<String> targetNames;
+      List<String> targetNames = new ArrayList<>();
       Map<String, Double> value = null;
       Map<String,Map<String, Double>> results = new HashMap<>();
       for (int k = 0; k < length; k++) {
         targetValue = 999999999;
         targetName = "t"+(k+1);
+        for (int a = 0; a < length; a++) {
+          if (k != a && length - depth != targetNames.size()) {
+            targetNames.add("t"+(a+1)); 
+          }
+          System.out.println("targetName : "+targetName);
+          System.out.println("targetNames : "+targetNames);
+        }
         for (int i = 0; i < result.size(); i++) {
           for (String key : result.get(""+i).keySet()) {
-            if (key.endsWith(targetName)) {
-              if (targetValue > result.get(""+i).get(key)) {
-                value = new HashMap<>();
-                targetValue = result.get(""+i).get(key);
-                value.put(key, targetValue);
-                System.out.println("key : "+key+" / value : "+targetValue);
-              }
-            }
+            value = new HashMap<>();
+            targetValue = result.get(""+i).get(key);
+            value.put(key, targetValue);
+//            System.out.println("key : "+key+" / value : "+targetValue);
+//            if (key.endsWith(targetName)) {
+//              if (targetValue > result.get(""+i).get(key)) {
+//                value = new HashMap<>();
+//                targetValue = result.get(""+i).get(key);
+//                value.put(key, targetValue);
+//                System.out.println("key : "+key+" / value : "+targetValue);
+//              }
+//            }
           }
         }
 //        results.put(""+k, value);
       }
 //      result = results;
+      System.out.println(result.size());
     } else if (depth == 1) {
-      int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
       double targetValue;
       String targetName;
       Map<String, Double> value = null;
