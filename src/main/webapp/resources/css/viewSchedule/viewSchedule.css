@@ -507,7 +507,7 @@ ol.timeline {
 .modal-content {
     background-color: #fff;
     width: 54%;
-    margin-left: 10%;
+    margin: 0 auto;
 }
 .fa-arrow-right{
   color: white;
