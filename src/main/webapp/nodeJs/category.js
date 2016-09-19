@@ -43,8 +43,6 @@ pool.on('connection', function() {
 });
 
 app.get('/category/middle.do', function (request, response) {
-
-	  console.log('들어옴');
 	pool.query(
 	  'select c03name, cate03, @rownum:=@rownum+1 rn from cate_m m, cate_s s, (select @rownum:=0) sub where cate01 = ? and m.cate02 != "A0204" and s.cate02 = m.cate02',
 	  [request.query.cate01], 
