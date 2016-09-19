@@ -164,7 +164,7 @@
   <div class="accordion" data-routeNo="{{route.routeNo}}">
 
     <div class="postLength">
-      <p class="reg">{{post.regDate}}</p>
+      <p class="reg">{{formatDate post.regDate}}</p>
        <div class="priceTrans">
 			<div class='price-btn'>소요비용 : {{price}}원</div>
 			<div class='tran' data-trans="{{transportation}}"></div>
@@ -215,7 +215,7 @@
   <div class="accordion" data-routeNo="{{route.routeNo}}">
 
     <div class="postLength">
-      <p class="reg">{{post.regDate}}</p>
+      <p class="reg">{{formatDate post.regDate}}</p>
        <div class="priceTrans">
 			<div class='price-btn'>소요비용 : {{price}}원</div>
 			<div class='tran' data-trans="{{transportation}}"></div>
@@ -263,6 +263,7 @@
 <script type="text/javascript"src="../resources/js/viewSchedule/viewSchedule.js"></script>
 <script type="text/javascript"src="../resources/js/viewSchedule/viewScheduleAjax.js"></script>
 <script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="../node_modules/moment/min/moment.min.js"></script>
 </body>
 
 </html>

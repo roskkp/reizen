@@ -207,8 +207,6 @@ function scheduleAjax() {
 						list[i].check = 'true';
 					}
 				}
-				alert('test')
-				console.log(result)
 				$('ol.timeline').append(template(result));
 				for (var i = 0; i < $('.tran').length; i++) {
 					switch ($($('.tran')[i]).attr('data-trans')) {
@@ -486,3 +484,8 @@ function usersrAjax() {
 		})// ajax
 	}); // like on click
 }
+
+var DateFormats = {
+	       short: "DD MMMM - YYYY",
+	       long: "dddd DD.MM.YYYY HH:mm"
+	};

@@ -306,7 +306,9 @@ $(function() {
 		bestRouteUpdate();
 	})
 	
-
+	$(document).on('click','.infoBtn',function(e){
+		e.stopPropagation();
+	})
 
 	$('#searchBar').on('keydown', function(event){
 		if( event.keyCode == 13 ){
@@ -665,8 +667,8 @@ function pointMap(mapX, mapY,maps) { // 주변 검색
 
 				var $clone = $dragList.eq(this.dataIndex).clone();
 				$clone.addClass('infoWindow').wrapAll("<div class='infoWindow' />").find('.resultTextBox').css('margin-left','10px').next().remove();
-				$clone.parent().append('<div class="infoBtn infoDetail">자세히</div>'+
-						'<div class="infoBtn infoAdd">+ 일정에 추가</div>');
+				$clone.parent().append('<div class="windowBtn infoDetail">자세히</div>'+
+						'<div class="windowBtn infoAdd">+ 일정에 추가</div>');
 				var infowindow = new google.maps.InfoWindow({
 					    content: $clone.parents('.infoWindow').html()
 		        });

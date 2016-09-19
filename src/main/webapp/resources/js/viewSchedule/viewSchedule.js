@@ -219,7 +219,10 @@ Handlebars.registerHelper('stime', function(time){
 Handlebars.registerHelper("inc", function(value, options){
 		    return parseInt(value) + 1;
 });
-
+Handlebars.registerHelper("formatDate", function(datetime) {
+	console.log(datetime)
+	return moment(datetime).format("YYYY-MM-DD");
+});
 
 /**************	맵	**************/
 
