@@ -310,7 +310,7 @@ function usersrAjax() {
 				$('.fa-calendar-minus-o').css("color","pink").attr('data-active','true');
 			}
 			if(result.recm == 'checked'){
-				$('.heart').css("color","pink").attr('data-active','true');
+				$('.fa-heart').css("color","pink").attr('data-active','true');
 			}
 		}
 	}) // ajax
@@ -399,7 +399,8 @@ function usersrAjax() {
 		})//ajax
 	});//scrap on click
 	
-	$('.heart').on('click',function(){
+	$('.fa-heart').on('click',function(){
+	
 		var url = null;
 		var toggle = null;
 		var $this = $(this);
@@ -431,10 +432,10 @@ function usersrAjax() {
 						success : function(result) {
 							if (result.status == 'success') {
 								var data = result.data
-								for (var i = 0; i < data.length; i++) {
+							/*	for (var i = 0; i < data.length; i++) {
 								$this.next().text(' '+data[i].schedule.recommandCount);
 								$this.css("color","#ffffff").removeAttr('data-active');
-								}
+								}*/
 							}
 						}
 					});
