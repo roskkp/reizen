@@ -3,7 +3,6 @@ function addScheduleAjax(eventDate){
 	if( title=='' || title==null ){
 		title = '나만의 여행';
 	}
-
 	$.ajax({
 		url : reizenUrl+'scheduler/addSchedule.do',
 		method : 'POST',
