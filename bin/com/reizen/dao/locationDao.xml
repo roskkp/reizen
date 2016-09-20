@@ -261,7 +261,7 @@
     cate_m m on s.CATE02 =
     m.CATE02 left outer join cate_l c 
     on  m.CATE01 = c.CATE01
-    WHERE l.map_x = #{mapX} and l.map_y=#{mapY}
+    WHERE l.cid = #{cid}
   </select>
   <select id="selectAroundList" parameterType="map" resultMap="locationMap">
     SELECT l.*, s.C03NAME, m.C02NAME, c.C01NAME

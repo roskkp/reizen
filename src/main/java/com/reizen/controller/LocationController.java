@@ -276,10 +276,11 @@ public class LocationController {
   
   @RequestMapping(path = "aroundList", produces = "application/json;charset=UTF-8")
   @ResponseBody
-  public String aroundList(String mapX, String mapY, String tid, int size, int page) {
+  public String aroundList(String mapX, String mapY, String tid, int size, int page, int cid) {
     Map<String, Object> result = new HashMap<String, Object>();
+    System.out.println("mapX : "+mapX+" / mapY : "+mapY+" / tid : "+tid+" / size : "+size+" / page : "+page);
     try {
-      result.put("data", locationService.selectAroundList(mapX, mapY, tid, size, page));
+      result.put("data", locationService.selectAroundList(mapX, mapY, tid, size, page, cid));
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();

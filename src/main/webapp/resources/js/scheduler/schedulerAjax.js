@@ -379,10 +379,11 @@ function dataTheorem(){
 
 }
 
-function aroundSearch(mapX,mapY){
+function aroundSearch(mapX,mapY,cid){
+	markerBoolean = true;
 	$('#draggable').empty();
 	$.ajax({
-		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1',
+		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1&cid='+cid,
 		method: 'GET',
 		dataType: 'json',
 		success: function(result){
