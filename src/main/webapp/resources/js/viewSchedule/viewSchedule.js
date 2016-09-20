@@ -216,12 +216,12 @@ Handlebars.registerHelper('stime', function(time){
 Handlebars.registerHelper("inc", function(value, options){
 		    return parseInt(value) + 1;
 });
-Handlebars.registerHelper("formatDate", function(datetime) {
+/*Handlebars.registerHelper("formatDate", function(datetime) {
 	console.log(datetime)
 	return moment(datetime).format("YYYY-MM-DD");
 });
 
-
+*/
 /**********************addSchedule***************************/
 function addSchedule(){
 	$(document).on('click','#addSchedule',function() {

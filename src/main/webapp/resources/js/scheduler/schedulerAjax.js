@@ -13,11 +13,20 @@ function addScheduleAjax(eventDate){
 		success : function(result){
 			if( ! result.status == 'success' ){
 				sweetAlert('스케줄 생성 에러');
-			}else{
-				scheduleNo = result.scheduleNo;
-				$('#schedule-title').text(title);
-				$('#startDate').text(date);
-			}//else
+				return;
+			}
+			scheduleNo = result.scheduleNo;
+			if(location.href.indexOf('copyScheduleNo')!=-1){
+				var copyScheduleNo = $(location).attr('search').substring(16);
+				$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
+					if(response.status=='success'){
+						emptySchedule = false;
+						window.location.href='scheduler.html?scheduleNo='+scheduleNo;
+					}
+				});
+			}
+			$('#schedule-title').text(title);
+			$('#startDate').text(date);
 		}//success
 	});
 }
@@ -183,6 +192,7 @@ function listAjax(scheduleNo, day){
 
 			var listSource = $('#scheduleList').text();
 			var listTemplate = Handlebars.compile(listSource);
+			
 			$('#sortable').empty();
 			$('#sortable').append(listTemplate(result));
 			$('#schedule-title').text(title);

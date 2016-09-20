@@ -4,14 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <title>일정보기</title>
-
-
 <link href="../node_modules/sweetalert/dist/sweetalert.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="../resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="../resources/css/select.css" />
 <link rel="stylesheet" type="text/css" href="../resources/css/viewSchedule/viewSchedule.css" />
-
 </head>
 <body>
   <header> </header>
@@ -171,7 +168,7 @@
   <div class="accordion" data-routeNo="{{route.routeNo}}">
 
     <div class="postLength">
-      <p class="reg">{{formatDate post.regDate}}</p>
+      <p class="reg">{{post.regDate}}</p>
        <div class="priceTrans">
 			<div class='price-btn'>소요비용 : {{price}}원</div>
 			<div class='tran' data-trans="{{transportation}}"></div>
@@ -222,7 +219,7 @@
   <div class="accordion" data-routeNo="{{route.routeNo}}">
 
     <div class="postLength">
-      <p class="reg">{{formatDate post.regDate}}</p>
+      <p class="reg">{{post.regDate}}</p>
        <div class="priceTrans">
 			<div class='price-btn'>소요비용 : {{price}}원</div>
 			<div class='tran' data-trans="{{transportation}}"></div>
@@ -270,7 +267,6 @@
 <script type="text/javascript"src="../resources/js/viewSchedule/viewSchedule.js"></script>
 <script type="text/javascript"src="../resources/js/viewSchedule/viewScheduleAjax.js"></script>
 <script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<script type="text/javascript" src="../node_modules/moment/min/moment.min.js"></script>
 </body>
 
 </html>

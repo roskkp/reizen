@@ -96,7 +96,7 @@
   
   <insert id="copySchedule" parameterType="map">
     insert into routes (sdno, day, tseq, time, cid) 
-    select #{scheduleNo} as sdno, day, tseq, time, cid 
+    select #{scheduleNo} as sdno, day, tseq, concat(#{date},date_format(time, '%H:%i')) time, cid 
     from routes where sdno=#{copyScheduleNo}
   </insert>
   

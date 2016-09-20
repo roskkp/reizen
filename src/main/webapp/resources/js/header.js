@@ -19,7 +19,9 @@ var navHeight = 207;
 $(function(){ 
 	
 	sessionCheck();
-
+	setInterval(() => {
+		scdleRec();
+	}, 1000);
 	$('#thumbnail').fileupload({
 		autoUpload : false
 	}).on('fileuploadadd', function(e, data) {
@@ -343,6 +345,25 @@ $('#btnProceeding').off('click').on('click', function(){
 	}
 });
 
+function scdleRec() {
+	$.ajax({
+		url : nodeUrl+':9000/scheduler/sessionRecm.do',
+		data : {
+			userNo:sessionStorage.getItem('userNo')
+		},
+		type : 'POST',
+		dataType : 'json',
+		success : function(result){
+			if( result.status == 'success' ){
+
+				sessionStorage.setItem('totalRecommand', result.s_recm);
+				sessionStorage.setItem('totalScrap', result.s_src);
+				sessionCheck();
+			}
+		}
+	});
+	
+}
 
 /*********** 세션 체크 ***********/
 
