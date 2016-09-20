@@ -151,6 +151,7 @@ public class PostscriptController {
   @RequestMapping(path = "deletePicts", produces = "application/json;charset=UTF-8")
   @ResponseBody
   public String delRecm(int pictureNo) {
+    System.out.println("pictureNo : "+pictureNo);
     Map<String, Object> result = new HashMap<String, Object>();
     try {
       postscriptService.deletePicts(pictureNo);
@@ -221,7 +222,7 @@ public class PostscriptController {
     return new Gson().toJson(result);
   }
 
-  @RequestMapping(path = "updateFile", method = RequestMethod.POST)
+  @RequestMapping(path = "updateFile")
   @ResponseBody
   public String updateFile(@RequestPart(required=false) MultipartFile file, HttpServletRequest request, @RequestParam("type") String type,
       @RequestParam("scheduleNo") int scheduleNo, @RequestParam("routeNo") int routeNo,
@@ -230,6 +231,7 @@ public class PostscriptController {
     Map<String, Object> result = new HashMap<String, Object>();
     try {
       postscriptService.updateFile(file, request, type, scheduleNo, routeNo, content, transportation, price);
+      System.out.println(file+", "+request+", "+type+", "+scheduleNo+", "+routeNo+", "+content+", "+transportation+", "+price);
       result.put("status", "success");
     } catch (Exception e) {
       e.printStackTrace();

@@ -168,12 +168,12 @@
 	</select>
 
 	<update id="updatePicture" parameterType="map">
-		UPDATE picts
-		SET PO_PIC=#{picturePath},
-		PO_CONT=#{content},
-		TRANS=#{transportation},
-		PRICE=#{price}
-		WHERE rno=#{routeNo}
+	 update picts
+	 set po_pic=#{picturePath},
+	 trans=#{transportation},
+	 price=#{price},
+	 po_cont=#{content}
+	 where rno=#{routeNo}
 	</update>
 
 	<select id="selectPicture" resultMap="pictureMap" parameterType="int">
@@ -200,19 +200,19 @@
 	</select>
 
 	<select id="userPost" resultMap="usersMap" parameterType="int">
-    SELECT
-    U.NICK,U.THUMB,S.TITLE,S.S_RECM,S.S_SRC,R.TIME,s.sdno,u.uno,d.DSNO
-    FROM users U
-    LEFT JOIN SCDLS S ON u.uno=s.uno
-    LEFT JOIN ROUTES R ON s.sdno=r.sdno
-    LEFT JOIN dsbd d ON u.uno=d.uno
-    WHERE s.sdno=#{scheduleNo}
-    order by r.time
+  select
+  u.nick, u.thumb, s.title, s.s_recm, s.s_src, r.time, s.sdno, u.uno, d.dsno
+  from users u
+  left join scdls s on u.uno=s.uno
+  left join routes r on s.sdno=r.sdno
+  left join dsbd d on u.uno=d.uno
+  where s.sdno=#{scheduleNo}
+  order by r.time
 	</select>
 
 	<delete id="deletePicts" parameterType="int">
-		DELETE FROM picts
-		WHERE PINO=#{pictureNo}
+	 delete from picts
+	 where pino=#{pictureNo}
 	</delete>
 
 </mapper>

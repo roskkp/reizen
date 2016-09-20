@@ -115,10 +115,10 @@
             <ul class="icons">
               <li><a href="" class="icon style2 fa-heart non-click"></a><br><span class="icon-text">{{recommandCount}}</span></li>
               <li><a href="" class="icon style2 fa-paperclip non-click"></a><br><span class="icon-text">{{scrapCount}}</span></li>
-              <li><a href="http://reizen.com:8080/scheduler/scheduler.html?scheduleNo={{scheduleNo}}" class="icon style2 fa-pencil"></a><br><span class="icon-text">edit</span></li>
+              <li><a href="/scheduler/scheduler.html?scheduleNo={{scheduleNo}}" class="icon style2 fa-pencil"></a><br><span class="icon-text">edit</span></li>
               <li><a href="" class="icon style2 fa-remove remove"></a><br><span class="icon-text">remove</span></li>
             </ul>
-              <a class="thmb-image" href="viewSchedule.html?shceduleNo={{scheduleNo}}">
+              <a class="thmb-image" href="/scheduler/viewSchedule.html?shceduleNo={{scheduleNo}}">
                     <img src="{{thumbImg}}" alt="" class="sceduleImg" data-no="{{scheduleNo}}"/>
                     <h2>{{title}}</h2>
                      <span>{{totalDays}}Days · {{month}}월 여행 · {{peopleCount}}명 · by </span><span class="nick-name" data-dashNo="{{user.dashNo}}">{{user.nickName}}</span>
@@ -130,10 +130,10 @@
             <ul class="icons">
               <li><a href="" class="icon style2 fa-heart non-click"></a><br><span class="icon-text">{{recommandCount}}</span></li>
               <li><a href="" class="icon style2 fa-paperclip non-click"></a><br><span class="icon-text">{{scrapCount}}</span></li>
-              <li><a href="http://reizen.com:8080/scheduler/scheduler.html?copyScheduleNo={{scheduleNo}}" class="icon style2 fa-plus"></a><br><span class="icon-text">add</span></li>
+              <li><a href="/scheduler/scheduler.html?copyScheduleNo={{scheduleNo}}" class="icon style2 fa-plus"></a><br><span class="icon-text">add</span></li>
               <li><a href="" class="icon style2 fa-remove remove"></a><br><span class="icon-text">remove</span></li>
             </ul>
-              <a class="thmb-image" href="viewSchedule.html?shceduleNo={{scheduleNo}}">
+              <a class="thmb-image" href="/scheduler/viewSchedule.html?shceduleNo={{scheduleNo}}">
                     <img src="{{thumbImg}}" alt="" />
                     <h2>{{title}}</h2>
                      <span>{{totalDays}}Days · {{month}}월 여행 · {{peopleCount}}명 · by </span><span class="nick-name" data-dashNo="{{user.dashNo}}">{{user.nickName}}</span>
@@ -148,7 +148,7 @@
               <li><a href="" class="icon style2 fa-plus btnPlus"></a><br><span class="icon-text">add</span></li>
               <li><a href="" class="icon style2 fa-remove remove"></a><br><span class="icon-text">remove</span></li>
             </ul>
-                  <a  class="thmb-image"  href="spot.html?cid={{contentId}}&tid={{typeId}}">
+                  <a  class="thmb-image"  href="/scheduler/spot.html?cid={{contentId}}&tid={{typeId}}">
                     <img src="{{firstImage}}" alt="" />
                     <h2>{{locateName}}</h2>
                     <span>{{address1}}</span>

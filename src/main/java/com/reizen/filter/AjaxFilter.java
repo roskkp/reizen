@@ -16,6 +16,7 @@ public class AjaxFilter implements Filter{
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
+    System.out.println("filter init");
     // TODO Auto-generated method stub
     
   }

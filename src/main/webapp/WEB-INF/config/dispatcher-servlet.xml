@@ -23,7 +23,6 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/scheduler/scCheck.do"/>
 			<mvc:mapping path="/scCheck.do"/>
       <!-- <mvc:mapping path="/user/checkUser.do"/> -->
 			<bean id="sessionCheckInterceptor" class="com.reizen.interceptor.SessionCheckInterceptor"/>

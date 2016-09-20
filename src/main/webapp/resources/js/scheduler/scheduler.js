@@ -93,7 +93,7 @@ $(function() {
 							$day.attr('data-day', 1);
 							$day.text('DAY'+day);
 							
-							$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
+							$.getJSON(nodeUrl+':8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
 								$day.attr('data-date', result[0].time);
 								date=result[0].time;
 								title=result[0].title;
@@ -205,7 +205,7 @@ $(function() {
 				$('#updateTime').modal('show');
 				$('#btnTimeSubmit').off('click').on('click', function(){
 					var time = $('#updateHour option:selected').val()+":"+$('#updateMin option:selected').val()
-					$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
+					$.getJSON(nodeUrl+':8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
 							if(result.status=='exist'){
 								swal({
 									 title: "잘못된 시간입니다.",   
@@ -439,7 +439,7 @@ $(function() {
 		});
 	})
 	$(document).on('click','.infoDetail',function(evnet){	
-		window.open("http://reizen.com:8080/scheduler/spot.html?cid="+$(this).prev().data('contentid')+"&tid="+$(this).prev().data('typeid'),"_blank");
+		window.open(nodeUrl+":8080/scheduler/spot.html?cid="+$(this).prev().data('contentid')+"&tid="+$(this).prev().data('typeid'),"_blank");
 	})
 	
 	$('.searchIcon').not('#btnLocation').off('click').on('click', function(){
@@ -495,7 +495,7 @@ $(function() {
 	$('#sortable').on('click', 'a.editBtn', function(event){ // 수정 버튼 이벤트 리스너
 		event.preventDefault();
 		var routeNo= $(this).parents('li').data('routeno');
-		$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
+		$.getJSON(nodeUrl+':8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
 			if(result.length>0){ // day가 있다면 ....? day가 없는 일정이 있을 수 있나 ?
 				var daySource = $('#dayList').html();
 				var dayTemplate = Handlebars.compile(daySource);
@@ -516,7 +516,7 @@ $(function() {
 		$('.adm-form-group').fadeIn();
 	});
 	$(document).on('change','.m-updateHour,.m-updateMin',function(){
-		$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
+		$.getJSON(nodeUrl+':8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
 			if(result.status=='exist'){
 				$('.control-label').remove();
 				$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');

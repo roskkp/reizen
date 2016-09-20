@@ -16,11 +16,8 @@ public class LogAspectJ {
       System.out.println("[Around before] 타겟 Instance의 호출할 method에 전달되는 인자 : "+joinPoint.getArgs()[0]);
     }
     Object obj = joinPoint.proceed();
-
     System.out.println("[Around after] 타겟 Instance 호출후 return value : "+obj);
     System.out.println("[Around after] "+getClass()+".invoke() end....");
-    
     return obj;
   }
-	
 }

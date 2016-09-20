@@ -1,15 +1,17 @@
 package com.reizen.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class BestRoute {
 
   public static Map<String, Object> routeOptimum(Map<String,Map<String, Double>> list, Map<String, Double> start,String targets){
-
     // return 해줄 데이터 선언 및 초기화;
     Map<String, Object> result = new HashMap<String, Object>();
-
     // 들어온 경로의 수 파악 및 데이터 준비
     int size = list.size();
     Map<String,Map<String, Double>> data = new HashMap<>();
@@ -22,15 +24,12 @@ public class BestRoute {
       data.put(""+index,value);
       index++;
     }
-    System.out.println(data);
-    System.out.println(list);
     if (size != 0) {
       data = toFor(data,list, size,end,targets);
     } else {
       result.put("path", "t1t2");
       result.put("distance",list.get("0").get("t2")+data.get("0").get("t1"));
     }
-
     // 계산된 데이터 중 최소거리 찾기
     // 결과 값 셋팅 후 반환
     result.put("path", data.get("end").keySet().toString().replace("[", "").replace("]", ""));
@@ -38,7 +37,6 @@ public class BestRoute {
   }
 
   public static Map<String,Map<String, Double>> toFor(Map<String,Map<String, Double>> data , Map<String,Map<String, Double>> list, int size,String end,String targets){
-    System.out.println("dataSize : "+data.size());
     Map<String,Map<String, Double>> result = new HashMap<>();
     String resultPath = null;
     double resultDistance = 999999999; 
@@ -79,20 +77,100 @@ public class BestRoute {
         }
       }
     }
-
-
+    int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
+    System.out.println("length - depth : "+(length - depth)+" / length : "+length+" / depth : "+depth);
+    if ( length - depth != 1 && depth > 1) {
+      double targetValue;
+      String targetName; 
+      Map<String, Double> value = null;
+      Map<String,Map<String, Double>> results = new HashMap<>();
+      int count = 0;
+      for (int k = 0; k < length; k++) {
+        targetName = "t"+(k+1);
+        Map<String, List<String>> before = new HashMap<>();
+        List<String> first = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+          if (k != i) {
+            first.add("t"+(i+1));
+          }
+        }
+        before.put(targetName,first);
+        Map<String, List<String>> after = target(length-depth, targetName, k, before, true);
+        int nos = 0;
+        for (int l = 0; l < after.size(); l++) {
+          if (nos == l) {
+            targetValue = 999999999;
+            for (int i = 0; i < result.size(); i++) {
+              for (String key : result.get(""+i).keySet()) {
+                if (key.endsWith(targetName) && keyContain(after.get(""+l), key)) {
+                  if (targetValue > result.get(""+i).get(key)) {
+                    value = new HashMap<>();
+                    targetValue = result.get(""+i).get(key);
+                    value.put(key, targetValue);
+                  }
+                }
+              }
+            }
+            nos++;
+            results.put(""+count, value);
+            count++;
+          }
+        }
+      }
+      result = results;
+    } else if (depth == 1) {
+      double targetValue;
+      String targetName;
+      Map<String, Double> value = null;
+      Map<String,Map<String, Double>> results = new HashMap<>();
+      for (int k = 0; k < length; k++) {
+        targetValue = 999999999;
+        targetName = "t"+(k+1);
+        for (int i = 0; i < result.size(); i++) {
+          for (String key : result.get(""+i).keySet()) {
+            if (key.endsWith(targetName)) {
+              if (targetValue > result.get(""+i).get(key)) {
+                value = new HashMap<>();
+                targetValue = result.get(""+i).get(key);
+                value.put(key, targetValue);
+              }
+            }
+          }
+        }
+        results.put(""+k, value);
+      }
+      result = results;
+    }
     // 경로가 끝이 아니므로, 재귀
     if (depth != 0) {
       result = toFor(result,list, depth,end,targets);  
     } else {
       Map<String, Double> value = new HashMap<>();
       value.put(resultPath,resultDistance);
-      System.out.println(value);
       result.put("end",value);
     }
     return result;
   }
+  
+  // 경우의 수를 줄이기 위한
+  public static Map<String,List<String>> target(int length, String targetName, int k, Map<String,List<String>> data, boolean pass ){
+//    System.out.println("length : "+length+" / targetName : "+targetName+" / data : "+data);
+    Map<String, List<String>> result = new HashMap<>();
+    
+    Set<Set<String>> outerSet = asd(length, targetName, k, data);
 
+    int no = 0;
+    for (Set<String> set : outerSet) {
+      List<String> innerList = new ArrayList<>();
+      for (String string : set) {
+        innerList.add(string);
+      }
+      result.put(""+no, innerList);
+      no++;
+    }
+    return result;
+  }
+  
   // 중복된 for 문을 줄이려고 동적으로 if 문 변경
   public static boolean checkIf (int depth, String key, String target, String key2) {
     if (depth == 0 ) {
@@ -100,5 +178,32 @@ public class BestRoute {
     } else {
       return key.endsWith(target) && !key.replace(target, "").equals(key2)  && !key.contains(key2);
     }
+  }
+  
+  // 중복된 for 문을 줄이려고 동적으로 if 문 변경
+  public static boolean keyContain(List<String> list, String key) {
+    for (String string : list) {
+      if (!key.contains(string)){
+//        System.out.println("return false");
+        return false;
+      };
+    }
+    return true;
+  }
+  
+  public static Set<Set<String>> asd(int length, String targetName, int k, Map<String,List<String>> data){
+    Set<Set<String>> outerSet = new HashSet<>();
+    for (int i = 0; i < data.get(targetName).size(); i++) {
+      for (int j = 0; j < data.get(targetName).size(); j++) {
+        if (!(""+i).contains((""+j))) {
+          Set<String> innerSet = new HashSet<>();
+          innerSet.add(data.get(targetName).get(i));
+          innerSet.add(data.get(targetName).get(j));
+          outerSet.add(innerSet);
+        }
+      }
+    }
+    System.out.println("outerSet : "+outerSet);
+    return outerSet;
   }
 }

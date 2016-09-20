@@ -282,7 +282,7 @@ $(function(){
 
 	/*********** 네이버 로그인 ***********/
 
-	var naver = new naver_id_login("5VKp7qdAUXuURPz9imbk", "http://reizen.com:8080/");
+	var naver = new naver_id_login("5VKp7qdAUXuURPz9imbk", reizenUrl);
 	var state = naver.getUniqState();
 	naver.setDomain("reizen.com");
 	naver.setState(state);
@@ -384,7 +384,7 @@ function sessionCheck(){
 			$('.min-thumbnail').css('background-image','');
 			sessionStorage.clear();
 			sessionCheck();
-			$(location).attr('href', 'http://reizen.com:8080')
+			$(location).attr('href', reizenUrl)
 		});
 		$('.login').on('click', function() {
 			$('nav.headerNav').css('height', navHeight);

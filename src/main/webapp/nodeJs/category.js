@@ -4,6 +4,7 @@ var dateFormat = require('dateformat');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+var db = require('./nodeDb.js')
 
 //express 모듈에 보조 장치 장착한다.
 app.use(bodyParser.json()); // JSON 형식으로 넘어온 데이터 처리 
@@ -28,13 +29,12 @@ app.use(function (req, res, next) {
     next();
 });
 
-
 var pool  = mysql.createPool({
   connectionLimit : 10,
-  host     : '192.168.0.28',
+  host     : db.url,
   port	   : 3306,
-  user     : 'reizen',
-  password : '1234',
+  user     : db.username,
+  password : db.password,
   database : 'reizen'
 });
 
@@ -43,6 +43,8 @@ pool.on('connection', function() {
 });
 
 app.get('/category/middle.do', function (request, response) {
+
+	  console.log('들어옴');
 	pool.query(
 	  'select c03name, cate03, @rownum:=@rownum+1 rn from cate_m m, cate_s s, (select @rownum:=0) sub where cate01 = ? and m.cate02 != "A0204" and s.cate02 = m.cate02',
 	  [request.query.cate01], 

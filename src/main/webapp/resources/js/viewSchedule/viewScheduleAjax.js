@@ -3,9 +3,6 @@ function getUser(){
 		url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
 		method : 'post',
 		dataType : 'json',
-		data : {
-			scheduleNo : scheduleNo
-		},
 		success : function(result) {
 			if (result.status == 'success') {
 				var data = result.data;
@@ -67,7 +64,7 @@ function getPictures(){
 /**************스크랩******************/
 function number() {
 	$.ajax({
-		url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+		url : reizenUrl + "postscript/userPost.do",
 		method : 'post',
 		dataType : 'json',
 		data : {
@@ -112,7 +109,6 @@ function userScheduleAjax(){
 
 				mapDay = 1;
 				initMap();
-				
 				
 				for (var i = 0; i < $(".timeline").children(".front").length; i++) {
 					console.log($($('.timeline').children(".front")[i]).attr('data-locate'))
@@ -341,7 +337,7 @@ function usersrAjax() {
 				}
 				if(toggle){
 					$.ajax({
-						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						url : reizenUrl + "postscript/userPost.do",
 						method : 'post',
 						dataType : 'json',
 						data : {
@@ -372,7 +368,7 @@ function usersrAjax() {
 				}else{
 					
 					$.ajax({
-						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						url : reizenUrl + "postscript/userPost.do",
 						method : 'post',
 						dataType : 'json',
 						data : {
@@ -426,7 +422,7 @@ function usersrAjax() {
 				}
 				if(toggle){
 					$.ajax({
-						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						url : reizenUrl + "postscript/userPost.do",
 						method : 'post',
 						dataType : 'json',
 						data : {
@@ -444,7 +440,7 @@ function usersrAjax() {
 					});
 				}else{
 					$.ajax({
-						url : reizenUrl + "postscript/userPost.do?scheduleNo="+scheduleNo,
+						url : reizenUrl + "postscript/userPost.do",
 						method : 'post',
 						dataType : 'json',
 						data : {

@@ -95,10 +95,6 @@ $( "#searchBar" ).autocomplete({
 });
 
 function searchLocation(){
-	for (var i = 0; i < $('.filter-value').length; i++) {
-		console.log($($('.filter-value')[i]).length)	
-	}
-	
 	cateS = categoryJson(cateS,9);
 	cateL = categoryJson(cateL,3);
 	$.ajax({
@@ -217,7 +213,7 @@ function searchSchedule(){
 
 function searchCategoryM(cate01){
 	$.ajax({
-		url: "http://reizen.com:8888/category/middle.do?cate01="+cate01,
+		url: nodeUrl+":8888/category/middle.do?cate01="+cate01,
 		dataType: 'json',
 		success: function(result){
 			$('.subclass-list').empty();
