@@ -28,6 +28,7 @@ function loginAjax(){
 	}); // ajax
 }
 
+
 function googleLoginAjax(email, name){
 	$.ajax({
 		url : reizenUrl+'user/googleLogin.do',

@@ -432,10 +432,10 @@ function usersrAjax() {
 						success : function(result) {
 							if (result.status == 'success') {
 								var data = result.data
-							/*	for (var i = 0; i < data.length; i++) {
+								for (var i = 0; i < data.length; i++) {
 								$this.next().text(' '+data[i].schedule.recommandCount);
 								$this.css("color","#ffffff").removeAttr('data-active');
-								}*/
+								}
 							}
 						}
 					});
