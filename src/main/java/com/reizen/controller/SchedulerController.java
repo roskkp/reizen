@@ -299,7 +299,6 @@ public class SchedulerController {
   @RequestMapping(path="copySchedule")
   @ResponseBody
   public String copySchedule(@RequestParam int scheduleNo, int copyScheduleNo, String date){
-    System.out.println("scheduleNo : "+scheduleNo+" / copyScheduleNo : "+copyScheduleNo);
     Map<String, Object> result = new HashMap<String, Object>();
     try {
       routeService.copySchedule(scheduleNo, copyScheduleNo, date);

@@ -108,6 +108,7 @@ public class RouteServiceImpl implements RouteService {
     System.out.println("schedultNo : "+scheduleNo+" / copyScheduleNo : "+copyScheduleNo+" / date : "+date);
     params.put("scheduleNo", scheduleNo);
     params.put("copyScheduleNo", copyScheduleNo);
+    params.put("date", date+" ");
     return dao.copySchedule(params);
   }
   

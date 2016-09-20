@@ -3,7 +3,6 @@ function addScheduleAjax(eventDate){
 	if( title=='' || title==null ){
 		title = '나만의 여행';
 	}
-
 	$.ajax({
 		url : reizenUrl+'scheduler/addSchedule.do',
 		method : 'POST',
@@ -14,19 +13,20 @@ function addScheduleAjax(eventDate){
 		success : function(result){
 			if( ! result.status == 'success' ){
 				sweetAlert('스케줄 생성 에러');
-			}else{
-				scheduleNo = result.scheduleNo;
-				if(flag){
-					$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
-						if(response.status=='success'){
-							console.log('일정 복사 성공');
-							window.location.href='scheduler.html?scheduleNo='+scheduleNo;
-						}
-					});
-				}
-				$('#schedule-title').text(title);
-				$('#startDate').text(date);
-			}//else
+				return;
+			}
+			scheduleNo = result.scheduleNo;
+			if(location.href.indexOf('copyScheduleNo')!=-1){
+				var copyScheduleNo = $(location).attr('search').substring(16);
+				$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
+					if(response.status=='success'){
+						emptySchedule = false;
+						window.location.href='scheduler.html?scheduleNo='+scheduleNo;
+					}
+				});
+			}
+			$('#schedule-title').text(title);
+			$('#startDate').text(date);
 		}//success
 	});
 }

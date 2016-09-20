@@ -22,8 +22,6 @@ var aroundMarkerList= [];
 var beforeLabel;
 var beforeIcon;
 var prev_infowindow;
-var flag = false;
-var copyScheduleNo;
 $(function() {
 	if(sessionStorage.length<=0){
 		swal("로그인이 필요한 페이지 입니다.", "로그인 해 주세요.", "info"); 
@@ -84,18 +82,14 @@ $(function() {
 				success : function(result){
 					if(result.status=='success'){
 						if(result.pass=='false'){ // 권한 없음
-							console.log(result);
 							swal("Access Denied", "You do not have permission", "warning"); 
 							setTimeout(function(){ // 3초뒤 자동 이동
 								window.location.href='main.html';
 							},3000);
-							
 						}else if(result.pass=='right'){ // 성공
 							var $day = $('#daysInfo');
-							
 							$day.attr('data-day', 1);
 							$day.text('DAY'+day);
-							
 							$.getJSON(nodeUrl+':8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
 								$day.attr('data-date', result[0].time);
 								date=result[0].time;
@@ -157,9 +151,7 @@ $(function() {
 		});
 	}
 	/* 스케줄 복사 추가했을 때 */
-	else if(location.href.indexOf('copyScheduleNo')!=-1){
-		copyScheduleNo=$(location).attr('search').substring(16);
-		flag = true;
+	else if(location.href.indexOf('copyScheduleNo')!=-1) {
 		$('#updateDay').modal({
 			backdrop : "static",
 			keyboard  : false
