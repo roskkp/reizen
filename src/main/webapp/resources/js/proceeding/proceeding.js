@@ -263,6 +263,7 @@ function load() {
 		$(document).on('click', '.moveDay', function(){ // 날짜 이동 버튼 이벤트 리스너
 			var day = $(this).attr('data-day');
 			if ( day >= 1 && day <= totalPage){
+				console.log(totalPage);
 				if( $(this).attr('data-pre') == $('#btn_prev').attr('data-pre')){
 					currentDate.setDate(currentDate.getDate()-1);
 				} else {

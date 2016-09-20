@@ -246,14 +246,15 @@ function scheduleAjax() {
 				
 				$(document).on('click', '.del', function(e) {
 					var $this= $(this);
-					swal({   
-						title: "Are you sure?",   
-						text: "You will not be able to recover",   
-						type: "warning",   
-						showCancelButton: true,   
-						confirmButtonColor: "#DD6B55",   
-						confirmButtonText: "Yes, delete it!",   
-						closeOnConfirm: false }, 
+		               swal({   
+		                   title: "삭제 하시겠습니까?",   
+		                   text: "삭제 버튼을 누르시면 삭제됩니다.",   
+		                   type: "warning",   
+		                   showCancelButton: true,   
+		                   confirmButtonColor: "#DD6B55",  
+		                   confirmButtonText: "삭제",    
+		                   cancelButtonText: "취소",   
+		                   closeOnConfirm: false }, 
 						function(){
 							$.ajax({
 								url : reizenUrl + 'postscript/deletePicts.do',
@@ -266,7 +267,7 @@ function scheduleAjax() {
 								method : 'post',
 								success : function(result) {
 									if (result.status != 'success') {
-										alert('후기 삭제 에러');
+										swal('후기 삭제 에러');
 									}
 									  swal({
 										    title: "후기",
