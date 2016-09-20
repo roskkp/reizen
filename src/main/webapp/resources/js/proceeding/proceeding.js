@@ -191,7 +191,7 @@ function load() {
 						var contentId = $target.find('div.panel-heading').data('contentid');
 						console.log('currentDay : '+currentDay);
 						var time = $('#updateHour option:selected').val()+':'+$('#updateMin option:selected').val();
-						$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+currentDay+'&time='+time, function(result){
+						$.getJSON('http://reizen.com:8080/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+currentDay+'&time='+time, function(result){
 							if(result.status=='exist'){
 								$('.control-label').remove();
 								$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
@@ -263,6 +263,7 @@ function load() {
 		$(document).on('click', '.moveDay', function(){ // 날짜 이동 버튼 이벤트 리스너
 			var day = $(this).attr('data-day');
 			if ( day >= 1 && day <= totalPage){
+				console.log(totalPage);
 				if( $(this).attr('data-pre') == $('#btn_prev').attr('data-pre')){
 					currentDate.setDate(currentDate.getDate()-1);
 				} else {

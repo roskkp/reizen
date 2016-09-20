@@ -40,12 +40,22 @@ public class SchedulerController {
   @RequestMapping(path = "proceeding", produces = "application/json;charset=utf-8")
   @ResponseBody
   public String proceeding(@RequestParam(defaultValue = "0") int day, int scheduleNo) {
-    if (day == 0) {
-      return new Gson().toJson(routeService.getCurrentList(scheduleNo));
-    } else {
-      return new Gson().toJson(routeService.getList(day, scheduleNo));
+    Map<String, Object> result = new HashMap<String, Object>();
+      try {
+        if (day == 0) {
+        result= routeService.getCurrentList(scheduleNo);
+        result.put("status", "success");
+       }
+        else {
+          result= routeService.getList(day,scheduleNo);
+          result.put("status", "success");
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        result.put("status", "failure");
+      }
+      return new Gson().toJson(result);
     }
-  }
 
 
   /*      scheduler 페이지에서 -> schedule day 하나씩 삭제      */

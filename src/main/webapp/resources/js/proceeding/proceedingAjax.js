@@ -183,6 +183,8 @@ function listAjax($value){
 	if ($value != null) {
 		dayInfo = '&day='+$value.attr('data-day');
 	};
+	console.log('day'+dayInfo);
+	console.log('scheduleNo'+scheduleNo);
 	$.ajax({
 		url: reizenUrl+'scheduler/proceeding.do?scheduleNo='+scheduleNo+dayInfo,
 		dataType: 'json',
