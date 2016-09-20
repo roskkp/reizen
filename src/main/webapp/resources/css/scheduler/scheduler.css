@@ -577,7 +577,7 @@ nav.searchNav a.btn-click:hover {
 	border-bottom: 1px solid #d6d6d6;
 	margin-bottom: 10px;
 }
-.infoBtn{
+.windowBtn{
 	cursor:pointer;
 	width: 48%;
 	text-align: center;
