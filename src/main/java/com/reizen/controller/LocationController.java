@@ -135,6 +135,7 @@ public class LocationController {
 	@RequestMapping(path = "addRecm", produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String addRecm(String nick, int cid) {
+		System.out.println(nick);
     Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			locationService.addRecm(nick, cid);

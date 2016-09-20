@@ -229,14 +229,18 @@ function checkStatus(){
 		var $this = $(this);
 		if($(this).attr('data-active') != 'true'){ // 기 추천 기록이 없다면
 			toggle = false;
-			url =  'location/addRecm.do?nick='+sessionStorage.getItem("nick")+'&cid='+contentId;
+			url =  'location/addRecm.do'
 		}else{ // 기 추천 기록이 있다면
 			toggle = true;
-			url = 'location/delRecm.do?cid='+contentId;
+			url = 'location/delRecm.do'
 		}
 		$.ajax({
 			url : reizenUrl + url,
-			method : 'get',
+			method : 'post',
+			data : {
+				nick : sessionStorage.getItem("nick"),
+				cid : contentId
+			},
 			dataType : 'json',
 			success : function(result) {
 				if (result.status != 'success') {
