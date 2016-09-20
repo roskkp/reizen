@@ -16,6 +16,14 @@ function addScheduleAjax(eventDate){
 				sweetAlert('스케줄 생성 에러');
 			}else{
 				scheduleNo = result.scheduleNo;
+				if(flag){
+					$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
+						if(response.status=='success'){
+							console.log('일정 복사 성공');
+							window.location.href='scheduler.html?scheduleNo='+scheduleNo;
+						}
+					});
+				}
 				$('#schedule-title').text(title);
 				$('#startDate').text(date);
 			}//else

@@ -22,6 +22,8 @@ var aroundMarkerList= [];
 var beforeLabel;
 var beforeIcon;
 var prev_infowindow;
+var flag = false;
+var copyScheduleNo;
 $(function() {
 	if(sessionStorage.length<=0){
 		swal("로그인이 필요한 페이지 입니다.", "로그인 해 주세요.", "info"); 
@@ -137,7 +139,6 @@ $(function() {
 		});
 		contentId = (location.href.substr(location.href.lastIndexOf('=') + 1)).replace("#","");
 		$('#updateDay').on('hide.bs.modal', function (){
-			swal("add??")
 			$('#updateTime').modal('show');
 			$('#btnTimeSubmit').off('click').on('click', function(){
 				var hour = $('#updateTime input:first').val();
@@ -157,20 +158,11 @@ $(function() {
 	}
 	/* 스케줄 복사 추가했을 때 */
 	else if(location.href.indexOf('copyScheduleNo')!=-1){
-		scheduleNo = $(location).attr('search').substring(16);
-		var copyScheduleNo=scheduleNo;
+		copyScheduleNo=$(location).attr('search').substring(16);
+		flag = true;
 		$('#updateDay').modal({
 			backdrop : "static",
 			keyboard  : false
-		});
-		$('#updateDay').on('hidden.bs.modal', function(){
-			$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
-				alert("scheduleNo : "+scheduleNo+" / copyScheduleNo : "+copyScheduleNo);
-				if(response.status=='success'){
-					console.log('일정 복사 성공');
-					window.location.href='scheduler.html?scheduleNo='+scheduleNo;
-				}
-			});
 		});
 	} 
 
