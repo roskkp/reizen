@@ -82,6 +82,7 @@ $(function() {
 				success : function(result){
 					if(result.status=='success'){
 						if(result.pass=='false'){ // 권한 없음
+							console.log(result);
 							swal("Access Denied", "You do not have permission", "warning"); 
 							setTimeout(function(){ // 3초뒤 자동 이동
 								window.location.href='main.html';
@@ -163,7 +164,8 @@ $(function() {
 			keyboard  : false
 		});
 		$('#updateDay').on('hidden.bs.modal', function(){
-			$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo, function(response){
+			$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
+				alert("scheduleNo : "+scheduleNo+" / copyScheduleNo : "+copyScheduleNo);
 				if(response.status=='success'){
 					console.log('일정 복사 성공');
 					window.location.href='scheduler.html?scheduleNo='+scheduleNo;

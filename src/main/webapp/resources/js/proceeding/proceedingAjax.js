@@ -173,6 +173,8 @@ function addRouteAjax(contentId,time){
 			if (result.status != 'success') {
 				console.log('일정 추가 에러');
 			}
+			console.log('addRouteAjax listAjax parameter');
+			console.log($('.location'));
 			listAjax($('.location'));
 		}
 	})
