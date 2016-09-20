@@ -96,8 +96,8 @@
   
   <insert id="copySchedule" parameterType="map">
     insert into routes (sdno, day, tseq, time, cid) 
-    select #{scheduleNo} as sdno, day, tseq, time, cid 
-    from scdls s, routes r where s.sdno=r.sdno and s.sdno=#{copyScheduleNo}
+    select #{scheduleNo} as sdno, day, tseq, concat(#{date},date_format(time, '%H:%i')) time, cid 
+    from routes where sdno=#{copyScheduleNo}
   </insert>
   
   <update id="bestRoute" parameterType="map">

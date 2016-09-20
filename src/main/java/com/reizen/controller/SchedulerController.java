@@ -211,6 +211,7 @@ public class SchedulerController {
         System.out.println("접근 회원 : " + uno + "    이 스케줄의 회원 번호 : " + resultUserNo + "    일치");
         result.put("pass", "right");
       } else {
+        System.out.println("접근 회원 : " + uno + "    이 스케줄의 회원 번호 : " + resultUserNo + "    불일치");
         System.out.println("회원 불일치 : proceeding.html 접근 제어");
         result.put("pass", "false");
       }
@@ -297,10 +298,10 @@ public class SchedulerController {
   
   @RequestMapping(path="copySchedule")
   @ResponseBody
-  public String copySchedule(@RequestParam int scheduleNo, int copyScheduleNo){
+  public String copySchedule(@RequestParam int scheduleNo, int copyScheduleNo, String date){
     Map<String, Object> result = new HashMap<String, Object>();
     try {
-      routeService.copySchedule(scheduleNo, copyScheduleNo);
+      routeService.copySchedule(scheduleNo, copyScheduleNo, date);
       result.put("status", "success");
     } catch (Exception e) {
       result.put("status", "failure");

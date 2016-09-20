@@ -103,10 +103,12 @@ public class RouteServiceImpl implements RouteService {
   }
 
   @Override
-  public int copySchedule(int scheduleNo, int copyScheduleNo) {
+  public int copySchedule(int scheduleNo, int copyScheduleNo, String date) {
     Map<String, Object> params = new HashMap<String, Object>();
+    System.out.println("schedultNo : "+scheduleNo+" / copyScheduleNo : "+copyScheduleNo+" / date : "+date);
     params.put("scheduleNo", scheduleNo);
     params.put("copyScheduleNo", copyScheduleNo);
+    params.put("date", date+" ");
     return dao.copySchedule(params);
   }
   

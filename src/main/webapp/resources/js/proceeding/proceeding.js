@@ -471,6 +471,7 @@ function load() {
 					$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
 					$('div.form-group').addClass('has-error');
 				} else {
+					console.log("contentId : "+contentId+" / time : "+time);
 					addRouteAjax(contentId,time);
 					$('#timeModal, #insertRoute').modal('hide');
 				} // else

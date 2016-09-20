@@ -86,13 +86,10 @@ $(function() {
 							setTimeout(function(){ // 3초뒤 자동 이동
 								window.location.href='main.html';
 							},3000);
-							
 						}else if(result.pass=='right'){ // 성공
 							var $day = $('#daysInfo');
-							
 							$day.attr('data-day', 1);
 							$day.text('DAY'+day);
-							
 							$.getJSON(nodeUrl+':8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
 								$day.attr('data-date', result[0].time);
 								date=result[0].time;
@@ -136,7 +133,6 @@ $(function() {
 		});
 		contentId = (location.href.substr(location.href.lastIndexOf('=') + 1)).replace("#","");
 		$('#updateDay').on('hide.bs.modal', function (){
-			swal("add??")
 			$('#updateTime').modal('show');
 			$('#btnTimeSubmit').off('click').on('click', function(){
 				var hour = $('#updateTime input:first').val();
@@ -155,20 +151,10 @@ $(function() {
 		});
 	}
 	/* 스케줄 복사 추가했을 때 */
-	else if(location.href.indexOf('copyScheduleNo')!=-1){
-		scheduleNo = $(location).attr('search').substring(16);
-		var copyScheduleNo=scheduleNo;
+	else if(location.href.indexOf('copyScheduleNo')!=-1) {
 		$('#updateDay').modal({
 			backdrop : "static",
 			keyboard  : false
-		});
-		$('#updateDay').on('hidden.bs.modal', function(){
-			$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo, function(response){
-				if(response.status=='success'){
-					console.log('일정 복사 성공');
-					window.location.href='scheduler.html?scheduleNo='+scheduleNo;
-				}
-			});
 		});
 	} 
 
