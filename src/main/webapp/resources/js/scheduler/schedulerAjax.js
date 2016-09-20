@@ -184,6 +184,7 @@ function listAjax(scheduleNo, day){
 
 			var listSource = $('#scheduleList').text();
 			var listTemplate = Handlebars.compile(listSource);
+			
 			$('#sortable').empty();
 			$('#sortable').append(listTemplate(result));
 			$('#schedule-title').text(title);
