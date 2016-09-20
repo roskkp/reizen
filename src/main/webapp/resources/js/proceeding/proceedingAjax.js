@@ -173,6 +173,8 @@ function addRouteAjax(contentId,time){
 			if (result.status != 'success') {
 				console.log('일정 추가 에러');
 			}
+			console.log('addRouteAjax listAjax parameter');
+			console.log($('.location'));
 			listAjax($('.location'));
 		}
 	})
@@ -183,6 +185,8 @@ function listAjax($value){
 	if ($value != null) {
 		dayInfo = '&day='+$value.attr('data-day');
 	};
+	console.log('day'+dayInfo);
+	console.log('scheduleNo'+scheduleNo);
 	$.ajax({
 		url: reizenUrl+'scheduler/proceeding.do?scheduleNo='+scheduleNo+dayInfo,
 		dataType: 'json',

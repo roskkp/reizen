@@ -40,12 +40,22 @@ public class SchedulerController {
   @RequestMapping(path = "proceeding", produces = "application/json;charset=utf-8")
   @ResponseBody
   public String proceeding(@RequestParam(defaultValue = "0") int day, int scheduleNo) {
-    if (day == 0) {
-      return new Gson().toJson(routeService.getCurrentList(scheduleNo));
-    } else {
-      return new Gson().toJson(routeService.getList(day, scheduleNo));
+    Map<String, Object> result = new HashMap<String, Object>();
+      try {
+        if (day == 0) {
+        result= routeService.getCurrentList(scheduleNo);
+        result.put("status", "success");
+       }
+        else {
+          result= routeService.getList(day,scheduleNo);
+          result.put("status", "success");
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        result.put("status", "failure");
+      }
+      return new Gson().toJson(result);
     }
-  }
 
 
   /*      scheduler 페이지에서 -> schedule day 하나씩 삭제      */
@@ -201,6 +211,7 @@ public class SchedulerController {
         System.out.println("접근 회원 : " + uno + "    이 스케줄의 회원 번호 : " + resultUserNo + "    일치");
         result.put("pass", "right");
       } else {
+        System.out.println("접근 회원 : " + uno + "    이 스케줄의 회원 번호 : " + resultUserNo + "    불일치");
         System.out.println("회원 불일치 : proceeding.html 접근 제어");
         result.put("pass", "false");
       }
@@ -287,10 +298,11 @@ public class SchedulerController {
   
   @RequestMapping(path="copySchedule")
   @ResponseBody
-  public String copySchedule(@RequestParam int scheduleNo, int copyScheduleNo){
+  public String copySchedule(@RequestParam int scheduleNo, int copyScheduleNo, String date){
+    System.out.println("scheduleNo : "+scheduleNo+" / copyScheduleNo : "+copyScheduleNo);
     Map<String, Object> result = new HashMap<String, Object>();
     try {
-      routeService.copySchedule(scheduleNo, copyScheduleNo);
+      routeService.copySchedule(scheduleNo, copyScheduleNo, date);
       result.put("status", "success");
     } catch (Exception e) {
       result.put("status", "failure");

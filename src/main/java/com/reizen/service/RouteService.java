@@ -28,7 +28,7 @@ public interface RouteService {
 	
 	public int removeRoute(int no);
 	
-	public int copySchedule(int scheduleNo, int copyScheduleNo);
+	public int copySchedule(int scheduleNo, int copyScheduleNo, String date);
 	
 	public Map<String, Object> checkRoute(org.json.JSONArray data);
 
