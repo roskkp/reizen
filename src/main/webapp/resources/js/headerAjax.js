@@ -16,7 +16,6 @@ function loginAjax(){
 				sessionStorage.setItem('activeScheduleNo', JSON.stringify(result.activeScheduleNo));
 				sessionStorage.setItem('totalRecommand', result.totalRecommand);
 				sessionStorage.setItem('totalScrap', result.totalScrap);
-				
 				sessionCheck();
 			} else {
 				swal("로그인 실패", "회원 정보를 확인해주세요 :( ", "error");

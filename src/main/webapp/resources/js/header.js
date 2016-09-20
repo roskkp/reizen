@@ -19,9 +19,7 @@ var navHeight = 207;
 $(function(){ 
 	
 	sessionCheck();
-	setInterval(() => {
-		scdleRec();
-	}, 1000);
+
 	$('#thumbnail').fileupload({
 		autoUpload : false
 	}).on('fileuploadadd', function(e, data) {
@@ -80,6 +78,7 @@ $(function(){
 
 	$("#login").on("click", function() {
 		loginAjax();
+
 	}); // login btn
 
 	$('#email').on("focusout", function() {
@@ -304,7 +303,12 @@ $(function(){
 		naverCheck();
 	}
 	
-	
+
+	if(sessionStorage.getItem('userNo') != null){
+		setInterval(() => {
+			scdleRec();
+		}, 1000);
+	}
 });  // on load
 
 
@@ -355,10 +359,11 @@ function scdleRec() {
 		dataType : 'json',
 		success : function(result){
 			if( result.status == 'success' ){
-
-				sessionStorage.setItem('totalRecommand', result.s_recm);
-				sessionStorage.setItem('totalScrap', result.s_src);
-				sessionCheck();
+				if(sessionStorage.getItem('totalRecommand') != result.s_recm || sessionStorage.getItem('totalScrap') != result.s_src) {
+					sessionStorage.setItem('totalRecommand', result.s_recm);
+					sessionStorage.setItem('totalScrap', result.s_src);
+					sessionCheck();	
+				}
 			}
 		}
 	});
