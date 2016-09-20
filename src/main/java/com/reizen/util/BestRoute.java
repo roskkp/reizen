@@ -78,7 +78,6 @@ public class BestRoute {
       }
     }
     int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
-    System.out.println("length - depth : "+(length - depth)+" / length : "+length+" / depth : "+depth);
     if ( length - depth != 1 && depth > 1) {
       double targetValue;
       String targetName; 
@@ -95,7 +94,7 @@ public class BestRoute {
           }
         }
         before.put(targetName,first);
-        Map<String, List<String>> after = target(length-depth, targetName, k, before, true);
+        Map<String, List<String>> after = target(length, targetName, k, before, true);
         int nos = 0;
         for (int l = 0; l < after.size(); l++) {
           if (nos == l) {
@@ -157,7 +156,7 @@ public class BestRoute {
 //    System.out.println("length : "+length+" / targetName : "+targetName+" / data : "+data);
     Map<String, List<String>> result = new HashMap<>();
     
-    Set<Set<String>> outerSet = asd(length, targetName, k, data);
+    Set<Set<String>> outerSet = test1(length-2, targetName, k, data);
 
     int no = 0;
     for (Set<String> set : outerSet) {
@@ -195,7 +194,7 @@ public class BestRoute {
     Set<Set<String>> outerSet = new HashSet<>();
     for (int i = 0; i < data.get(targetName).size(); i++) {
       for (int j = 0; j < data.get(targetName).size(); j++) {
-        if (!(""+i).contains((""+j))) {
+        if (i != j) {
           Set<String> innerSet = new HashSet<>();
           innerSet.add(data.get(targetName).get(i));
           innerSet.add(data.get(targetName).get(j));
@@ -205,5 +204,61 @@ public class BestRoute {
     }
     System.out.println("outerSet : "+outerSet);
     return outerSet;
+  }
+  
+  public static Set<Set<String>> test1(int size, String targetName, int k, Map<String,List<String>> data){
+    int length = 1;
+    Set<Set<String>> outerSet = new HashSet<>();
+    for (int i = 0; i < data.get(targetName).size(); i++) {
+      if (test3(size, length)) {
+        Set<String> innerSet = new HashSet<>();
+        innerSet.add(data.get(targetName).get(i));
+        Set<Set<String>> outerSets = test2(i, targetName, k, data, innerSet, length+1, size);
+        for (Set<String> set : outerSets) {
+          outerSet.add(set);
+        }
+      } else {
+        Set<String> innerSet = new HashSet<>();
+        innerSet.add(data.get(targetName).get(i));
+        outerSet.add(innerSet); 
+      }
+    }
+    System.out.println("targetName : "+targetName+" / outerSet : "+outerSet);
+    return outerSet;
+  }
+  
+  public static Set<Set<String>> test2(int first, String targetName, int k, Map<String,List<String>> data, Set<String> innerSet, int length, int size){
+    System.out.println("length : "+length+" / size : "+size);
+    Set<Set<String>> outerSet = new HashSet<>();
+    for (int i = 0; i < data.get(targetName).size(); i++) {
+      if (first != i) {
+        if (test3(size, length)) {
+          Set<String> innerSets = new HashSet<>();
+          innerSets.add(data.get(targetName).get(i));
+          Set<Set<String>> outerSets = test2(i, targetName, k, data, innerSets, length+1, size);
+          for (Set<String> set : outerSets) {
+            outerSet.add(set);
+          }
+        } else {
+          Set<String> innerSets = new HashSet<>();
+          for (String string : innerSet) {
+            innerSets.add(string);
+            innerSets.add(data.get(targetName).get(i));
+          }
+          outerSet.add(innerSets);
+        }
+      }
+    }
+//    if (test3(size, length)) {
+//      outerSet = test2(first, targetName, k, data, innerSet);
+//    }
+    return outerSet;
+  }
+  
+  public static boolean test3(int size, int length){
+    if (size == length) {
+      return false;
+    }
+    return true;
   }
 }

@@ -69,7 +69,7 @@ function checkDuplicateAjax(email){
 		success : function(result) {
 			var $emailCheck = $('#email-span');
 			if (result.status == 'success') {
-				$emailCheck.text("사용 ");
+				$emailCheck.text("사용 할 수 있습니다 :) ");
 			} else {
 				$emailCheck.text("이메일 중복 입니다");
 			}

@@ -191,9 +191,7 @@ function load() {
 						var contentId = $target.find('div.panel-heading').data('contentid');
 						console.log('currentDay : '+currentDay);
 						var time = $('#updateHour option:selected').val()+':'+$('#updateMin option:selected').val();
-
 						$.getJSON(nodeUrl+':8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+currentDay+'&time='+time, function(result){
-
 							if(result.status=='exist'){
 								$('.control-label').remove();
 								$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
