@@ -17,11 +17,9 @@ function maskImgs() {
 var navHeight = 207;
 
 $(function(){ 
-	
+
 	sessionCheck();
-	setInterval(() => {
-		scdleRec();
-	}, 1000);
+
 	$('#thumbnail').fileupload({
 		autoUpload : false
 	}).on('fileuploadadd', function(e, data) {
@@ -80,6 +78,7 @@ $(function(){
 
 	$("#login").on("click", function() {
 		loginAjax();
+
 	}); // login btn
 
 	$('#email').on("focusout", function() {
@@ -222,7 +221,7 @@ $(function(){
 			$("#checkUpdatePwd").focus();
 			return false;
 		} else { // 폼에 문제가 없다면 
-			
+
 			if (filesList.length > 0) {
 				console.log("multi file submit");
 				event.preventDefault();
@@ -249,16 +248,16 @@ $(function(){
 				});
 			} else {
 				event.preventDefault();
-		        $('#updateThumb').fileupload('send', {
-		          files : {"name" : "empty.png"}
-		        });
+				$('#updateThumb').fileupload('send', {
+					files : {"name" : "empty.png"}
+				});
 				console.log("plain default form submit");
 			}
 		}
 	});
 
 	/*********** 탈퇴 ***********/
-	
+
 	$(document).on('click', '#btnOut', function(){
 		swal({
 			title: "탈퇴하시겠습니까?",
@@ -280,7 +279,7 @@ $(function(){
 			}
 		});
 	});
-	
+
 
 	/*********** 네이버 로그인 ***********/
 
@@ -298,12 +297,19 @@ $(function(){
 	function naverCheck(){
 		naver.get_naver_userprofile();
 	}
-	
+
 	// 네이버 로그인 체크
 	if($(location).attr('href').indexOf('access_token')!=-1){
 		naverCheck();
 	}
-	
+
+
+
+	setInterval(() => {
+		if(sessionStorage.getItem('userNo') != null){
+			scdleRec();
+		}
+	}, 1000);
 	
 });  // on load
 
@@ -321,13 +327,13 @@ function initG(){
 $('#btnGoogle').off('click').on('click', function(){
 	auth2.attachClickHandler(this, {}, 
 			function(googleUser){
-				var user = googleUser.getBasicProfile();
-				var email = user.getEmail();
-				var name = user.getName();
-				googleLoginAjax(email, name);
-			}, function(error){
-				console.log('google login error'+error);
-			}
+		var user = googleUser.getBasicProfile();
+		var email = user.getEmail();
+		var name = user.getName();
+		googleLoginAjax(email, name);
+	}, function(error){
+		console.log('google login error'+error);
+	}
 	);
 });
 
@@ -355,14 +361,15 @@ function scdleRec() {
 		dataType : 'json',
 		success : function(result){
 			if( result.status == 'success' ){
-
-				sessionStorage.setItem('totalRecommand', result.s_recm);
-				sessionStorage.setItem('totalScrap', result.s_src);
-				sessionCheck();
+				if(sessionStorage.getItem('totalRecommand') != result.s_recm || sessionStorage.getItem('totalScrap') != result.s_src) {
+					sessionStorage.setItem('totalRecommand', result.s_recm);
+					sessionStorage.setItem('totalScrap', result.s_src);
+					sessionCheck();	
+				}
 			}
 		}
 	});
-	
+
 }
 
 /*********** 세션 체크 ***********/
@@ -378,7 +385,7 @@ function sessionCheck(){
 		$('.like-count').text(sessionStorage.getItem('totalRecommand'));
 		$('.write-count').text(sessionStorage.getItem('totalScrap'));
 		var activeList = JSON.parse(sessionStorage.getItem("activeScheduleNo"));
-		
+
 		if(activeList.length>0){
 			$('#btnProceeding').removeClass('empty').html('진행중인 일정 <span class="badge">'+activeList.length+'</span>');
 			$('#proceedingList').empty();
