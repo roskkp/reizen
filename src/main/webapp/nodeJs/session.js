@@ -44,21 +44,21 @@ pool.on('connection', function() {
 
 app.post('/scheduler/sessionRecm.do', function (request, response) {
 	pool.query(
-	  'select sum(s_recm) recm,sum(s_src) src from scdls where uno=? GROUP BY uno',
+	  'select sum(s_recm) recm, sum(s_src) src from scdls where uno=? GROUP BY uno',
 	  [request.body.userNo], 
 	  function(err, rows, fields) { 
 		  if (err) throw err;
 		  response.writeHead(200, {
 			'Content-Type' : 'application/json;charset=UTF-8' 
 		  });
-			  var cate = new Object();
-			  recm = rows[0].recm;
-			  src = rows[0].src;
-			  cate.s_recm = recm;
-			  cate.s_src = src;
-			  cate.status = 'success'; 
-			  cate = JSON.stringify(cate);
-		  response.write(cate)
+		  
+		  var data = new Object();
+		  data.s_recm = rows[0].recm;
+		  data.s_src = rows[0].src;
+		  data.status = 'success'; 
+		  data = JSON.stringify(data);
+		  console.log(data);
+		  response.write(data)
 		  response.end();
 	});
 });

@@ -62,11 +62,12 @@ function googleLoginAjax(email, name){
 function checkDuplicateAjax(email){
 	$.ajax({
 		type : 'POST',
-		url : reizenUrl+"user/checkMail.do",
+		url : nodeUrl+":7878/user/checkMail.do",
 		data : {
 			email : email
 		},
 		success : function(result) {
+			console.log(result);
 			var $emailCheck = $('#email-span');
 			if (result.status == 'success') {
 				$emailCheck.text("사용 할 수 있습니다 :) ");

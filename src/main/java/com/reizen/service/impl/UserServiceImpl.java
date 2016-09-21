@@ -62,11 +62,6 @@ public class UserServiceImpl implements UserService {
 		return dashBoardDao.insertDashBoard(user.getUserNo());
 	}
 
-	@Override
-	public String checkMail(String email) throws Exception {
-		return userDao.selectMail(email);
-	}
-
   @Override
   public int updateUser(User user) {
     return userDao.updateUser(user);
