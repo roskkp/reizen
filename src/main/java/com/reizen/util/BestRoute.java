@@ -25,7 +25,7 @@ public class BestRoute {
       index++;
     }
     if (size != 0) {
-      data = toFor(data,list, size,end,targets);
+      data = toFor(data,list, size,end,targets,1);
     } else {
       result.put("path", "t1t2");
       result.put("distance",list.get("0").get("t2")+data.get("0").get("t1"));
@@ -36,7 +36,7 @@ public class BestRoute {
     return result;
   }
 
-  public static Map<String,Map<String, Double>> toFor(Map<String,Map<String, Double>> data , Map<String,Map<String, Double>> list, int size,String end,String targets){
+  public static Map<String,Map<String, Double>> toFor(Map<String,Map<String, Double>> data , Map<String,Map<String, Double>> list, int size,String end,String targets, int page){
     Map<String,Map<String, Double>> result = new HashMap<>();
     String resultPath = null;
     double resultDistance = 999999999; 
@@ -50,6 +50,8 @@ public class BestRoute {
     // !key.contains(key2) 는 한번 지나간 곳으로 돌아가지 못하게 걸어주는 조건이다.
     int depth = size-1;
     int index = 0;
+//    System.out.println("null check point : data : "+data);
+//    System.out.println("null check point : size : "+data.size());
     for (int i = 0; i < data.size(); i++) {
       for (String key : data.get(""+i).keySet()) {
         for (int j = 1; j < list.size()+1; j++) {
@@ -78,7 +80,8 @@ public class BestRoute {
       }
     }
     int length = Integer.parseInt(targets.substring(targets.lastIndexOf("t")+1))-1;
-    if ( length - depth != 1 && depth > 1) {
+    System.out.println("page : "+page+" / depth : "+depth);
+    if ( page != 1 && depth > 1) {
       double targetValue;
       String targetName; 
       Map<String, Double> value = null;
@@ -94,14 +97,21 @@ public class BestRoute {
           }
         }
         before.put(targetName,first);
-        Map<String, List<String>> after = target(length, targetName, k, before, true);
+        Map<String, List<String>> after = target(page, targetName, k, before);
         int nos = 0;
+//        System.out.println("result size : "+result.size());
         for (int l = 0; l < after.size(); l++) {
           if (nos == l) {
             targetValue = 999999999;
             for (int i = 0; i < result.size(); i++) {
               for (String key : result.get(""+i).keySet()) {
+//                if (count == 0) {
+//                  System.out.println("keyContain(after.get("+l+"), "+key+" : "+keyContain(after.get(""+l), key));
+//                }
                 if (key.endsWith(targetName) && keyContain(after.get(""+l), key)) {
+                  if (count == 0) {
+                    System.out.println("in");
+                  }
                   if (targetValue > result.get(""+i).get(key)) {
                     value = new HashMap<>();
                     targetValue = result.get(""+i).get(key);
@@ -110,12 +120,16 @@ public class BestRoute {
                 }
               }
             }
+//            if (count == 0) {
+//              System.out.println("count = 0 : value : "+value);
+//            }
             nos++;
             results.put(""+count, value);
-            count++;
+            count++;  
           }
         }
       }
+      System.out.println("count : "+count);
       result = results;
     } else if (depth == 1) {
       double targetValue;
@@ -142,7 +156,13 @@ public class BestRoute {
     }
     // 경로가 끝이 아니므로, 재귀
     if (depth != 0) {
-      result = toFor(result,list, depth,end,targets);  
+//      System.out.println("result : "+result);
+//      System.out.println("list : "+list);
+//      System.out.println("depth : "+depth);
+//      System.out.println("end : "+end);
+//      System.out.println("targets : "+targets);
+//      System.out.println("page+1 : "+page);
+      result = toFor(result,list, depth,end,targets,page+1);  
     } else {
       Map<String, Double> value = new HashMap<>();
       value.put(resultPath,resultDistance);
@@ -152,12 +172,9 @@ public class BestRoute {
   }
   
   // 경우의 수를 줄이기 위한
-  public static Map<String,List<String>> target(int length, String targetName, int k, Map<String,List<String>> data, boolean pass ){
-//    System.out.println("length : "+length+" / targetName : "+targetName+" / data : "+data);
+  public static Map<String,List<String>> target(int page, String targetName, int k, Map<String,List<String>> data){
     Map<String, List<String>> result = new HashMap<>();
-    
-    Set<Set<String>> outerSet = test1(length-2, targetName, k, data);
-
+    Set<Set<String>> outerSet = test1(page, targetName, k, data);
     int no = 0;
     for (Set<String> set : outerSet) {
       List<String> innerList = new ArrayList<>();
@@ -183,37 +200,18 @@ public class BestRoute {
   public static boolean keyContain(List<String> list, String key) {
     for (String string : list) {
       if (!key.contains(string)){
-//        System.out.println("return false");
         return false;
       };
     }
     return true;
   }
   
-  public static Set<Set<String>> asd(int length, String targetName, int k, Map<String,List<String>> data){
-    Set<Set<String>> outerSet = new HashSet<>();
-    for (int i = 0; i < data.get(targetName).size(); i++) {
-      for (int j = 0; j < data.get(targetName).size(); j++) {
-        if (i != j) {
-          Set<String> innerSet = new HashSet<>();
-          innerSet.add(data.get(targetName).get(i));
-          innerSet.add(data.get(targetName).get(j));
-          outerSet.add(innerSet);
-        }
-      }
-    }
-    System.out.println("outerSet : "+outerSet);
-    return outerSet;
-  }
-  
-  public static Set<Set<String>> test1(int size, String targetName, int k, Map<String,List<String>> data){
+  public static Set<Set<String>> test1(int page, String targetName, int k, Map<String,List<String>> data){
     int length = 1;
     Set<Set<String>> outerSet = new HashSet<>();
     for (int i = 0; i < data.get(targetName).size(); i++) {
-      if (test3(size, length)) {
-        Set<String> innerSet = new HashSet<>();
-        innerSet.add(data.get(targetName).get(i));
-        Set<Set<String>> outerSets = test2(i, targetName, k, data, innerSet, length+1, size);
+      if (page != length) {
+        Set<Set<String>> outerSets = test2("t"+i, targetName, k, data, length+1, page);
         for (Set<String> set : outerSets) {
           outerSet.add(set);
         }
@@ -227,38 +225,28 @@ public class BestRoute {
     return outerSet;
   }
   
-  public static Set<Set<String>> test2(int first, String targetName, int k, Map<String,List<String>> data, Set<String> innerSet, int length, int size){
-    System.out.println("length : "+length+" / size : "+size);
+  public static Set<Set<String>> test2(String key, String targetName, int k, Map<String,List<String>> data, int length, int page){
     Set<Set<String>> outerSet = new HashSet<>();
     for (int i = 0; i < data.get(targetName).size(); i++) {
-      if (first != i) {
-        if (test3(size, length)) {
-          Set<String> innerSets = new HashSet<>();
-          innerSets.add(data.get(targetName).get(i));
-          Set<Set<String>> outerSets = test2(i, targetName, k, data, innerSets, length+1, size);
+      if (!key.contains("t"+i)) {
+        if (page != length) {
+          Set<Set<String>> outerSets = test2(key+"t"+i, targetName, k, data, length+1, page);
           for (Set<String> set : outerSets) {
             outerSet.add(set);
           }
         } else {
           Set<String> innerSets = new HashSet<>();
-          for (String string : innerSet) {
-            innerSets.add(string);
-            innerSets.add(data.get(targetName).get(i));
+          for (String before : key.split("t")) {
+            if (!before.equals("")) {
+              innerSets.add(data.get(targetName).get(Integer.parseInt(before)));
+            }
           }
+          innerSets.add(data.get(targetName).get(i));
           outerSet.add(innerSets);
         }
       }
     }
-//    if (test3(size, length)) {
-//      outerSet = test2(first, targetName, k, data, innerSet);
-//    }
     return outerSet;
   }
   
-  public static boolean test3(int size, int length){
-    if (size == length) {
-      return false;
-    }
-    return true;
-  }
 }

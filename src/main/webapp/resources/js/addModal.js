@@ -31,7 +31,7 @@ $(function(){
 		if(sessionStorage.length>0){ // 로그인 되어있다면
 			var userNo = sessionStorage.getItem("userNo");
 			$.ajax({
-				url : 'http://reizen.com:8889/scheduler/checkSchedule.do', 
+				url : nodeUrl+':8889/scheduler/checkSchedule.do', 
 				method : 'POST',
 				data : {'userNo' : userNo}, 
 				dataType : 'json',
@@ -51,7 +51,7 @@ $(function(){
 							confirmButtonText: "Yes",   
 							closeOnConfirm: false }, 
 							function(){ // 메인에서의 접근과 여타 페이지에서의 접근 경로가 달라서 절대경로 써야합니다
-								window.location.href='http://reizen.com:8890/scheduler/scheduler.html?cid='+cid;
+								window.location.href=reizenUrl+'scheduler/scheduler.html?cid='+cid;
 							}); // swal
 					}
 				}
@@ -68,7 +68,7 @@ $(function(){
 			$('.adm-form-group').fadeOut();
 		}
 		var scheduleNo = $('select.scheduleSelectList option:selected').data('no');
-		$.getJSON('http://reizen.com:8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
+		$.getJSON(nodeUrl+':8889/scheduler/checkDay.do?scheduleNo='+scheduleNo, function(result){
 			if(result.length>0){ // day가 있다면 ....? day가 없는 일정이 있을 수 있나 ?
 				$('.dayList').fadeIn();
 				var daySource = $('#dayList').html();
@@ -97,7 +97,7 @@ $(function(){
 			swal("Failed!", "모든 정보를 기입해 주세요", "error"); 
 			return;
 		}
-		$.getJSON('http://reizen.com:8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
+		$.getJSON(nodeUrl+':8890/scheduler/checkTime.do?scheduleNo='+scheduleNo+'&day='+day+'&time='+time, function(result){
 			if(result.status=='exist'){
 				$('.control-label').remove();
 				$('div.form-group').append('<label class="control-label" for="inputError1">중복된 시간입니다.</label>');
@@ -115,7 +115,7 @@ $(function(){
 							confirmButtonText: "Yes",   
 							closeOnConfirm: false }, 
 							function(){ // 메인에서의 접근과 여타 페이지에서의 접근 경로가 달라서 절대경로 써야합니다
-								window.location.href='http://reizen.com:8080/scheduler/scheduler.html?scheduleNo='+scheduleNo;
+								window.location.href=reizenUrl+'scheduler/scheduler.html?scheduleNo='+scheduleNo;
 							}); // swal
 						}else{
 							swal("Failed!", "일정 추가 실패. 관리자에게 문의하세요. ", "error"); 

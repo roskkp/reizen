@@ -302,7 +302,13 @@ function initMap() {
 		marker[i] = new google.maps.Marker({
 			position: spots[i],
 			map: map,
-			label: labels[i]
+			icon: '/resources/images/marker/empty.png',
+			label:{
+				text: 	(i+1)+'',
+				color: '#ffffff',
+			    fontWeight: 'bold',
+				fontSize: '16px'
+			},
 		});
 	}
 	spotPath.setMap(map);//마커를 맵에추가함

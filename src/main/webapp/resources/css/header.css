@@ -14,10 +14,12 @@
 	position: absolute;
 	bottom: 83px;
 }
-.check{
-	height : 20px;
-	font-size: 13px;
-	color: rgba(255,0,0,0.7);
+.check {
+    height: 20px;
+    font-size: 13px;
+    /* border: 1px solid; */
+    font-weight: 600;
+    color: rgb(56, 122, 213);
 }
 .preview {
     display: block;
