@@ -282,9 +282,6 @@ function bestRoute(){
 		success : function(result){
 			routeSeq = result.data;
 			spotPath.setMap(null);
-			for (var i = 0; i < marker.length; i++) {
-				marker[i].setMap(map);
-			}
 			var departure;
 			var arrival;
 			var labels = '123456789';
@@ -293,7 +290,13 @@ function bestRoute(){
 				marker[i] = new google.maps.Marker({
 					position: {lat: parseFloat(routeSeq[i].map.mapY), lng: parseFloat(routeSeq[i].map.mapX)},
 					map: routeMap,
-					label: labels[i]
+					icon: '/resources/images/marker/empty.png',
+					label:{
+						text: 	(i+1)+'',
+						color: '#ffffff',
+					    fontWeight: 'bold',
+						fontSize: '16px'
+					},
 				});
 				if (i != routeSeq.length-1) {
 					drawLine(new google.maps.LatLng(routeSeq[i].map.mapY, routeSeq[i].map.mapX),new google.maps.LatLng(routeSeq[i+1].map.mapY, routeSeq[i+1].map.mapX),i);	
@@ -379,10 +382,11 @@ function dataTheorem(){
 
 }
 
-function aroundSearch(mapX,mapY){
+function aroundSearch(mapX,mapY,cid){
+	markerBoolean = true;
 	$('#draggable').empty();
 	$.ajax({
-		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1',
+		url : reizenUrl+'location/aroundList.do?mapX='+mapX+'&mapY='+mapY+'&tid='+typeId+'&size=100&page=1&cid='+cid,
 		method: 'GET',
 		dataType: 'json',
 		success: function(result){

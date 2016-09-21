@@ -19,7 +19,7 @@ public interface LocationService {
 	
 	public List<Location> around(String lat, String lon, String tid);
   
-  public List<Location> selectAroundList(String lat, String lon, String tid, int size, int page);
+  public List<Location> selectAroundList(String lat, String lon, String tid, int size, int page, int cid);
   
   public int countAroundList(String lat, String lon, String tid);
 

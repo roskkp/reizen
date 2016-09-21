@@ -22,6 +22,7 @@ var aroundMarkerList= [];
 var beforeLabel;
 var beforeIcon;
 var prev_infowindow;
+var markerBoolean = false;
 $(function() {
 	if(sessionStorage.length<=0){
 		swal("로그인이 필요한 페이지 입니다.", "로그인 해 주세요.", "info"); 
@@ -63,6 +64,7 @@ $(function() {
 	}
 	/* 일정 새로 만들 때 */
 	if(location.href.indexOf('=')==-1){
+		emptySchedule = true;
 		$('#updateDay').modal({
 			backdrop : "static",
 			keyboard  : false
@@ -135,8 +137,8 @@ $(function() {
 		$('#updateDay').on('hide.bs.modal', function (){
 			$('#updateTime').modal('show');
 			$('#btnTimeSubmit').off('click').on('click', function(){
-				var hour = $('#updateTime input:first').val();
-				if( hour >= 1 && hour <= 24 ){
+				var hour = $('#updateHour').val();
+				if( hour >= 0 && hour <= 23 ){
 					if( this.id=='btnTimeSubmit'){
 						var min = $('#updateMin').val();
 						var time = hour+":"+min;
@@ -144,7 +146,6 @@ $(function() {
 						addAjax(contentId, date, day, time, scheduleNo);
 						getTotal(scheduleNo);
 						return;
-
 					} // btntimeSubmit check
 				}	//hour check if
 			});	// btn click
@@ -302,6 +303,8 @@ $(function() {
 				$($('.searchIcon')[i]).removeClass('btn-click');
 			}
 			category = '';
+			markerBoolean = false;
+			page = 1;
 			$('#draggable').empty();
 			searchAjax();
 		}
@@ -311,6 +314,8 @@ $(function() {
 		for (var i = 0; i < $('.searchIcon').length; i++) {
 			$($('.searchIcon')[i]).removeClass('btn-click');
 		}
+		page = 1;
+		markerBoolean = false;
 		category = '';
 		$('#draggable').empty();
 		searchAjax();
@@ -436,15 +441,21 @@ $(function() {
 				$($('.searchIcon')[i]).removeClass('btn-click');
 			}
 			$(this).addClass('btn-click')
-			category=$(this).attr('data-cate');
+			category = $(this).attr('data-cate');
+			typeId = $(this).attr('data-tid');
 				
 		} else {
 			$(this).removeClass('btn-click')
 			category='';
+			typeId = '';
 		}
-		$('#draggable').empty();
-		page = 1;
-		searchAjax();
+		if (markerBoolean) {
+			$('.marker-click').click();
+		} else {
+			$('#draggable').empty();
+			page = 1;
+			searchAjax();
+		}
 	});
 
 	$('#draggable').scroll(function(){
@@ -462,7 +473,7 @@ $(function() {
 		event.preventDefault();
 		var mapx = $(this).data('mapx');
 		var mapy = $(this).data('mapy');
-		aroundSearch(mapx,mapy);
+		aroundSearch(mapx,mapy,$(this).data('contentid'));
 	})
 	$('#sortable').on('click', 'a.removeBtn', function(event){
 		event.preventDefault();
@@ -608,11 +619,10 @@ $(document).on('click', '.mapBtn', function(event){
 	var $li = $(this).parents('li');
 	var 	mapX = $li.data('mapx'),
 			mapY = $li.data('mapy');
-	aroundSearch(mapX,mapY);
+	aroundSearch(mapX,mapY,$(this).parents('li').data('contentid'));
 });
 
 function pointMap(mapX, mapY,maps) { // 주변 검색 
-	$('.btn-click').removeClass('btn-click');
 	var $list = $('#sortable li');
 	var $dragList = $('#draggable li');
 	var spots = [];
@@ -917,13 +927,18 @@ function bestRouteMap(mapId){
 		strokeWeight: 2
 	});
 
-	var labels = '123456789';
 	marker = [];
 	for(var i=0; i<spots.length; i++){
 		marker[i] = new google.maps.Marker({
+			icon: '/resources/images/marker/empty.png',
+			label:{
+				text: 	(i+1)+'',
+				color: '#ffffff',
+			    fontWeight: 'bold',
+				fontSize: '16px'
+			},
 			position: spots[i],
 			map: map,
-			label: labels[i]
 		});
 	}
 

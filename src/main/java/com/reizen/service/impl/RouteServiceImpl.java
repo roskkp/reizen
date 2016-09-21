@@ -145,8 +145,9 @@ public class RouteServiceImpl implements RouteService {
     String[] paths = path.split("t");
     List<JSONObject> resultList = new ArrayList<JSONObject>();
     resultList.add(((JSONObject)data.get(0)));
+    System.out.println("path : "+path);
     for (String string : paths) {
-     if (!string.equals("")) {
+     if (!string.equals("") && !string.equals("null")) {
         resultList.add(((JSONObject)data.get(Integer.parseInt(string))));
       }
     }

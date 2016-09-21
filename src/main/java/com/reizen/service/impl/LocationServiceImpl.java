@@ -175,7 +175,7 @@ public class LocationServiceImpl implements LocationService {
   }
 
   @Override
-  public List<Location> selectAroundList(String mapX, String mapY, String tid, int size, int page) {
+  public List<Location> selectAroundList(String mapX, String mapY, String tid, int size, int page, int cid) {
     List<Location> list = new ArrayList<>();
     Map<String, Object> params = new HashMap<>();
     if(mapX.length()!=14){
@@ -184,9 +184,10 @@ public class LocationServiceImpl implements LocationService {
     if(mapY.length() != 13){
       mapY=mapY.concat("0");
     }
+    params.put("cid", cid);
+    list.add(locationDao.selectLocationByMap(params));
     params.put("mapX", mapX);
     params.put("mapY", mapY);
-    list.add(locationDao.selectLocationByMap(params));
     params.put("tid", tid);
     params.put("size", size);
     params.put("page", (page-1)*size);
