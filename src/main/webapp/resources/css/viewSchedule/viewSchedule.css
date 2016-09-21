@@ -579,6 +579,7 @@ ol.timeline {
     border: 1px solid #8c8f99;
     color: #8c8f99;
     width: 409px;
+    padding: 5px;
 }
 
 
@@ -936,7 +937,7 @@ h1 {
   font-weight: 100;
   font-size: 2.4em;
 }
- @media (min-width: 1680px) {
+ @media (min-width: 1100px) {
  .scriptImage {
     /* margin-top: -10%; */
     width: 100%;
@@ -1203,7 +1204,7 @@ ol.timeline {
     padding: 1.5em;
   }
 }
-@media (min-width: 1680px) {
+@media (min-width:1100px) {
 .user-wrapper {
     height: 100%;
     border: 1px solid white;
@@ -1211,7 +1212,7 @@ ol.timeline {
     margin-left: 0%;
 }
 }
-@media (min-width: 1680px) {
+@media (min-width: 1100px) {
 .mapnum {
     border: 0px solid #ffffff;
     background: #6a9ce9;
@@ -1237,13 +1238,13 @@ ol.timeline {
 }
 }
 
-@media (min-width: 1680px) {
+@media (min-width: 1100px) {
 .info {
     display: flex;
     padding-left: 7.5%;
 }
 } 
-@media (min-width: 1680px) { 
+@media (min-width: 1100px) { 
  .user-profile {
     height: 70%;
     padding-top: 3.0%;
@@ -1252,7 +1253,7 @@ ol.timeline {
     font-size: 12px;
 }
 }
-@media (min-width: 1680px) {
+@media (min-width: 1100px) {
 .avatar {
     float: left;
     width: 100px;
@@ -1261,7 +1262,7 @@ ol.timeline {
     margin-right: 2%;
 }
 }
-@media (min-width: 1680px) {
+@media (min-width: 1100px) {
   .username {
     width: 55%;
     cursor:pointer;
@@ -1269,19 +1270,19 @@ ol.timeline {
     font-weight: 500;
   }
 }
-@media (min-width: 1680px) {
+@media (min-width: 1100px) {
   .bio{
     color: white;
     font-size: 17px;
   }
   
 }
-@media (min-width: 50em) {
+@media (min-width: 1100px) {
   .modal__wrap {
     padding: 1.75em;
   }
 }
-@media (min-height: 37.5em) {
+@media (min-height: 1100px) {
   .modal__wrap {
     left: 50%;
     position: absolute;
