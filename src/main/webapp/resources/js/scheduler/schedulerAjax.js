@@ -3,10 +3,11 @@ function addScheduleAjax(eventDate){
 	if( title=='' || title==null ){
 		title = '나만의 여행';
 	}
-	$.ajax({
+	return $.ajax({
 		url : reizenUrl+'scheduler/addSchedule.do',
 		method : 'POST',
 		dataType : 'json',
+		async: false,
 		data : {
 			'title' : title
 		},
@@ -16,19 +17,27 @@ function addScheduleAjax(eventDate){
 				return;
 			}
 			scheduleNo = result.scheduleNo;
-			if(location.href.indexOf('copyScheduleNo')!=-1){
-				var copyScheduleNo = $(location).attr('search').substring(16);
-				$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
-					if(response.status=='success'){
-						emptySchedule = false;
-						window.location.href='scheduler.html?scheduleNo='+scheduleNo;
-					}
-				});
-			}
+			
 			$('#schedule-title').text(title);
 			$('#startDate').text(date);
 		}//success
 	});
+}
+
+function asdasd(){
+	var no = addScheduleAjax();
+	console.log(no.responseJSON.scheduleNo);
+	schelduleNo=no.responseJSON.scheduleNo;
+	if(location.href.indexOf('copyScheduleNo')!=-1){
+		var copyScheduleNo = $(location).attr('search').substring(16);
+		$.getJSON(reizenUrl+'scheduler/copySchedule.do?scheduleNo='+scheduleNo+'&copyScheduleNo='+copyScheduleNo+'&date='+date, function(response){
+			console.log(response.status);
+			if(response.status=='success'){
+				emptySchedule = false;
+				window.location.href='scheduler.html?scheduleNo='+scheduleNo;
+			}
+		});
+	}
 }
 
 function searchAjax(){
