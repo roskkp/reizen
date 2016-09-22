@@ -44,14 +44,14 @@ pool.on('connection', function() {
 
 app.post('/scheduler/sessionRecm.do', function (request, response) {
 	pool.query(
+
 	  'select sum(s_recm) recm, sum(s_src) src from scdls where uno=? GROUP BY uno',
 	  [request.body.userNo], 
 	  function(err, rows, fields) { 
 		  if (err) throw err;
 		  response.writeHead(200, {
 			'Content-Type' : 'application/json;charset=UTF-8' 
-		  });
-		  
+		  });	
 		  var data = new Object();
 		  data.s_recm = rows[0].recm;
 		  data.s_src = rows[0].src;
@@ -59,6 +59,7 @@ app.post('/scheduler/sessionRecm.do', function (request, response) {
 		  data = JSON.stringify(data);
 		  console.log(data);
 		  response.write(data)
+
 		  response.end();
 	});
 });

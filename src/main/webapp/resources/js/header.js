@@ -310,7 +310,7 @@ $(function(){
 			scdleRec();
 		}
 	}, 1000);
-	
+
 });  // on load
 
 
