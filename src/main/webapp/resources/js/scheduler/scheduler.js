@@ -396,7 +396,7 @@ $(function() {
 		$day.attr('data-day', 1);
 		$day.text('DAY'+day);
 
-		addScheduleAjax(eventDate);
+		addEvent();
 	});
 	
 	$(document).on('click','.infoAdd',function(){ // 맵 인포 박스 버튼 이벤트 리스너 
