@@ -24,8 +24,8 @@ function addScheduleAjax(eventDate){
 	});
 }
 
-function addEvent(){
-	var no = addScheduleAjax();
+function addEvent(eventDate){
+	var no = addScheduleAjax(eventDate);
 	console.log(no.responseJSON.scheduleNo);
 	schelduleNo=no.responseJSON.scheduleNo;
 	if(location.href.indexOf('copyScheduleNo')!=-1){
