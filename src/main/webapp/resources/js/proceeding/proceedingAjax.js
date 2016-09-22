@@ -2,7 +2,7 @@ function makeList(result){
 	var mapList = new Array();
 	var lat = result.list[0].location.mapY-0;
 	var lon = result.list[0].location.mapX-0;
-	/*getWeather(lat,lon);*/
+	getWeather(lat,lon);
 
 	for(var j=0; j<result.list.length; j++){
 		var first = result.list[j].location.mapY;
