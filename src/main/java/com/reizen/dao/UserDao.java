@@ -10,8 +10,6 @@ public interface UserDao {
 
 	public User checkUser(User user);
 
-	public String selectMail(String email);
-
 	public int updateUser(User user);
 
 	public int deleteUser(int no);

@@ -62,22 +62,6 @@ public class UserController {
     return new Gson().toJson(result);
   }
 
-  @RequestMapping(path = "checkMail", produces = "application/json;charset=UTF-8")
-  @ResponseBody
-  public String checkMail(String email) {
-    Map<String, Object> result = new HashMap<String, Object>();
-    try {
-      if (userService.checkMail(email) == null) {
-        result.put("status", "success");
-      } else {
-        result.put("status", "duplicated");
-      }
-    } catch (Exception e) {
-      result.put("status", "failure");
-    }
-    return new Gson().toJson(result);
-  }
-
   @RequestMapping(path="login", produces="application/json; charset=UTF-8")
   @ResponseBody
   public String checkUser(User user, HttpSession httpSession) {

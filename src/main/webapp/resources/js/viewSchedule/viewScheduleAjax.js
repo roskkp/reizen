@@ -8,6 +8,7 @@ function getUser(){
 				var data = result.data;
 			
 				for (var i = 0; i < data.length; i++) {
+					console.log(data[i]);
 					var ti = data[data.length -1];
 					var t = ti.time;
 					var timed = t.split(' ')[0];

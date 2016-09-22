@@ -43,8 +43,6 @@ pool.on('connection', function() {
 });
 
 app.get('/category/middle.do', function (request, response) {
-
-	  console.log('들어옴');
 	pool.query(
 	  'select c03name, cate03, @rownum:=@rownum+1 rn from cate_m m, cate_s s, (select @rownum:=0) sub where cate01 = ? and m.cate02 != "A0204" and s.cate02 = m.cate02',
 	  [request.query.cate01], 
@@ -66,34 +64,6 @@ app.get('/category/middle.do', function (request, response) {
 		  list.data = data;
 		  list = JSON.stringify(list)
 		  response.write(list);
-		  response.end();
-	});
-});
-
-app.get('/category/small.do', function (request, response) {
-	pool.query(
-	  'select c03name, cate03, @rownum:=@rownum+1 rn from cate_s s , (select @rownum:=0) sub where cate02 = ? and s.cate02 != "A0204"',
-	  [request.query.cate02], 
-	  function(err, rows, fields) { 
-		  if (err) throw err;
-		  response.writeHead(200, {
-			'Content-Type' : 'application/json;charset=UTF-8' 
-		  });
-		  var data = new Array();
-		  for (var i = 0; i < rows.length; i++) {
-			  var cate = new Object();
-			  name = rows[i].c03name.substr(0,5);
-			  if(rows[i].c03name.charAt(6) != ''){
-				  name = name+'...'
-			  }
-			  cate.name = name;
-			  cate.fname = rows[i].c03name; 
-			  cate.cate = rows[i].cate03;
-			  cate.index = rows[i].rn;
-			  data.push(cate);
-		  }
-		  data = JSON.stringify(data)
-		  response.write(data);
 		  response.end();
 	});
 });
